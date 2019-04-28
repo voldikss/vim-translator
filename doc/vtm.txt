@@ -1,0 +1,137 @@
+*vim-translate-me.txt*                     Vim/Neovim翻译插件
+
+Author : voldikss <https://voldikss.github.io>
+
+CONTENTS                *vim-translate-me-contents*
+
+Introduction            |vim-translate-me-introduction|
+Screenshot              |vim-translate-me-screenshot|
+Install                 |vim-translate-me-install|
+Commands                |vim-translate-me-commands|
+Mappings                |vim-translate-me-mappings|
+Variables               |vim-translate-me-variables|
+Health Check            |vim-translate-me-health-check|
+Repository              |vim-translate-me-repository-page|
+License                 |vim-translate-me-license|
+
+
+==============================================================================
+SCREENSHOT                                            *vim-translate-me-screenshot*
+
+Vim/Neovim 翻译插件。支持 悬浮窗口 和 异步特性
+
+
+==============================================================================
+INSTALL                                                  *vim-translate-me-install*
+
+With vim-plug:
+>
+  Plug 'voldikss/vim-translate-me'
+<
+
+==============================================================================
+COMMANDS                                                *vim-translate-me-commands*
+
+*:Translate*
+
+  翻译文本，仅在命令行回显翻译内容
+
+*:TranslateW*
+
+  翻译文本，在窗口显示翻译内容
+
+
+==============================================================================
+MAPPINGS                                                *vim-translate-me-mappings*
+
+*<Plug>Translate*
+
+  普通模式，翻译光标下的文本，在命令行回显翻译内容
+
+*<Plug>TranslateV*
+
+  可视模式，翻译光标下的文本，在命令行回显翻译内容
+
+*<Plug>TranslateW*
+
+  普通模式，翻译光标下的文本，在窗口中显示翻译内容
+
+*<Plug>TranslateWV*
+
+  可视模式，翻译光标下的文本，在窗口中显示翻译内容
+
+*<Plug>TranslateR*
+
+  普通模式，替换光标下的文本为翻译内容
+
+*<Plug>TranslateRV*
+
+  可视模式，替换光标下的文本为翻译内容
+
+==============================================================================
+VARIABLES                                              *vim-translate-me-variables*
+
+*g:vtm_popup_window*
+
+  显示翻译内容的窗口，可选值有 'preview' 和 'floating'。
+  默认如果检测到floating特性支持，则为'floating'，否则为'preview'
+
+*g:vtm_preview_position*
+
+  如果g:vtm_popup_window为'preview'，此选项决定preview 窗口的位置。
+  可选值：'to'在顶部，'bo'在底部（:help to查看详细说明）。
+  默认为'bo'
+
+*g:vtm_youdao_app_key*
+
+*g:vtm_youdao_app_secret*
+
+  有道 api 的 APPKEY 和 APP_SECRET ，推荐自己申请，也可以使用内置的（会过期）
+
+
+==============================================================================
+HEALTH CHECK                                        *vim-translate-me-health-check*
+
+运行
+>
+  :checkhealth
+<
+
+
+==============================================================================
+REPOSITORY                                       *vim-translate-me-repository-page*
+
+|vim-translate-me| is developed at GitHub. Please make a new issue or PR to
+join development.
+
+https://github.com/voldikss/vim-translate-me
+
+
+==============================================================================
+LICENSE                                                  *vim-translate-me-license*
+
+|vim-translate-me| is distributed under The MIT license.
+
+  Copyright (c) 2019 voldikss
+
+  Permission is hereby granted, free of charge, to any person obtaining
+  a copy of this software and associated documentation files (the
+  "Software"), to deal in the Software without restriction, including
+  without limitation the rights to use, copy, modify, merge, publish,
+  distribute, sublicense, and/or sell copies of the Software, and to
+  permit persons to whom the Software is furnished to do so, subject to
+  the following conditions:
+  The above copyright notice and this permission notice shall be
+  included in all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+  EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+  MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+  IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+  CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+  TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+  SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
+==============================================================================
+vim:tw=78:ts=8:ft=help:norl:et:fen:fdl=0:

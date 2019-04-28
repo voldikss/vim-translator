@@ -1,0 +1,14 @@
+test.*
+tmp.*
+.tags
+*.pyc
+*.o
+*.out
+*.log
+/doc/tags
+.idea/
+/.idea
+build/
+__pycache__
+
+
