@@ -141,9 +141,8 @@ def vtmQuery(word):
 
     try:
         data_json = json.loads(data_back.decode('utf-8'))
-        # print(data_json)
         if data_json['errorCode'] != "0":
-            sys.stderr.write(ERROR_CODE['errorCode'])
+            sys.stderr.write(ERROR_CODE[data_json['errorCode']])
             return
 
         trans['query'] = data_json['query']
