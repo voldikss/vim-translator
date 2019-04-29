@@ -40,14 +40,27 @@ Vim/Neovim 翻译插件
 
 - **`g:vtm_default_mapping`**
 
+    > 是否使用默认快捷键
+
     - 可选值：`1` 使用默认快捷键，`0` 不使用默认快捷键
 
     - 默认值：`1`
 
-- **`g:vtm_youdao_app_key`**
-- **`g:vtm_youdao_app_secret`**
+- **`g:vtm_default_api`**
+  
+  > 默认使用的翻译接口
 
-    > 有道 api 的 `APPKEY` 和 `APP_SECRET` ，可以[自己申请](https://ai.youdao.com/doc.s#guide)，推荐不用设置，使用默认值
+  - 可选值：`'youdao'`, `'baidu'`
+
+  - 默认值：`'youdao'`
+
+- **`g:vtm_youdao_app_key`** & **`g:vtm_youdao_app_secret`**
+
+  > 有道 api 的 `APPKEY` 和 `APP_SECRET` ，可以[自己申请](https://ai.youdao.com/doc.s#guide)，建议不用设置，使用默认值
+
+- **`g:vtm_baidu_app_key`** & **`g:vtm_baidu_app_secret`**
+
+  > 百度 api 的 `APPKEY` 和 `APP_SECRET` ，可以[自己申请](https://api.fanyi.baidu.com/api/trans/product/index)  建议不用设置，使用默认值
 
 #### 快捷键
 

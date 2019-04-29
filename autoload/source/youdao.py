@@ -19,7 +19,7 @@ else:
     from urllib.parse import urlencode
 
 
-YOUDAO_URL = 'http://openapi.youdao.com/api?'
+YOUDAO_URL = 'http://openapi.youdao.com/api'
 
 
 ERROR_CODE = {
@@ -132,7 +132,7 @@ SAMPLE_STDOUT = {
 
 def vtmQuery(word):
     trans = {}
-    url = YOUDAO_URL + buildQuery(word)
+    url = YOUDAO_URL + '?' + buildQuery(word)
     try:
         data_back = urlopen(url).read()
     except:
@@ -178,4 +178,5 @@ else:
     # to trim the string's quote/doublequote(becase `shellescape` was used in autoload/vtm.vim)
     word = args.word.strip('\'')
     word = word.strip('\"')
+    word = word.strip()
     vtmQuery(word)

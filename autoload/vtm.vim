@@ -23,7 +23,18 @@ endif
 
 
 " note: this must be outside the function!!!
-let s:py_file = expand('<sfile>:p:h') . '/vtm.py'
+let s:py_file = expand('<sfile>:p:h') . '/source/' . g:vtm_default_api . '.py'
+
+let s:api_key_secret = {
+    \ 'baidu': [
+        \ g:vtm_baidu_app_key,
+        \ g:vtm_baidu_app_secret
+    \ ],
+    \ 'youdao': [
+        \ g:vtm_youdao_app_key,
+        \ g:vtm_youdao_app_secret
+    \ ]
+    \ }
 
 " sample contents
 " {
@@ -308,8 +319,8 @@ function! vtm#Translate(word, type) abort
 
     let cmd = s:vtm_py_version . ' ' . s:py_file
         \ . ' --word '      . shellescape(a:word)
-        \ . ' --appKey '    . g:vtm_youdao_app_key
-        \ . ' --appSecret ' . g:vtm_youdao_app_secret
+        \ . ' --appKey '    . s:api_key_secret[g:vtm_default_api][0]
+        \ . ' --appSecret ' . s:api_key_secret[g:vtm_default_api][1]
 
     call s:JobStart(cmd, a:type)
 endfunction

@@ -14,9 +14,12 @@ else
     let g:vtm_popup_window = 'preview'
 endif
 
+let g:vtm_preview_position = get(g:, 'vtm_preview_position', 'bo')
+let g:vtm_default_api = get(g:, 'vtm_default_api', 'youdao')
+let g:vtm_baidu_app_key = get(g:, 'vtm_baidu_app_key', '20190429000292722')
+let g:vtm_baidu_app_secret = get(g:, 'vtm_baidu_app_secret', 'sv566pogmFxLFUjaJY4e')
 let g:vtm_youdao_app_key = get(g:, 'vtm_youdao_app_key', '70d26c625f056dba')
 let g:vtm_youdao_app_secret = get(g:, 'vtm_youdao_app_secret', 'wqbp7g6MloxwmOTUGSkMghnIWxTGOyrp')
-let g:vtm_preview_position = get(g:, 'vtm_preview_position', 'bo')
 
 if get(g:, 'vtm_default_mapping', 1)
     if !hasmapto('<Plug>Translate')
