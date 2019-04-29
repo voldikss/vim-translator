@@ -19,11 +19,11 @@ let g:vtm_youdao_app_secret = get(g:, 'vtm_youdao_app_secret', 'wqbp7g6MloxwmOTU
 let g:vtm_preview_position = get(g:, 'vtm_preview_position', 'bo')
 
 if !hasmapto('<Plug>Translate')
-    nmap <silent> <Leader>d <Plug>Translate
+    nmap <silent> <Leader>t <Plug>Translate
 endif
 
 if !hasmapto('<Plug>TranslateV')
-    vmap <silent> <Leader>d <Plug>TranslateV
+    vmap <silent> <Leader>t <Plug>TranslateV
 endif
 
 if !hasmapto('<Plug>TranslateW')
