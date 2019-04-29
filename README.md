@@ -87,13 +87,22 @@ Vim/Neovim 翻译插件
 - 在翻译窗口中按 `q` 键关闭窗口
 
 #### 命令
-- `:Translate <word>`
 
-    翻译文本，仅在命令行回显翻译内容
+- `:Translate<CR>`
 
-- `:TranslateW <word>`
+    命令不带参数执行，翻译当前光标下的单词并在命令行回显
 
-    翻译文本，在窗口显示翻译内容
+- `:Translate <word><CR>`
+
+    翻译单词 `<word>`，并在命令行回显翻译内容
+
+- `:Translate <api> <word><CR>`
+
+    使用指定的 `<api>` 翻译单词 `<word>` 并在命令行回显，可用 `<Tab>` 补全 `<api>` 参数
+
+- `:TranslateW`
+
+    用法同上，但是在窗口中显示翻译内容
 
 
 ### Credit

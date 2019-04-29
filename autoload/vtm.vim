@@ -23,7 +23,7 @@ endif
 
 
 " note: this must be outside the function!!!
-let s:py_file = expand('<sfile>:p:h') . '/source/' . g:vtm_default_api . '.py'
+let s:py_file_path = expand('<sfile>:p:h') . '/source/'
 
 let s:api_key_secret = {
     \ 'baidu': [
@@ -308,7 +308,7 @@ function! s:JobStart(cmd, type) abort
     call function(s:job_cmd, [a:cmd, callbacks])()
 endfunction
 
-function! vtm#Translate(word, type) abort
+function! vtm#Translate(...) abort
     " if there is a popup window already
     if exists('s:popup_win_id')
         let popup_winnr = win_id2win(s:popup_win_id)
@@ -318,15 +318,58 @@ function! vtm#Translate(word, type) abort
         endif
     endif
 
-    let cmd = s:vtm_py_version . ' ' . s:py_file
-        \ . ' --word '      . shellescape(a:word)
-        \ . ' --appKey '    . s:api_key_secret[g:vtm_default_api][0]
-        \ . ' --appSecret ' . s:api_key_secret[g:vtm_default_api][1]
+    " `:Translate<CR>` == call vtm#Translate(expand("<cword>"), 'simple')
+    " argument: ''
+    if a:1 == ''
+        let word = expand("<cword>")
+        let api = g:vtm_default_api
+    else
+        let pos = match(trim(a:1),' ')
+        " `:Translate test<CR>` == call vtm#Translate('test', 'simple')
+        " argument: 'test'
+        if pos < 0
+            let word = trim(a:1)
+            let api = g:vtm_default_api
+        " `:Translate youdao test<CR>` == call vtm#Translate('youdao test', 'simple')
+        " argument: 'youdao test'
+        else
+            " split a:1 to get api and word
+            let api = a:1[: pos-1]
+            if index(['youdao', 'baidu'], api) < 0
+                echomsg '[vim-translate-me] Invalid api parameter'
+                return
+            endif
+            let word = a:1[l:pos+1 :]
+        endif
+    endif
 
-    call s:JobStart(cmd, a:type)
+    let type = a:2
+    let py_file = s:py_file_path . api . '.py'
+
+    let cmd = s:vtm_py_version . ' ' . py_file
+        \ . ' --word '      . shellescape(word)
+        \ . ' --appKey '    . s:api_key_secret[api][0]
+        \ . ' --appSecret ' . s:api_key_secret[api][1]
+
+    call s:JobStart(cmd, type)
 endfunction
 
 function! vtm#TranslateV(type) abort
     let select_text = s:GetVisualText()
     call vtm#Translate(select_text, a:type)
+endfunction
+
+function! vtm#Complete(arg_lead, cmd_line, cursor_pos)
+    let apis = ['youdao', 'baidu']
+    let cmd_line_before_cursor = a:cmd_line[:a:cursor_pos - 1]
+    let args = split(cmd_line_before_cursor, '\v\\@<!(\\\\)*\zs\s+', 1)
+    call remove(args, 0)
+    if len(args) == 1
+        let candidates = apis
+        let prefix = args[0]
+        if !empty(prefix)
+            let candidates = filter(apis, 'v:val[:len(prefix) - 1] == prefix')
+        endif
+        return sort(candidates)
+    endif
 endfunction

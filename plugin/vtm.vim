@@ -55,9 +55,9 @@ nmap <silent> <Plug>TranslateR  viw:<C-U>call vtm#TranslateV("replace")<CR>
 vmap <silent> <Plug>TranslateRV :<C-U>call vtm#TranslateV("replace")<CR>
 
 if !exists(':Translate')
-    command! -nargs=1 Translate call vtm#Translate(<q-args>, 'simple')
+    command! -complete=customlist,vtm#Complete -nargs=* Translate call vtm#Translate(<q-args>, 'simple')
 endif
 
 if !exists(':TranslateW')
-    command! -nargs=1 TranslateW call vtm#Translate(<q-args>, 'complex')
+    command! -complete=customlist,vtm#Complete -nargs=* TranslateW call vtm#Translate(<q-args>, 'complex')
 endif
