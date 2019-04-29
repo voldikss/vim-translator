@@ -188,11 +188,23 @@ function! s:ClosePopup() abort
 endfunction
 
 function! s:Echo(contents) abort
-    let translation = a:contents['query'] .
-        \ ' ==> ' .
-        \ a:contents['translation'] .
-        \ ' [' . get(a:contents, 'phonetic', '') . '] ' .
-        \ join(get(a:contents, 'explain', []), ' ')
+    if has_key(a:contents, 'phonetic')
+        let phonetic = ' [' . a:contents['phonetic'] . '] '
+    else
+        let phonetic = ''
+    endif
+
+    if has_key(a:contents, 'explain')
+        let explain = join(get(a:contents, 'explain', []), ' ')
+    else
+        let explain = ''
+    endif
+
+    let translation = a:contents['query']
+        \ . ' ==> '
+        \ . a:contents['translation']
+        \ . phonetic
+        \ . explain
 
     echomsg translation
 endfunction
