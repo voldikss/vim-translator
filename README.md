@@ -1,5 +1,5 @@
 # vim-translate-me
-Vim/Neovim 翻译插件。
+Vim/Neovim 翻译插件
 
 支持悬浮窗口（目前只有Neovim支持）和异步（Vim 8 和 Neovim 都支持）
 
@@ -24,22 +24,30 @@ Vim/Neovim 翻译插件。
 #### 变量
 - **`g:vtm_popup_window`**
 
-    显示翻译内容的窗口，可选值有 `'preview'` 和 `'floating'`。
+    > 显示翻译内容的窗口
 
-    默认如果检测到`floating`特性支持，则为`'floating'`，否则为`'preview'`
+    - 可选值： `'preview'`, `'floating'`
+
+    - 默认值：如果检测到`floating`特性支持，则为`'floating'`，否则为`'preview'`
 
 - **`g:vtm_preview_position`**
 
-    如果`g:vtm_popup_window`为`'preview'`，此选项决定preview 窗口的位置。
+    > 如果`g:vtm_popup_window`为`'preview'`，此选项决定preview 窗口的位置
 
-    可选值：`'to'`在顶部，`'bo'`在底部（`:help to`查看详细说明）。
+    - 可选值：`'to'` 在顶部，`'bo'` 在底部（`:help to`查看详细说明）
 
-    默认为`'bo'`
+    - 默认值：`'bo'`
+
+- **`g:vtm_default_mapping`**
+
+    - 可选值：`1` 使用默认快捷键，`0` 不使用默认快捷键
+
+    - 默认值：`1`
 
 - **`g:vtm_youdao_app_key`**
 - **`g:vtm_youdao_app_secret`**
 
-    有道 api 的 `APPKEY` 和 `APP_SECRET` ，可以[自己申请](https://ai.youdao.com/doc.s#guide)，推荐不用设置，使用默认值。
+    > 有道 api 的 `APPKEY` 和 `APP_SECRET` ，可以[自己申请](https://ai.youdao.com/doc.s#guide)，推荐不用设置，使用默认值
 
 #### 快捷键
 

@@ -68,25 +68,41 @@ MAPPINGS                                                *vim-translate-me-mappin
 
   可视模式，替换光标下的文本为翻译内容
 
+默认快捷键~
+ >
+  nmap <silent> <Leader>t <Plug>Translate
+  vmap <silent> <Leader>t <Plug>TranslateV
+  nmap <silent> <Leader>w <Plug>TranslateW
+  vmap <silent> <Leader>w <Plug>TranslateWV
+  nmap <silent> <Leader>r <Plug>TranslateR
+  vmap <silent> <Leader>r <Plug>TranslateRV
+
+
 ==============================================================================
 VARIABLES                                              *vim-translate-me-variables*
 
 *g:vtm_popup_window*
 
-  显示翻译内容的窗口，可选值有 'preview' 和 'floating'。
-  默认如果检测到floating特性支持，则为'floating'，否则为'preview'
+  显示翻译内容的窗口
+  可选值： `'preview'`, `'floating'`
+  默认值：如果检测到`floating`特性支持，则为`'floating'`，否则为`'preview'`
 
 *g:vtm_preview_position*
 
-  如果g:vtm_popup_window为'preview'，此选项决定preview 窗口的位置。
-  可选值：'to'在顶部，'bo'在底部（:help to查看详细说明）。
-  默认为'bo'
+  如果`g:vtm_popup_window`为`'preview'`，此选项决定preview 窗口的位置
+  可选值：`'to'` 在顶部，`'bo'` 在底部（`:help to`查看详细说明）
+  默认值：`'bo'`
+
+*g:vtm_default_mapping*
+
+  可选值：`1` 使用默认快捷键，`0` 不使用默认快捷键
+  默认值：`1`
 
 *g:vtm_youdao_app_key*
 
 *g:vtm_youdao_app_secret*
 
-  有道 api 的 APPKEY 和 APP_SECRET ，推荐自己申请，也可以使用内置的（会过期）
+  有道 api 的 `APPKEY` 和 `APP_SECRET` ，推荐自己申请，也可以使用内置的（会过期）
 
 
 ==============================================================================
