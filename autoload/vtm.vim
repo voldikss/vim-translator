@@ -244,9 +244,10 @@ function! s:Start(type, data, event) abort
 
     " python2 will return unicode object which is hard to solve in python
     " so solve it in vim
-    " convert unicode to normal chinese string
-    let message = substitute(message, 'u"', '"', 'g')
-    let message = substitute(message, "u'", "'", 'g')
+    " 1. remove `u` before strings
+    let message = substitute(message, '\(: \|: [\)\(u\)\("\)', '\=submatch(1).submatch(3)', 'g')
+    let message = substitute(message, "\\([: \|: \[]\\)\\(u\\)\\('\\)", '\=submatch(1).submatch(3)', 'g')
+    " 2. convert unicode to normal chinese string
     let message = substitute(message, '\\u\(\x\{4\}\)', '\=nr2char("0x".submatch(1),1)', 'g')
 
     if a:event == 'stdout'
