@@ -39,7 +39,7 @@ Vim/Neovim 翻译插件。
 - **`g:vtm_youdao_app_key`**
 - **`g:vtm_youdao_app_secret`**
 
-    有道 api 的 `APPKEY` 和 `APP_SECRET` ，推荐[自己申请](https://ai.youdao.com/doc.s#guide)，也可以使用内置的（会过期）
+    有道 api 的 `APPKEY` 和 `APP_SECRET` ，可以[自己申请](https://ai.youdao.com/doc.s#guide)，推荐不用设置，使用默认值。
 
 #### 快捷键
 
