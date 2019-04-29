@@ -88,9 +88,9 @@ function! s:OnOpen(contents) abort
     setlocal nonumber
     setlocal norelativenumber
     setlocal nocursorline
-    setlocal wrap
+    setlocal nowrap
     setlocal filetype=vtm
-    nmap <silent> <buffer> q :execute 'close'<CR>
+    nmap <silent> <buffer> q :close<CR>
 
     let query = '查找：' . a:contents['query']
     call setline(1, query)
@@ -142,12 +142,13 @@ function! s:GetFloatingSize(contents) abort
                 endif
                 let height += 1
             endfor
+            " `解释` takes one line
+            let height += 1
         endif
     endfor
 
     " no reason about '8' here. I picked it as I like
     let width += 8
-    let height += 1
 
     return [width, height]
 endfunction
