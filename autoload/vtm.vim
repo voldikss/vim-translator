@@ -191,8 +191,8 @@ function! s:Echo(contents) abort
     let translation = a:contents['query'] .
         \ ' ==> ' .
         \ a:contents['translation'] .
-        \ ' [' . a:contents['phonetic'] . '] ' .
-        \ join(a:contents['explain'], ' ')
+        \ ' [' . get(a:contents, 'phonetic', '') . '] ' .
+        \ join(get(a:contents, 'explain', []), ' ')
 
     echomsg translation
 endfunction
