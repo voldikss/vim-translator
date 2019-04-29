@@ -18,28 +18,30 @@ let g:vtm_youdao_app_key = get(g:, 'vtm_youdao_app_key', '70d26c625f056dba')
 let g:vtm_youdao_app_secret = get(g:, 'vtm_youdao_app_secret', 'wqbp7g6MloxwmOTUGSkMghnIWxTGOyrp')
 let g:vtm_preview_position = get(g:, 'vtm_preview_position', 'bo')
 
-if !hasmapto('<Plug>Translate')
-    nmap <silent> <Leader>t <Plug>Translate
-endif
+if get(g:, 'vtm_default_mapping', 1)
+    if !hasmapto('<Plug>Translate')
+        nmap <silent> <Leader>t <Plug>Translate
+    endif
 
-if !hasmapto('<Plug>TranslateV')
-    vmap <silent> <Leader>t <Plug>TranslateV
-endif
+    if !hasmapto('<Plug>TranslateV')
+        vmap <silent> <Leader>t <Plug>TranslateV
+    endif
 
-if !hasmapto('<Plug>TranslateW')
-    nmap <silent> <Leader>w <Plug>TranslateW
-endif
+    if !hasmapto('<Plug>TranslateW')
+        nmap <silent> <Leader>w <Plug>TranslateW
+    endif
 
-if !hasmapto('<Plug>TranslateWV')
-    vmap <silent> <Leader>w <Plug>TranslateWV
-endif
+    if !hasmapto('<Plug>TranslateWV')
+        vmap <silent> <Leader>w <Plug>TranslateWV
+    endif
 
-if !hasmapto('<Plug>TranslateR')
-    nmap <silent> <Leader>r <Plug>TranslateR
-endif
+    if !hasmapto('<Plug>TranslateR')
+        nmap <silent> <Leader>r <Plug>TranslateR
+    endif
 
-if !hasmapto('<Plug>TranslateRV')
-    vmap <silent> <Leader>r <Plug>TranslateRV
+    if !hasmapto('<Plug>TranslateRV')
+        vmap <silent> <Leader>r <Plug>TranslateRV
+    endif
 endif
 
 nmap <silent> <Plug>Translate   :call vtm#Translate(expand("<cword>"), "simple")<CR>
