@@ -4,29 +4,29 @@
 " @Last Modified time: 2019-04-28 13:32:21
 
 function! s:check_job() abort
-    if exists(*jobstart) || exists('*job_start')
-        call health#report_ok('+job is available to execute python command')
+    if exists('*jobstart') || exists('*job_start')
+        call health#report_ok('Async check passed')
     else
-        call health#report_error('+job feature is required to execute python command')
+        call health#report_error('+job feature is required to execute network request')
     endif
 endfunction
 
 function! s:check_floating_window() abort
     if !has('nvim')
-        call health#report_warning('Floating window is currently not available in Vim, will use preview instead')
+        call health#report_warning('Floating window check failed, use preview instead')
         return 
     endif
 
     if exists('*nvim_open_win')
-        call health#report_ok('Floating window is available to display translation')
+        call health#report_ok('Floating window check passed')
     else
-        call health#report_warning('Floating window is not available, will use preview instead')
+        call health#report_warning('Floating window check failed, use preview instead')
     endif
 endfunction
 
 function! s:check_python() abort
     if executable('python')
-        call health#report_ok('Python is installed')
+        call health#report_ok('Python check passed')
     else
         call health#report_error('Python is required but not installed or executable')
     endif
