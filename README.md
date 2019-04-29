@@ -49,9 +49,9 @@ Vim/Neovim 翻译插件。
 
     ```vim
     " 普通模式，<Leader>d 翻译光标下的文本，在命令行回显翻译内容
-    nmap <silent> <Leader>d <Plug>Translate
+    nmap <silent> <Leader>t <Plug>Translate
     " 可视模式，<Leader>d 翻译光标下的文本，在命令行回显翻译内容
-    vmap <silent> <Leader>d <Plug>TranslateV
+    vmap <silent> <Leader>t <Plug>TranslateV
     " 普通模式，<Leader>w 翻译光标下的文本，在窗口中显示翻译内容
     nmap <silent> <Leader>w <Plug>TranslateW
     " 可视模式，<Leader>w 翻译光标下的文本，在窗口中显示翻译内容

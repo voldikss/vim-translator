@@ -20,11 +20,11 @@ let g:vtm_preview_position = get(g:, 'vtm_preview_position', 'bo')
 
 if get(g:, 'vtm_default_mapping', 1)
     if !hasmapto('<Plug>Translate')
-        nmap <silent> <Leader>d <Plug>Translate
+        nmap <silent> <Leader>t <Plug>Translate
     endif
 
     if !hasmapto('<Plug>TranslateV')
-        vmap <silent> <Leader>d <Plug>TranslateV
+        vmap <silent> <Leader>t <Plug>TranslateV
     endif
 
     if !hasmapto('<Plug>TranslateW')
