@@ -191,11 +191,9 @@ endfunction
 
 function! s:ClosePopup() abort
     let popup_winnr = win_id2win(s:popup_win_id)
-    if popup_winnr == 0
-        return
+    if popup_winnr != 0
+        execute popup_winnr . 'wincmd c'
     endif
-    execute popup_winnr . 'wincmd c'
-    " call nvim_win_close(s:popup_win_id, 1)
     autocmd! VtmClosePopup * <buffer>
 endfunction
 
