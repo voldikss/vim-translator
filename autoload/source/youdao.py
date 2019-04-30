@@ -12,7 +12,7 @@ import time
 import json
 
 if sys.version_info[0] == 2:
-    from urllib import urlopen
+    from urllib2 import urlopen
     from urllib import urlencode
 else:
     from urllib.request import urlopen
@@ -80,33 +80,6 @@ def buildQuery(word):
     return urlencode(data)
 
 
-# sample of the response from the youdao server
-SAMPLE_RESPONSE = {
-    "tSpeakUrl": "...",
-    "returnPhrase": ["test"],
-    "web": [
-        {"value": ["正交试验", "正交实验法", "正交设计"], "key":"orthogonal test"},
-        {"value": ["双缩脲试剂", "二缩", "双脲试验"], "key":"biuret test"},
-        {"value": ["项测试", "长期试验", "期中考试"], "key":"Term test"}],
-    "query": "test",
-    "translation": ["测试"],
-    "errorCode": "0",
-    "dict": {"url": "yddict://m.youdao.com/dict?le=eng&q=test"},
-    "webdict": {"url": "http://m.youdao.com/dict?le=eng&q=test"},
-    "basic": {
-        "exam_type": ["高中", "初中"],
-        "us-phonetic": "tɛst",
-        "phonetic": "test",
-        "uk-phonetic": "test",
-        "uk-speech": "...",
-        "explains": ["n. 试验；检验", "vt. 试验；测试", "vi. 试验；测试", "n. (Test)人名"],
-        "us-speech": "..."
-    },
-    "l": "en2zh-CHS",
-    "speakUrl": "..."
-}
-
-
 # todo
 def byteify(input, encoding='utf-8'):
     if isinstance(input, dict):
@@ -119,32 +92,57 @@ def byteify(input, encoding='utf-8'):
         return input
 
 
-# sample stdout that we build
-SAMPLE_STDOUT = {
-    'data': {
-        'query': 'word',
-        'phonetic': 'phonetic',
-        'translation': 'translation1',
-        'explain': ['explains1', 'explains2']
-    }
-}
-
-
 def vtmQuery(word):
-    trans = {}
     url = YOUDAO_URL + '?' + buildQuery(word)
     try:
-        data_back = urlopen(url).read()
-    except:
-        sys.stderr.write("网络请求错误(HTTP request error)")
+        res = urlopen(url).read()
+    except Exception as e:
+        sys.stderr.write("网络请求错误(HTTP request error) %s" % e)
         return
 
+    # sample of the response from the youdao server
+    # SAMPLE_RESPONSE = {
+    #     "tSpeakUrl": "...",
+    #     "returnPhrase": ["test"],
+    #     "web": [
+    #         {"value": ["正交试验", "正交实验法", "正交设计"], "key":"orthogonal test"},
+    #         {"value": ["双缩脲试剂", "二缩", "双脲试验"], "key":"biuret test"},
+    #         {"value": ["项测试", "长期试验", "期中考试"], "key":"Term test"}],
+    #     "query": "test",
+    #     "translation": ["测试"],
+    #     "errorCode": "0",
+    #     "dict": {"url": "yddict://m.youdao.com/dict?le=eng&q=test"},
+    #     "webdict": {"url": "http://m.youdao.com/dict?le=eng&q=test"},
+    #     "basic": {
+    #         "exam_type": ["高中", "初中"],
+    #         "us-phonetic": "tɛst",
+    #         "phonetic": "test",
+    #         "uk-phonetic": "test",
+    #         "uk-speech": "...",
+    #         "explains": ["n. 试验；检验", "vt. 试验；测试", "vi. 试验；测试", "n. (Test)人名"],
+    #         "us-speech": "..."
+    #     },
+    #     "l": "en2zh-CHS",
+    #     "speakUrl": "..."
+    # }
+
+    # sample stdout that we build
+    # SAMPLE_STDOUT = {
+    #     'data': {
+    #         'query': 'word',
+    #         'phonetic': 'phonetic',
+    #         'translation': 'translation1',        # not necessary
+    #         'explain': ['explains1', 'explains2'] # not necessary
+    #     }
+    # }
+
     try:
-        data_json = json.loads(data_back.decode('utf-8'))
+        data_json = json.loads(res.decode('utf-8'))
         if data_json['errorCode'] != "0":
             sys.stderr.write(ERROR_CODE[data_json['errorCode']])
             return
 
+        trans = {}
         trans['query'] = data_json['query']
         trans['translation'] = data_json['translation'][0]
         # sometimes data_json['basic'] is type <'None'>
@@ -157,7 +155,8 @@ def vtmQuery(word):
 
         sys.stdout.write(str(trans))
     except Exception as e:
-        sys.stderr.write("数据解析错误(Data parsing error) Line[%s]：%s" % (sys.exc_info()[2].tb_lineno, e))
+        sys.stderr.write("数据解析错误(Data parsing error) Line[%s]：%s" % (
+            sys.exc_info()[2].tb_lineno, e))
         return
 
 
@@ -171,6 +170,7 @@ args = parser.parse_args()
 if not args.word:  # for debug
     APP_KEY = '70d26c625f056dba'
     APP_SECRET = 'wqbp7g6MloxwmOTUGSkMghnIWxTGOyrp'
+    to_lang = 'zh-CHS'
     vtmQuery('import')
 else:
     APP_KEY = args.appKey

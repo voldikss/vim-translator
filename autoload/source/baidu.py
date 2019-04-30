@@ -11,7 +11,7 @@ import hashlib
 import argparse
 
 if sys.version_info[0] == 2:
-    from urllib import urlopen
+    from urllib2 import urlopen
     from urllib import urlencode
 else:
     from urllib.request import urlopen
@@ -52,36 +52,34 @@ def buildQuery(word):
     return urlencode(data)
 
 
-# sample of the response from the youdao server
-SAMPLE_RESPONSE = {
-    'from': 'en',
-    'to': 'zh',
-    'trans_result': [{'src': 'sample', 'dst': '样品'}]
-}
-
-
-# sample stdout that we build
-SAMPLE_STDOUT = {
-    'data': {
-        'query': 'word',
-        'phonetic': 'phonetic',
-        'translation': 'translation1',         # not necessary
-        'explain': ['explains1', 'explains2']  # not necessary
-    }
-}
-
-
 def vtmQuery(word):
-    trans = {}
     url = BAIDU_URL + '?' + buildQuery(word)
     try:
-        data_back = urlopen(url).read()
-    except:
-        sys.stderr.write("网络请求错误(HTTP request error)")
+        res = urlopen(url).read()
+    except Exception as e:
+        sys.stderr.write("网络请求错误(HTTP request error) %s" % e)
         return
 
+    # sample of the response from the youdao server
+    # SAMPLE_RESPONSE = {
+    #     'from': 'en',
+    #     'to': 'zh',
+    #     'trans_result': [{'src': 'sample', 'dst': '样品'}]
+    # }
+
+    # sample stdout that we build
+    # SAMPLE_STDOUT = {
+    #     'data': {
+    #         'query': 'word',
+    #         'phonetic': 'phonetic',
+    #         'translation': 'translation1',         # not necessary
+    #         'explain': ['explains1', 'explains2']  # not necessary
+    #     }
+    # }
+
     try:
-        data_json = json.loads(data_back.decode('utf-8'))
+        trans = {}
+        data_json = json.loads(res.decode('utf-8'))
         if 'error_code' in data_json:
             sys.stderr.write(ERROR_CODE[data_json['error_code']])
             return
@@ -92,7 +90,8 @@ def vtmQuery(word):
 
         sys.stdout.write(str(trans))
     except Exception as e:
-        sys.stderr.write("数据解析错误(Data parsing error) Line[%s]：%s" % (sys.exc_info()[2].tb_lineno, e))
+        sys.stderr.write("数据解析错误(Data parsing error) Line[%s]：%s" % (
+            sys.exc_info()[2].tb_lineno, e))
         return
 
 
@@ -103,9 +102,10 @@ parser.add_argument('--appSecret', required=False)
 parser.add_argument('--toLang', required=False)
 args = parser.parse_args()
 
-if not args.word:
+if not args.word:  # for debug
     APP_KEY = '20190429000292722'  # 你的appid
     APP_SECRET = 'sv566pogmFxLFUjaJY4e'  # 你的密钥
+    to_lang = 'zh'
     vtmQuery('baidu')
 else:
     APP_KEY = args.appKey
