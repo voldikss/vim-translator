@@ -307,8 +307,8 @@ function! s:JobStart(cmd, type) abort
 endfunction
 
 function! vtm#Translate(...) abort
-    " if there is a popup window already
-    if exists('s:popup_win_id')
+    " if there is a popup window already && type == 'complex'
+    if a:2 == 'complex' && exists('s:popup_win_id')
         let popup_winnr = win_id2win(s:popup_win_id)
         if popup_winnr != 0
             call s:IntoPopup()
