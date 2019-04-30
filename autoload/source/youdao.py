@@ -23,30 +23,30 @@ YOUDAO_URL = 'http://openapi.youdao.com/api'
 
 
 ERROR_CODE = {
-    '101': '缺少必填的参数，出现这个情况还可能是et的值和实际加密方式不对应',
-    '102': '不支持的语言类型',
-    '103': '翻译文本过长',
-    '104': '不支持的API类型',
-    '105': '不支持的签名类型',
-    '106': '不支持的响应类型',
-    '107': '不支持的传输加密类型',
-    '108': 'appKey无效，注册账号， 登录后台创建应用和实例并完成绑定， 可获得应用ID和密钥等信息，其中应用ID就是appKey（ 注意不是应用密钥）',
-    '109': 'batchLog格式不正确',
-    '110': '无相关服务的有效实例',
-    '111': '开发者账号无效',
-    '113': 'q不能为空',
-    '201': '解密失败，可能为DES,BASE64,URLDecode的错误',
-    '202': '签名检验失败',
-    '203': '访问IP地址不在可访问IP列表',
-    '205': '请求的接口与应用的平台类型不一致，如有疑问请参考[入门指南]()',
-    '206': '因为时间戳无效导致签名校验失败',
-    '207': '重放请求',
-    '301': '辞典查询失败',
-    '302': '翻译查询失败',
-    '303': '服务端的其它异常',
-    '401': '账户已经欠费停',
-    '411': '访问频率受限,请稍后访问',
-    '412': '长请求过于频繁，请稍后访问'
+    '101': '缺少必填的参数(Expected arguments were not filled)',
+    '102': '不支持的语言类型(Not supported language)',
+    '103': '翻译文本过长(Text is too long to translate)',
+    '104': '不支持的API类型(Not supported API)',
+    '105': '不支持的签名类型(Not supported signature)',
+    '106': '不支持的响应类型(Not supported response)',
+    '107': '不支持的传输加密类型(Not supported transport encryption)',
+    '108': 'appKey无效(Invalid appKey)',
+    '109': 'batchLog格式不正确(Wrong format batchLog)',
+    '110': '无相关服务的有效实例(No instance for relative service)',
+    '111': '开发者账号无效(Invalid developer account)',
+    '113': 'q不能为空(q can\' be empty)',
+    '201': '解密失败(Failed to decode)',
+    '202': '签名检验失败(Signature checking failed)',
+    '203': '访问IP地址不在可访问IP列表(Not permitted IP address)',
+    '205': '请求的接口与应用的平台类型不一致(The API you request isn\'t consistent with the platform of application)',
+    '206': '因为时间戳无效导致签名校验失败(Signature checking failed due to invalid time stamp)',
+    '207': '重放请求(Replay request)',
+    '301': '辞典查询失败(Dictionary looking up failed)',
+    '302': '翻译查询失败(Translation looking up failed)',
+    '303': '服务端的其它异常(Other exception of server)',
+    '401': '账户已经欠费停(Your account is out of credit)',
+    '411': '访问频率受限,请稍后访问(Limited access frequency)',
+    '412': '长请求过于频繁，请稍后访问(Long request is too frequent)'
 }
 
 
@@ -66,7 +66,7 @@ def truncate(q):
 def buildQuery(word):
     data = {}
     data['from'] = 'auto'
-    data['to'] = 'auto'
+    data['to'] = to_lang
     data['signType'] = 'v3'
     curtime = str(int(time.time()))
     data['curtime'] = curtime
@@ -136,7 +136,7 @@ def vtmQuery(word):
     try:
         data_back = urlopen(url).read()
     except:
-        sys.stderr.write("网络请求错误，请检查网络")
+        sys.stderr.write("网络请求错误(HTTP request error)")
         return
 
     try:
@@ -157,7 +157,7 @@ def vtmQuery(word):
 
         sys.stdout.write(str(trans))
     except Exception as e:
-        sys.stderr.write("数据解析错误第[%s]行：%s" % (sys.exc_info()[2].tb_lineno, e))
+        sys.stderr.write("数据解析错误(Data parsing error) Line[%s]：%s" % (sys.exc_info()[2].tb_lineno, e))
         return
 
 
@@ -165,9 +165,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--word', required=False)
 parser.add_argument('--appKey', required=False)
 parser.add_argument('--appSecret', required=False)
+parser.add_argument('--toLang', required=False)
 args = parser.parse_args()
 
-if not args.word:
+if not args.word:  # for debug
     APP_KEY = '70d26c625f056dba'
     APP_SECRET = 'wqbp7g6MloxwmOTUGSkMghnIWxTGOyrp'
     vtmQuery('import')
@@ -179,4 +180,7 @@ else:
     word = args.word.strip('\'')
     word = word.strip('\"')
     word = word.strip()
+    to_lang = args.toLang
+    if to_lang == 'zh':
+        to_lang = 'zh-CHS'
     vtmQuery(word)

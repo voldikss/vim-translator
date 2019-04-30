@@ -106,12 +106,6 @@ VARIABLES                                              *vim-translate-me-variabl
   可选值：`1` 使用默认快捷键，`0` 不使用默认快捷键
   默认值：`1`
 
-*g:vtm_default_api*
-  
-  默认使用的翻译接口
-  可选值：`'youdao'`, `'baidu'`
-  默认值：`'youdao'`
-
 *g:vtm_youdao_app_key*
 *g:vtm_youdao_app_secret*
 
@@ -125,6 +119,20 @@ VARIABLES                                              *vim-translate-me-variabl
   百度 api 的 `APPKEY` 和 `APP_SECRET` ，可以自己申请
   (https://api.fanyi.baidu.com/api/trans/product/index)
   推荐不用设置，使用默认值
+
+*g:vtm_default_api*
+  
+  默认使用的翻译接口
+  可选值：`'youdao'`, `'baidu'`
+  默认值：`'youdao'`
+
+*g:vtm_default_to_lang*
+  
+  默认翻译的目标语言
+
+  可选值：参考[各 API 支持语言列表](https://github.com/voldikss/vim-translate-me/wiki)
+
+  默认值：`'zh'`
 
 ==============================================================================
 HEALTH CHECK                                        *vim-translate-me-health-check*

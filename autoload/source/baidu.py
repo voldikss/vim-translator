@@ -21,18 +21,18 @@ else:
 BAIDU_URL = 'http://api.fanyi.baidu.com/api/trans/vip/translate'
 
 ERROR_CODE = {
-    '52000': '成功',
-    '52001': '请求超时，请重试',
-    '52002': '系统错误，请重试',
-    '52003': '未授权用户，请检查您的 appid 是否正确，或者服务是否开通',
-    '54000': '必填参数为空，请检查是否少传参数',
-    '54001': '签名错误，请检查您的签名生成方法',
-    '54003': '访问频率受限，请降低您的调用频率',
-    '54004': '账户余额不足，请前往管理控制台为账户充值',
-    '54005': '长query请求频繁，请降低长query的发送频率，3s后再试',
-    '58000': '客户端IP非法，请检查个人资料里填写的 IP地址 是否正确，可前往管理控制平台修改，IP限制，IP可留空',
-    '58001': '译文语言方向不支持，检查译文语言是否在语言列表里',
-    '58002': '服务当前已关闭，请前往管理控制台开启服务'
+    '52000': '成功(Success)',
+    '52001': '请求超时，请重试(HTTP request timed out, retry)',
+    '52002': '系统错误，请重试(System error)',
+    '52003': '未授权用户，请检查您的 appid 是否正确，或者服务是否开通(Unauthorized user, please check your appid or service)',
+    '54000': '必填参数为空，请检查是否少传参数(Expected argument)',
+    '54001': '签名错误，请检查您的签名生成方法(Sign error, please check your sign generation function)',
+    '54003': '访问频率受限，请降低您的调用频率(Limited access frequency)',
+    '54004': '账户余额不足，请前往管理控制台为账户充值(Insufficient balance for your account)',
+    '54005': '长query请求频繁，请降低长query的发送频率，3s后再试(Too long and frequent requests)',
+    '58000': '客户端IP非法(Invalid client IP address)',
+    '58001': '译文语言方向不支持，检查译文语言是否在语言列表里(Not supported translation)',
+    '58002': '服务当前已关闭，请前往管理控制台开启服务(Service has been closed, please start your service in the console)'
 }
 
 
@@ -46,7 +46,7 @@ def buildQuery(word):
     data['appid'] = APP_KEY
     data['q'] = word
     data['from'] = 'auto'
-    data['to'] = 'zh'
+    data['to'] = to_lang
     data['salt'] = salt
     data['sign'] = sign
     return urlencode(data)
@@ -77,7 +77,7 @@ def vtmQuery(word):
     try:
         data_back = urlopen(url).read()
     except:
-        sys.stderr.write("网络请求错误，请检查网络")
+        sys.stderr.write("网络请求错误(HTTP request error)")
         return
 
     try:
@@ -92,7 +92,7 @@ def vtmQuery(word):
 
         sys.stdout.write(str(trans))
     except Exception as e:
-        sys.stderr.write("数据解析错误第[%s]行：%s" % (sys.exc_info()[2].tb_lineno, e))
+        sys.stderr.write("数据解析错误(Data parsing error) Line[%s]：%s" % (sys.exc_info()[2].tb_lineno, e))
         return
 
 
@@ -100,6 +100,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--word', required=False)
 parser.add_argument('--appKey', required=False)
 parser.add_argument('--appSecret', required=False)
+parser.add_argument('--toLang', required=False)
 args = parser.parse_args()
 
 if not args.word:
@@ -114,4 +115,5 @@ else:
     word = args.word.strip('\'')
     word = word.strip('\"')
     word = word.strip()
+    to_lang = args.toLang
     vtmQuery(word)

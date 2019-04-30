@@ -36,6 +36,18 @@ let s:api_key_secret = {
     \ ]
     \ }
 
+if g:vtm_default_to_lang == 'zh'
+    let s:query_title = '查找：'
+    let s:translation_title = '翻译：'
+    let s:phonetic_title = '音标：'
+    let s:explain_title = '解释：'
+else
+    let s:query_title = '@QUERY: '
+    let s:translation_title = '@TRANS: '
+    let s:phonetic_title = '@PHONETIC: '
+    let s:explain_title = '@EXPLAIN: '
+endif
+
 " sample contents
 " {
 "   'data': {
@@ -92,19 +104,19 @@ function! s:OnOpen(contents) abort
     setlocal filetype=vtm
     nmap <silent> <buffer> q :close<CR>
 
-    let query = '查找：' . a:contents['query']
+    let query = s:query_title . a:contents['query']
     call setline(1, query)
 
-    let translation = '翻译：' . a:contents['translation']
+    let translation = s:translation_title . a:contents['translation']
     call append(line('$'), translation)
 
     if has_key(a:contents, 'phonetic')
-        let phonetic = '音标：' . '[' . a:contents['phonetic'] . ']'
+        let phonetic = s:phonetic_title . '[' . a:contents['phonetic'] . ']'
         call append(line('$'), phonetic)
     endif
 
     if has_key(a:contents, 'explain')
-        call append(line('$'), '解释：')
+        call append(line('$'), s:explain_title)
         for i in a:contents['explain']
             let explain = '  ' . i
             call append(line('$'), explain)
@@ -148,7 +160,11 @@ function! s:GetFloatingSize(contents) abort
     endfor
 
     " no reason about '8' here. I picked it as I like
-    let width += 8
+    if g:vtm_default_to_lang == 'zh'
+        let width += 8
+    else
+        let width += 10
+    endif
 
     return [width, height]
 endfunction
@@ -345,9 +361,10 @@ function! vtm#Translate(...) abort
     let py_file = s:py_file_path . api . '.py'
 
     let cmd = s:vtm_py_version . ' ' . py_file
-        \ . ' --word '      . shellescape(word)
         \ . ' --appKey '    . s:api_key_secret[api][0]
         \ . ' --appSecret ' . s:api_key_secret[api][1]
+        \ . ' --word '      . shellescape(word)
+        \ . ' --toLang '    . g:vtm_default_to_lang
 
     call s:JobStart(cmd, type)
 endfunction

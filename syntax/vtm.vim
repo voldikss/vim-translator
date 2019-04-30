@@ -7,14 +7,25 @@ if exists('b:current_syntax')
     finish
 endif
 
-syn match vtmTitle    #^.\{2}：#
-syn match vtmProperty #^\s\{2}[a-z]\{1,4}\.#
-syn match vtmQuery    #查找：.*$#            contains=vtmTitle
-syn match vtmTrans    #翻译：.*$#            contains=vtmTitle
-syn match vtmPhonetic #音标：.*$#            contains=vtmTitle
-syn match vtmExplain  #^\s\{2}.*#            contains=vtmProperty
+if g:vtm_default_to_lang == 'zh'
+    " Chinese
+    syn match vtmTitle    #^.\{2}：#
+    syn match vtmProperty #^\s\{2}[a-z]\{1,4}\.#
+    syn match vtmQuery    #查找：.*$#            contains=vtmTitle
+    syn match vtmTrans    #翻译：.*$#            contains=vtmTitle
+    syn match vtmPhonetic #音标：.*$#            contains=vtmTitle
+    syn match vtmExplain  #^\s\{2}.*#            contains=vtmProperty
+else
+    " English 
+    syn match vtmTitle    #^@\(QUERY\|TRANS\|PHONETIC\|EXPLAIN\): #
+    syn match vtmProperty #^\s\{2}[a-z]\{1,4}\.#
+    syn match vtmQuery    #@QUERY: .*$#          contains=vtmTitle
+    syn match vtmTrans    #@TRANS: .*$#          contains=vtmTitle
+    syn match vtmPhonetic #@PHONETIC: .*$#       contains=vtmTitle
+    syn match vtmExplain  #^\s\{2}.*#            contains=vtmProperty
+endif
 
-hi def link vtmTitle         vrmTitleHL
+hi def link vtmTitle         vtmTitleHL
 hi def link vtmQuery         vtmQueryHL
 hi def link vtmTrans         vtmTransHL
 hi def link vtmPhonetic      vtmPhoneticHL
