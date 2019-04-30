@@ -19,6 +19,7 @@ let g:vtm_baidu_app_key = get(g:, 'vtm_baidu_app_key', '20190429000292722')
 let g:vtm_baidu_app_secret = get(g:, 'vtm_baidu_app_secret', 'sv566pogmFxLFUjaJY4e')
 let g:vtm_youdao_app_key = get(g:, 'vtm_youdao_app_key', '70d26c625f056dba')
 let g:vtm_youdao_app_secret = get(g:, 'vtm_youdao_app_secret', 'wqbp7g6MloxwmOTUGSkMghnIWxTGOyrp')
+let g:vtm_bing_app_secret_key = get(g:, 'vtm_bing_app_secret_key', '81d36c3ed9d4472ab270b165d7bfaf65')
 let g:vtm_default_api = get(g:, 'vtm_default_api', 'youdao')
 let g:vtm_default_to_lang = get(g:, 'vtm_default_to_lang', 'zh')
 

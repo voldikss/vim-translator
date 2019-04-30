@@ -48,17 +48,21 @@ Vim/Neovim 翻译插件
 
 - **`g:vtm_youdao_app_key`** & **`g:vtm_youdao_app_secret`**
 
-  > 有道 api 的 `APPKEY` 和 `APP_SECRET` ，可以[自己申请](https://ai.youdao.com/doc.s#guide)，建议不用设置，使用默认值
+  > 有道 api 的 `APPKEY` 和 `APP_SECRET` ，可以[自己申请](https://ai.youdao.com/doc.s#guide)，也可以使用默认的
 
 - **`g:vtm_baidu_app_key`** & **`g:vtm_baidu_app_secret`**
 
-  > 百度 api 的 `APPKEY` 和 `APP_SECRET` ，可以[自己申请](https://api.fanyi.baidu.com/api/trans/product/index)  建议不用设置，使用默认值
+  > 百度 api 的 `APPKEY` 和 `APP_SECRET` ，可以[自己申请](https://api.fanyi.baidu.com/api/trans/product/index)，也可以使用默认的
+
+- **`g:vtm_bing_app_secret_key`**
+  
+  > 必应 api 的密钥，可以[自己申请](https://docs.microsoft.com/zh-cn/azure/cognitive-services/translator/translator-text-how-to-signup)，也可以使用默认的
 
 - **`g:vtm_default_api`**
   
   > 默认使用的翻译接口
 
-  - 可选值：`'youdao'`, `'baidu'`
+  - 可选值：`'youdao'`, `'baidu'`, `'bing'`
 
   - 默认值：`'youdao'`
 

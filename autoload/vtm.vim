@@ -25,6 +25,7 @@ endif
 " note: this must be outside the function!!!
 let s:py_file_path = expand('<sfile>:p:h') . '/source/'
 
+" bing api only requires app secret key
 let s:api_key_secret = {
     \ 'baidu': [
         \ g:vtm_baidu_app_key,
@@ -33,6 +34,10 @@ let s:api_key_secret = {
     \ 'youdao': [
         \ g:vtm_youdao_app_key,
         \ g:vtm_youdao_app_secret
+    \ ],
+    \ 'bing': [
+        \ 'null',
+        \ g:vtm_bing_app_secret_key
     \ ]
     \ }
 
@@ -349,7 +354,7 @@ function! vtm#Translate(...) abort
         else
             " split a:1 to get api and word
             let api = a:1[: pos-1]
-            if index(['youdao', 'baidu'], api) < 0
+            if index(['youdao', 'baidu', 'bing'], api) < 0
                 echomsg '[vim-translate-me] Invalid api parameter'
                 return
             endif
@@ -375,7 +380,7 @@ function! vtm#TranslateV(type) abort
 endfunction
 
 function! vtm#Complete(arg_lead, cmd_line, cursor_pos)
-    let apis = ['youdao', 'baidu']
+    let apis = ['youdao', 'baidu', 'bing']
     let cmd_line_before_cursor = a:cmd_line[:a:cursor_pos - 1]
     let args = split(cmd_line_before_cursor, '\v\\@<!(\\\\)*\zs\s+', 1)
     call remove(args, 0)
