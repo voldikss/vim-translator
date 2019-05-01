@@ -1,4 +1,4 @@
-*vim-translate-me.txt*                     A Vim/Neovim plugin for translation
+*vim-translate-me.txt*                     Vim/Neovim翻译插件
 
 Author : voldikss <https://voldikss.github.io>
 
@@ -18,9 +18,7 @@ License                 |vim-translate-me-license|
 ==============================================================================
 SCREENSHOT                                            *vim-translate-me-screenshot*
 
-A naive translate plugin for Vim/Neovim
-
-Supports floating window(for Neovim currently) and asynchronous run
+Vim/Neovim 翻译插件。支持 悬浮窗口 和 异步特性
 
 
 ==============================================================================
@@ -36,19 +34,19 @@ COMMANDS                                                *vim-translate-me-comman
 
 `:Translate<CR>`
 
-    Run the command without arguments to translate the text under the cursor, print in the cmdline
+    命令不带参数执行，翻译当前光标下的单词并在命令行回显
 
 `:Translate <word><CR>`
 
-    Translate `<word>`, print in the cmdline
+    翻译单词 `<word>`，并在命令行回显翻译内容
 
 `:Translate <api> <word><CR>`
 
-    Translate `<word>` with specified `<api>`, print in the cmdline. Use <Tab> to complete `<api>` argument
+    使用指定的 `<api>` 翻译单词 `<word>` 并在命令行回显，可用 `<Tab>` 补全 `<api>` 参数
 
 `:TranslateW`
 
-    The same as `:Translate...`, but it displays the translation in the popup window instead
+    用法同上，但是在窗口中显示翻译内容
 
 
 ==============================================================================
@@ -56,29 +54,29 @@ MAPPINGS                                                *vim-translate-me-mappin
 
 *<Plug>Translate*
 
-  Normal mode: Translate the text under the cursor, print in the cmdline
+  普通模式，翻译光标下的文本，在命令行回显翻译内容
 
 *<Plug>TranslateV*
 
-  Visual mode: Translate the text under the cursor, print in the cmdline
+  可视模式，翻译光标下的文本，在命令行回显翻译内容
 
 *<Plug>TranslateW*
 
-  Normal mode: Translate the text under the cursor, display in the popup window
+  普通模式，翻译光标下的文本，在窗口中显示翻译内容
 
 *<Plug>TranslateWV*
 
-  Visual mode: Translate the text under the cursor, display in the popup window
+  可视模式，翻译光标下的文本，在窗口中显示翻译内容
 
 *<Plug>TranslateR*
 
-  Normal mode: Translate the text under the cursor and replace the text with the translation
+  普通模式，替换光标下的文本为翻译内容
 
 *<Plug>TranslateRV*
 
-  Visual mode: Translate the text under the cursor and replace the text with the translation
+  可视模式，替换光标下的文本为翻译内容
 
-Default keymappings~
+默认快捷键~
  >
   nmap <silent> <Leader>t <Plug>Translate
   vmap <silent> <Leader>t <Plug>TranslateV
@@ -93,64 +91,64 @@ VARIABLES                                              *vim-translate-me-variabl
 
 *g:vtm_popup_window*
 
-  The window that displays the translation
-  Available: `'preview'`, `'floating'`
-  Default：`floating` if `api-floatwin` was detected, otherwise `'preview'`
+  显示翻译内容的窗口
+  可选值： `'preview'`, `'floating'`
+  默认值：如果检测到`floating`特性支持，则为`'floating'`，否则为`'preview'`
 
 *g:vtm_preview_position*
 
-  If you have set `g:vtm_popup_window` to `'preview'`, this option specifies preview-window's position
-  Available: `'to'` indicates the preview-window should be opened on the top of the main window,
-    `'bo'` bottom instead(run `:help to` in vim to get instructions)
-  Default: `'bo'`
+  如果`g:vtm_popup_window`为`'preview'`，此选项决定preview 窗口的位置
+  可选值：`'to'` 在顶部，`'bo'` 在底部（`:help to`查看详细说明）
+  默认值：`'bo'`
 
 *g:vtm_default_mapping*
 
-  Whether to use the default key mapping
-  Available: `1` `0`
-  Default: `1`
+  可选值：`1` `0`
+  默认值：`1`
 
 *g:vtm_youdao_app_key*
 *g:vtm_youdao_app_secret*
 
-  `APPKEY` and `APP_SECRET` for [Youdao API](https://ai.youdao.com/doc.s#guide)
-    You can apply for your own API key or use the built-in one
+  有道 api 的 `APPKEY` 和 `APP_SECRET` ，可以自己申请
+  (https://ai.youdao.com/doc.s#guide)
+  也可以使用默认的
 
 *g:vtm_baidu_app_key*
 *g:vtm_baidu_app_secret*
 
-  `APPKEY` and `APP_SECRET` for [Baidu API](https://api.fanyi.baidu.com/api/trans/product/index)
-    You can apply for your own API key or use the built-in one
+  百度 api 的 `APPKEY` 和 `APP_SECRET` ，可以自己申请
+  (https://api.fanyi.baidu.com/api/trans/product/index)
+  也可以使用默认的
 
 *g:vtm_bing_app_secret_key*
 
-  `APPKEY` and `APP_SECRET` for [Bing API]
-    (https://docs.microsoft.com/en-us/azure/cognitive-services/translator/translator-text-how-to-signup)
-    You can apply for your own API key or use the built-in one
+  必应 api 的密钥，可以自己申请
+  (https://docs.microsoft.com/zh-cn/azure/cognitive-services/translator/translator-text-how-to-signup)
+  也可以使用默认的
 
 *g:vtm_yandex_app_secret_key*
 
-  `APPKEY` and `APP_SECRET` for [Yandex API](https://translate.yandex.com/developers/keys)
-    You can apply for your own API key or use the built-in one
+  Yandex api 的密钥，可以[自己申请](https://translate.yandex.com/developers/keys)
+  也可以使用默认的
 
 *g:vtm_default_api*
 
-  The default translation API you use
-  Available: `'youdao'`, `'baidu'`, `'bing'`, `'yandex'`
-  Default: `'youdao'`
+  默认使用的翻译接口
+  可选值：`'youdao'`, `'baidu'`, `'bing'`, `'yandex'`
+  默认值：`'youdao'`
 
 *g:vtm_default_to_lang*
 
-  Which language that the text will be translated to
-  Available: Please refer to [Supported languages for every API]
-    (https://github.com/voldikss/vim-translate-me/wiki)
-  Default: `'zh'`
+  默认翻译的目标语言
 
+  可选值：参考[各 API 支持语言列表](https://github.com/voldikss/vim-translate-me/wiki)
+
+  默认值：`'zh'`
 
 ==============================================================================
 HEALTH CHECK                                        *vim-translate-me-health-check*
 
-Run
+运行
 >
   :checkhealth
 <
