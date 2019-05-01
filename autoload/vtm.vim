@@ -25,7 +25,7 @@ endif
 " note: this must be outside the function!!!
 let s:py_file_path = expand('<sfile>:p:h') . '/source/'
 
-" bing and yandex api only require app secret key
+" bing api only requires app secret key
 let s:api_key_secret = {
     \ 'baidu': [
         \ g:vtm_baidu_app_key,
@@ -38,10 +38,6 @@ let s:api_key_secret = {
     \ 'bing': [
         \ 'null',
         \ g:vtm_bing_app_secret_key
-    \ ],
-    \ 'yandex': [
-        \ 'null',
-        \ g:vtm_yandex_app_secret_key
     \ ]
     \ }
 
@@ -172,7 +168,7 @@ function! s:GetFloatingSize(contents) abort
     if g:vtm_default_to_lang == 'zh'
         let width += 8
     else
-        let width += 12
+        let width += 10
     endif
 
     return [width, height]
@@ -343,26 +339,28 @@ function! vtm#Translate(...) abort
 
     " `:Translate<CR>` == call vtm#Translate(expand("<cword>"), 'simple')
     " argument: ''
-    if a:1 == ''
+    let arg1 = trim(a:1)
+    if arg1 == ''
         let word = expand("<cword>")
         let api = g:vtm_default_api
     else
-        let pos = match(trim(a:1),' ')
+        let pos = match(arg1,' ')
         " `:Translate test<CR>` == call vtm#Translate('test', 'simple')
         " argument: 'test'
         if pos < 0
-            let word = trim(a:1)
+            let word = arg1
             let api = g:vtm_default_api
         " `:Translate youdao test<CR>` == call vtm#Translate('youdao test', 'simple')
         " argument: 'youdao test'
         else
-            " split a:1 to get api and word
-            let api = a:1[: pos-1]
+            " split arg1 to get api and word
+            let api = arg1[: pos-1]
             if index(['youdao', 'baidu', 'bing', 'yandex'], api) < 0
-                echomsg '[vim-translate-me] Invalid api parameter'
-                return
+                let api = g:vtm_default_api
+                let word = arg1
+            else
+                let word = arg1[l:pos+1 :]
             endif
-            let word = a:1[l:pos+1 :]
         endif
     endif
 
