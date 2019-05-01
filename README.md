@@ -63,14 +63,6 @@ Vim/Neovim 翻译插件
   
 > Yandex api 的密钥，可以[自己申请](https://translate.yandex.com/developers/keys)，也可以使用默认的
 
-#### **`g:vtm_default_api`**
-  
-> 默认使用的翻译接口
-
-- 可选值：`'youdao'`, `'baidu'`, `'bing'`, `yandex`
-
-- 默认值：`'youdao'`
-
 #### **`g:vtm_default_to_lang`**
   
 > 默认翻译的目标语言
@@ -78,6 +70,14 @@ Vim/Neovim 翻译插件
 - 可选值：参考[各 API 支持语言列表](https://github.com/voldikss/vim-translate-me/wiki)
 
 - 默认值：`'zh'`
+
+#### **`g:vtm_default_api`**
+  
+> 默认使用的翻译接口
+
+- 可选值：`'youdao'`, `'baidu'`, `'bing'`, `yandex`
+
+- 默认值：如果 `g:vtm_default_to_lang` 设置为 `'zh'` 则该项默认为 `'baidu'`，否则为 `'bing'`
 
 
 ## 快捷键

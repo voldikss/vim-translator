@@ -64,14 +64,6 @@ Supports floating window(for Neovim currently) and asynchronous run
   
 > `APPKEY` and `APP_SECRET` for [Yandex API](https://translate.yandex.com/developers/keys), you can apply for your own API key or use the built-in one
 
-#### **`g:vtm_default_api`**
-  
-> The default translation API you use
-
-- Available: `'youdao'`, `'baidu'`, `'bing'`, `'yandex'`
-
-- Default: `'youdao'`
-
 #### **`g:vtm_default_to_lang`**
   
 > Which language that the text should be translated to
@@ -79,6 +71,14 @@ Supports floating window(for Neovim currently) and asynchronous run
 - Available: Please refer to [Supported languages for every API](https://github.com/voldikss/vim-translate-me/wiki)
 
 - Default: `'zh'`
+
+#### **`g:vtm_default_api`**
+  
+> The default translation API you use
+
+- Available: `'youdao'`, `'baidu'`, `'bing'`, `'yandex'`
+
+- Default: `'baidu'` if `g:vtm_default_to_lang` is set to `'zh'`, otherwise `'bing'`
 
 
 ## Key Mapping
