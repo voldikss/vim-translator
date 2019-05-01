@@ -58,11 +58,15 @@ Vim/Neovim 翻译插件
   
   > 必应 api 的密钥，可以[自己申请](https://docs.microsoft.com/zh-cn/azure/cognitive-services/translator/translator-text-how-to-signup)，也可以使用默认的
 
+- **`g:vtm_yandex_app_secret_key`**
+  
+  > Yandex api 的密钥，可以[自己申请](https://translate.yandex.com/developers/keys)，也可以使用默认的
+
 - **`g:vtm_default_api`**
   
   > 默认使用的翻译接口
 
-  - 可选值：`'youdao'`, `'baidu'`, `'bing'`
+  - 可选值：`'youdao'`, `'baidu'`, `'bing'`, `yandex`
 
   - 默认值：`'youdao'`
 
