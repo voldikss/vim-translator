@@ -131,6 +131,12 @@ function! s:OnOpen(contents) abort
     setlocal nomodified
     setlocal nomodifiable
 
+    " set the background and foreground color of the popup window
+    " only available in nvim
+    if has('nvim')
+        setlocal winhighlight=Normal:vtmPopupNormal
+    endif
+
     " go to the original window
     wincmd p
 

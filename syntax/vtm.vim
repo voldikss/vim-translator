@@ -1,7 +1,7 @@
 " @Author: voldikss
 " @Date: 2019-04-27 9:31:12
 " @Last Modified by: voldikss
-" @Last Modified time: 2019-04-28 18:20:21
+" @Last Modified time: 2019-05-02 00:07:30
 
 if exists('b:current_syntax')
     finish
@@ -25,18 +25,12 @@ else
     syn match vtmExplain  #^\s\{2}.*#            contains=vtmProperty
 endif
 
-hi def link vtmTitle         vtmTitleHL
-hi def link vtmQuery         vtmQueryHL
-hi def link vtmTrans         vtmTransHL
-hi def link vtmPhonetic      vtmPhoneticHL
-hi def link vtmExplain       vtmExplainHL
-hi def link vtmProperty      vtmPropertyHL
+hi def vtmTitle       term=None ctermfg=135 guifg=#AE81FF cterm=bold    gui=bold
+hi def vtmQuery       term=None ctermfg=161 guifg=#F92672 cterm=bold    gui=bold
+hi def vtmTrans       term=None ctermfg=118 guifg=#A6E22E cterm=bold    gui=bold
+hi def vtmPhonetic    term=None ctermfg=193 guifg=#C4BE89 cterm=italic  gui=italic
+hi def vtmExplain     term=None ctermfg=144 guifg=#00FFFF
+hi def vtmProperty    term=None ctermfg=161 guifg=#FF00FF cterm=bold    gui=bold
+hi def vtmPopupNormal term=None ctermfg=255 ctermbg=234   guibg=#303030 guifg=#EEEEEE
 
-hi vtmTitle      term=None ctermfg=135 guifg=#AE81FF cterm=bold   gui=bold
-hi vtmQueryHL    term=None ctermfg=161 guifg=#F92672 cterm=bold   gui=bold
-hi vtmTransHL    term=None ctermfg=118 guifg=#A6E22E cterm=bold   gui=bold
-hi vtmPhoneticHL term=None ctermfg=193 guifg=#C4BE89 cterm=italic gui=italic
-hi vtmExplainHL  term=None ctermfg=144 guifg=#00FFFF 
-hi vtmPropertyHL term=None ctermfg=161 guifg=#FF00FF cterm=bold   gui=bold
-
-let b:current_syntax = 'vtm'
+let b:current_syntax = 'vtm_popup'

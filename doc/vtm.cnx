@@ -3,13 +3,14 @@
 Author : voldikss <https://voldikss.github.io>
 
 CONTENTS                *vim-translate-me-contents*
-
 Introduction            |vim-translate-me-introduction|
+
 Screenshot              |vim-translate-me-screenshot|
 Install                 |vim-translate-me-install|
 Commands                |vim-translate-me-commands|
 Mappings                |vim-translate-me-mappings|
 Variables               |vim-translate-me-variables|
+Highlight               |vim-translate-me-highlight|
 Health Check            |vim-translate-me-health-check|
 Repository              |vim-translate-me-repository-page|
 License                 |vim-translate-me-license|
@@ -145,6 +146,25 @@ VARIABLES                                              *vim-translate-me-variabl
   可选值：`'youdao'`, `'baidu'`, `'bing'`, `'yandex'`
   默认值：如果 `g:vtm_default_to_lang` 设置为 `'zh'` 则该项默认为 `'baidu'`，否则为 `'bing'`
 
+
+==============================================================================
+HIGHLIGHT                                        *vim-translate-me-highlight*
+
+注意：此选项仅在 NeoVim 上有效
+
+插件默认定义了一套颜色高亮，你也可以指定你自己的配色
+
+配置示例，你只需要更改每个项目的颜色值即可
+ >
+    hi def vtmTitle       term=None ctermfg=135 guifg=#AE81FF cterm=bold    gui=bold
+    hi def vtmQuery       term=None ctermfg=161 guifg=#F92672 cterm=bold    gui=bold
+    hi def vtmTrans       term=None ctermfg=118 guifg=#A6E22E cterm=bold    gui=bold
+    hi def vtmPhonetic    term=None ctermfg=193 guifg=#C4BE89 cterm=italic  gui=italic
+    hi def vtmExplain     term=None ctermfg=144 guifg=#00FFFF
+    hi def vtmProperty    term=None ctermfg=161 guifg=#FF00FF cterm=bold    gui=bold
+    " This item determines the background and foreground of the whole window
+    hi def vtmPopupNormal term=None ctermfg=255 ctermbg=234   guibg=#303030 guifg=#EEEEEE
+<
 
 ==============================================================================
 HEALTH CHECK                                        *vim-translate-me-health-check*

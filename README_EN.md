@@ -120,6 +120,26 @@ Supports floating window(for Neovim currently) and asynchronous run
 
 > The same as `:Translate...`, but it displays the translation in the popup window instead
 
+## Highlight
+
+**Note**: this option is only available in NeoVim
+
+This plugin has set syntax highlight for the popup window by default. 
+But you can also specify your own highlight color
+
+Here is the example on which you can just change the color value of each item:
+
+```vim
+hi def vtmTitle       term=None ctermfg=135 guifg=#AE81FF cterm=bold    gui=bold
+hi def vtmQuery       term=None ctermfg=161 guifg=#F92672 cterm=bold    gui=bold
+hi def vtmTrans       term=None ctermfg=118 guifg=#A6E22E cterm=bold    gui=bold
+hi def vtmPhonetic    term=None ctermfg=193 guifg=#C4BE89 cterm=italic  gui=italic
+hi def vtmExplain     term=None ctermfg=144 guifg=#00FFFF
+hi def vtmProperty    term=None ctermfg=161 guifg=#FF00FF cterm=bold    gui=bold
+" This item determines the background and foreground of the whole window
+hi def vtmPopupNormal term=None ctermfg=255 ctermbg=234   guibg=#303030 guifg=#EEEEEE
+```
+
 
 ### Credit
 @[iamcco](https://github.com/iamcco)

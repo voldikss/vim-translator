@@ -119,6 +119,24 @@ Vim/Neovim 翻译插件
 
 > 用法同上，但是在窗口中显示翻译内容
 
+## 颜色高亮
+
+**注意**：此选项仅在 NeoVim 上有效
+
+插件默认定义了一套颜色高亮，你也可以指定你自己的配色
+
+下面是配置示例，你只需要更改每个项目的颜色值即可
+```vim
+hi def vtmTitle       term=None ctermfg=135 guifg=#AE81FF cterm=bold    gui=bold
+hi def vtmQuery       term=None ctermfg=161 guifg=#F92672 cterm=bold    gui=bold
+hi def vtmTrans       term=None ctermfg=118 guifg=#A6E22E cterm=bold    gui=bold
+hi def vtmPhonetic    term=None ctermfg=193 guifg=#C4BE89 cterm=italic  gui=italic
+hi def vtmExplain     term=None ctermfg=144 guifg=#00FFFF
+hi def vtmProperty    term=None ctermfg=161 guifg=#FF00FF cterm=bold    gui=bold
+" 这一选项决定了窗口整体的前景色和背景色
+hi def vtmPopupNormal term=None ctermfg=255 ctermbg=234   guibg=#303030 guifg=#EEEEEE
+```
+
 
 ## Credit
 @[iamcco](https://github.com/iamcco)
