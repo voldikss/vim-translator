@@ -343,9 +343,15 @@ function! vtm#Translate(...) abort
         endif
     endif
 
+    if has('nvim')
+        let arg1 = trim(a:1)
+    else
+        " TODO: a robust trim for vim
+        let arg1 = a:1
+    endif
+
     " `:Translate<CR>` == call vtm#Translate(expand("<cword>"), 'simple')
     " argument: ''
-    let arg1 = trim(a:1)
     if arg1 == ''
         let word = expand("<cword>")
         let api = g:vtm_default_api
