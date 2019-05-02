@@ -382,7 +382,7 @@ function! vtm#Translate(...) abort
     let cmd = s:vtm_py_version . ' ' . py_file
         \ . ' --appKey '    . s:api_key_secret[api][0]
         \ . ' --appSecret ' . s:api_key_secret[api][1]
-        \ . ' --word '      . shellescape(word)
+        \ . ' --word '      . shellescape('"' . word . '"')
         \ . ' --toLang '    . g:vtm_default_to_lang
 
     call s:JobStart(cmd, type)
