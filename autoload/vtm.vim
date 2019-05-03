@@ -378,6 +378,7 @@ function! vtm#Translate(...) abort
 
     let type = a:2
     let py_file = s:py_file_path . api . '.py'
+    let word = substitute(word, '[\n\|\r]\+', '. ', 'g')
 
     let cmd = s:vtm_py_version . ' ' . py_file
         \ . ' --appKey '    . s:api_key_secret[api][0]
