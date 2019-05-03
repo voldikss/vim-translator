@@ -8,8 +8,12 @@ Vim/Neovim 翻译插件
 
 ## 预览
 
-![](https://user-images.githubusercontent.com/20282795/56863017-aba94280-69e3-11e9-8002-e6ed8e38d02c.gif)
-![](https://user-images.githubusercontent.com/20282795/56863018-aba94280-69e3-11e9-9c4c-d903a80cb893.gif)
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/56863017-aba94280-69e3-11e9-8002-e6ed8e38d02c.gif">
+</div>
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/56863018-aba94280-69e3-11e9-9c4c-d903a80cb893.gif">
+</div>
 
 ## 安装
  - 确保已经安装了 Python(2或3都行)

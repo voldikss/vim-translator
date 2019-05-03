@@ -8,8 +8,12 @@ Supports floating window(for Neovim currently) and asynchronous run
 
 ## Screenshot
 
-![](https://user-images.githubusercontent.com/20282795/56863017-aba94280-69e3-11e9-8002-e6ed8e38d02c.gif)
-![](https://user-images.githubusercontent.com/20282795/56863018-aba94280-69e3-11e9-9c4c-d903a80cb893.gif)
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/56863017-aba94280-69e3-11e9-8002-e6ed8e38d02c.gif">
+</div>
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/56863018-aba94280-69e3-11e9-9c4c-d903a80cb893.gif">
+</div>
 
 ## Installation
  - Make sure you have Python installed
