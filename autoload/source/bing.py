@@ -8,13 +8,16 @@ import sys
 import json
 import argparse
 import uuid
+import codecs
 
 if sys.version_info[0] == 2:
     from urllib2 import Request
     from urllib2 import urlopen
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 else:
     from urllib.request import urlopen
     from urllib.request import Request
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer)
 
 
 BING_URL = 'https://api.cognitive.microsofttranslator.com/translate?api-version=3.0'

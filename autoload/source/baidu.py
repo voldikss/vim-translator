@@ -9,13 +9,16 @@ import json
 import random
 import hashlib
 import argparse
+import codecs
 
 if sys.version_info[0] == 2:
     from urllib2 import urlopen
     from urllib import urlencode
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 else:
     from urllib.request import urlopen
     from urllib.parse import urlencode
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer)
 
 
 BAIDU_URL = 'http://api.fanyi.baidu.com/api/trans/vip/translate'

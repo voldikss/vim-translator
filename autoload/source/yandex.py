@@ -7,13 +7,16 @@
 import sys
 import json
 import argparse
+import codecs
 
 if sys.version_info[0] == 2:
     from urllib2 import urlopen
     from urllib import urlencode
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 else:
     from urllib.request import urlopen
     from urllib.parse import urlencode
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer)
 
 
 YANDEX_URL = 'https://translate.yandex.net/api/v1.5/tr.json/translate'

@@ -5,6 +5,7 @@
 # @Last Modified time: 2019-04-28 13:30:28
 
 import sys
+import codecs
 import argparse
 import uuid
 import hashlib
@@ -14,9 +15,11 @@ import json
 if sys.version_info[0] == 2:
     from urllib2 import urlopen
     from urllib import urlencode
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout)
 else:
     from urllib.request import urlopen
     from urllib.parse import urlencode
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer)
 
 
 YOUDAO_URL = 'http://openapi.youdao.com/api'
