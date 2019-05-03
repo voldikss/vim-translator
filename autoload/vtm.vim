@@ -343,12 +343,7 @@ function! vtm#Translate(...) abort
         endif
     endif
 
-    if has('nvim')
-        let arg1 = trim(a:1)
-    else
-        " TODO: a robust trim for vim
-        let arg1 = a:1
-    endif
+    let arg1 = substitute(a:1, '^\s*\(.\{-}\)\s*$', '\1', '')
 
     " `:Translate<CR>` == call vtm#Translate(expand("<cword>"), 'simple')
     " argument: ''
