@@ -9,20 +9,20 @@ endif
 
 if g:vtm_default_to_lang == 'zh'
     " Chinese
-    syn match vtmTitle    #^.\{2}：#
-    syn match vtmProperty #^\s\{2}[a-z]\{1,4}\.#
-    syn match vtmQuery    #查找：.*$#            contains=vtmTitle
-    syn match vtmTrans    #翻译：.*$#            contains=vtmTitle
-    syn match vtmPhonetic #音标：.*$#            contains=vtmTitle
-    syn match vtmExplain  #^\s\{2}.*#            contains=vtmProperty
+    syn match vtmTitle    #^\s.\{2}：#
+    syn match vtmProperty #^\s\{3}[a-z]\{1,4}\.#
+    syn match vtmQuery    #\s查找：.*$#            contains=vtmTitle
+    syn match vtmTrans    #\s翻译：.*$#            contains=vtmTitle
+    syn match vtmPhonetic #\s音标：.*$#            contains=vtmTitle
+    syn match vtmExplain  #^\s\{3}.*#            contains=vtmProperty
 else
     " English 
-    syn match vtmTitle    #^@\(QUERY\|TRANS\|PHONETIC\|EXPLAIN\): #
-    syn match vtmProperty #^\s\{2}[a-z]\{1,4}\.#
-    syn match vtmQuery    #@QUERY: .*$#          contains=vtmTitle
-    syn match vtmTrans    #@TRANS: .*$#          contains=vtmTitle
-    syn match vtmPhonetic #@PHONETIC: .*$#       contains=vtmTitle
-    syn match vtmExplain  #^\s\{2}.*#            contains=vtmProperty
+    syn match vtmTitle    #^\s@\(QUERY\|TRANS\|PHONETIC\|EXPLAIN\): #
+    syn match vtmProperty #^\s\{3}[a-z]\{1,4}\.#
+    syn match vtmQuery    # @QUERY: .*$#          contains=vtmTitle
+    syn match vtmTrans    # @TRANS: .*$#          contains=vtmTitle
+    syn match vtmPhonetic # @PHONETIC: .*$#       contains=vtmTitle
+    syn match vtmExplain  #^\s\{3}.*#            contains=vtmProperty
 endif
 
 hi def vtmTitle       term=None ctermfg=135 guifg=#AE81FF cterm=bold    gui=bold
