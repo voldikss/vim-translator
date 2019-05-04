@@ -166,16 +166,16 @@ function! s:GetFloatingSize(contents) abort
             let line_width = strdisplaywidth(a:contents[item]) + 
                 \ (g:vtm_default_to_lang == 'zh' ? 8 : 13)
         else
-            let height += 1 " ' 解释：' takes one line
             for line in a:contents[item]
                 " <leftspace>(1+2=3) + <rightspace>(1) = 4
                 let line_width = strdisplaywidth(line) + 4
                 if line_width > width | let width = line_width | endif
+                let height += 1
             endfor
         endif
 
         if line_width > width | let width = line_width | endif
-        let height += 1
+        let height += 1 " for titles
     endfor
 
     return [width, height]
