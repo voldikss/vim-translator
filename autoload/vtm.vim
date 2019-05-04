@@ -46,15 +46,15 @@ let s:api_key_secret = {
     \ }
 
 if g:vtm_default_to_lang == 'zh'
-    let s:query_title = '查找：'
-    let s:translation_title = '翻译：'
-    let s:phonetic_title = '音标：'
-    let s:explain_title = '解释：'
+    let s:query_title = ' 查找：'
+    let s:translation_title = ' 翻译：'
+    let s:phonetic_title = ' 音标：'
+    let s:explain_title = ' 解释：'
 else
-    let s:query_title = '@QUERY: '
-    let s:translation_title = '@TRANS: '
-    let s:phonetic_title = '@PHONETIC: '
-    let s:explain_title = '@EXPLAIN: '
+    let s:query_title = ' @QUERY: '
+    let s:translation_title = ' @TRANS: '
+    let s:phonetic_title = ' @PHONETIC: '
+    let s:explain_title = ' @EXPLAIN: '
 endif
 
 " sample contents
@@ -103,6 +103,8 @@ function! s:OnOpen(contents) abort
 
     setlocal buftype=nofile
     setlocal bufhidden=wipe
+    setlocal signcolumn=no
+    setlocal filetype=vtm
     setlocal nomodified
     setlocal nobuflisted
     setlocal noswapfile
@@ -110,7 +112,6 @@ function! s:OnOpen(contents) abort
     setlocal norelativenumber
     setlocal nocursorline
     setlocal nowrap
-    setlocal filetype=vtm
     nmap <silent> <buffer> q :close<CR>
 
     let query = s:query_title . a:contents['query']
@@ -127,7 +128,7 @@ function! s:OnOpen(contents) abort
     if has_key(a:contents, 'explain')
         call append(line('$'), s:explain_title)
         for i in a:contents['explain']
-            let explain = '  ' . i
+            let explain = '   ' . i
             call append(line('$'), explain)
         endfor
     endif
@@ -152,34 +153,30 @@ endfunction
 function! s:GetFloatingSize(contents) abort
     let height = 0
     let width = 0
-    for item in keys(a:contents)
-        " query or phonetic or translation
-        if item == 'query' || item == 'phonetic' || item == 'translation'
-            let line_width = strdisplaywidth(a:contents[item])
-            if line_width > width
-                let width = line_width
-            endif
-            let height += 1
-        " explain
-        else
-            for line in a:contents[item]
-                let line_width = strdisplaywidth(line)
-                if line_width > width
-                    let width = line_width
-                endif
-                let height += 1
-            endfor
-            " `解释` takes one line
-            let height += 1
-        endif
-    endfor
 
-    " no reason about '8' here. I picked it as I like
-    if g:vtm_default_to_lang == 'zh'
-        let width += 8
-    else
-        let width += 10
-    endif
+    for item in keys(a:contents)
+        if item == 'query' || item == 'translation'
+            " <space>(1) + '翻译：'(6) + <space>(1) = 8
+            " <space>(1) + '@TRANS: '(8) + <space>(1) = 10
+            let line_width = strdisplaywidth(a:contents[item]) + 
+                \ (g:vtm_default_to_lang == 'zh' ? 8 : 10)
+        elseif item == 'phonetic'
+            " <space>(1) + '音标：'(6) + <space>(1) = 8
+            " <space>(1) + '@PHONETIC: '(11) + <space>(1) = 13
+            let line_width = strdisplaywidth(a:contents[item]) + 
+                \ (g:vtm_default_to_lang == 'zh' ? 8 : 13)
+        else
+            let height += 1 " ' 解释：' takes one line
+            for line in a:contents[item]
+                " <leftspace>(1+2=3) + <rightspace>(1) = 4
+                let line_width = strdisplaywidth(line) + 4
+                if line_width > width | let width = line_width | endif
+            endfor
+        endif
+
+        if line_width > width | let width = line_width | endif
+        let height += 1
+    endfor
 
     return [width, height]
 endfunction
