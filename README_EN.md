@@ -124,6 +124,10 @@ Supports floating window(for Neovim currently) and asynchronous run
 
 > The same as `:Translate...`, but it displays the translation in the popup window instead
 
+#### `:TranslateR...`
+
+> The same as `:Translate...`, but it replaces the current word with the translation
+
 ## Highlight
 
 **Note**: this option is only available in NeoVim

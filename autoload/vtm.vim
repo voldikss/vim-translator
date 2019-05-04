@@ -337,9 +337,11 @@ function! s:JobStart(cmd, type) abort
     call function(s:job_cmd, [a:cmd, callbacks])()
 endfunction
 
-function! vtm#Translate(...) abort
+function! vtm#Translate(args, type) abort
+    " a:args: 'word' or 'word+api'
+
     " if there is a popup window already && type == 'complex'
-    if a:2 == 'complex' && exists('s:popup_win_id')
+    if a:type == 'complex' && exists('s:popup_win_id')
         let popup_winnr = win_id2win(s:popup_win_id)
         if popup_winnr != 0
             call s:IntoPopup()
@@ -347,7 +349,7 @@ function! vtm#Translate(...) abort
         endif
     endif
 
-    let arg1 = substitute(a:1, '^\s*\(.\{-}\)\s*$', '\1', '')
+    let arg1 = substitute(a:args, '^\s*\(.\{-}\)\s*$', '\1', '')
 
     " `:Translate<CR>` == call vtm#Translate(expand("<cword>"), 'simple')
     " argument: ''
@@ -375,7 +377,6 @@ function! vtm#Translate(...) abort
         endif
     endif
 
-    let type = a:2
     let py_file = s:py_file_path . api . '.py'
     let word = substitute(word, '[\n\|\r]\+', '. ', 'g')
 
@@ -385,7 +386,7 @@ function! vtm#Translate(...) abort
         \ . ' --word '      . shellescape('"' . word . '"')
         \ . ' --toLang '    . g:vtm_default_to_lang
 
-    call s:JobStart(cmd, type)
+    call s:JobStart(cmd, a:type)
 endfunction
 
 function! vtm#TranslateV(type) abort

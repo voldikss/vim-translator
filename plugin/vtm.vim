@@ -69,3 +69,7 @@ endif
 if !exists(':TranslateW')
     command! -complete=customlist,vtm#Complete -nargs=* TranslateW call vtm#Translate(<q-args>, 'complex')
 endif
+
+if !exists(':TranslateR')
+    command! -complete=customlist,vtm#Complete -nargs=* TranslateR exec 'normal viw<Esc>' | call vtm#Translate(<q-args>, 'replace')
+endif

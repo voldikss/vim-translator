@@ -48,8 +48,11 @@ COMMANDS                                                *vim-translate-me-comman
 
 `:TranslateW`
 
-    The same as `:Translate...`, but it displays the translation in the popup window instead
+    The same as `:Translate`, but it displays the translation in the popup window instead
 
+`:TranslateR`
+
+    The same as `:Translate`, but it replaces the current word with the translation
 
 ==============================================================================
 MAPPINGS                                                *vim-translate-me-mappings*

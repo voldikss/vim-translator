@@ -49,6 +49,9 @@ COMMANDS                                                *vim-translate-me-comman
 
     用法同上，但是在窗口中显示翻译内容
 
+`:TranslateR` 
+
+    用法同上，但是会用翻译内容替换光标下单词
 
 ==============================================================================
 MAPPINGS                                                *vim-translate-me-mappings*
