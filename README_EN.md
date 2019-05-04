@@ -9,10 +9,10 @@ Supports floating window(for Neovim currently) and asynchronous run
 ## Screenshot
 
 <div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/56863017-aba94280-69e3-11e9-8002-e6ed8e38d02c.gif">
+	<img src="https://user-images.githubusercontent.com/20282795/57177114-6aa5a800-6e93-11e9-9ab3-7a6a99bef70e.gif">
 </div>
 <div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/56863018-aba94280-69e3-11e9-9c4c-d903a80cb893.gif">
+	<img src="https://user-images.githubusercontent.com/20282795/57177115-6b3e3e80-6e93-11e9-9a65-7556d5564a28.gif">
 </div>
 
 ## Installation
