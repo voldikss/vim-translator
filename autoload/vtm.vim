@@ -25,7 +25,7 @@ endif
 " note: this must be outside the function!!!
 let s:py_file_path = expand('<sfile>:p:h') . '/source/'
 
-" bing api only requires app secret key
+" bing and yandex api only requires app secret key
 let s:api_key_secret = {
     \ 'baidu': [
         \ g:vtm_baidu_app_key,
@@ -38,6 +38,10 @@ let s:api_key_secret = {
     \ 'bing': [
         \ 'null',
         \ g:vtm_bing_app_secret_key
+    \ ],
+    \ 'yandex': [
+        \ 'null',
+        \ g:vtm_yandex_app_secret_key
     \ ]
     \ }
 
