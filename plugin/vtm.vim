@@ -8,12 +8,7 @@ if exists('g:loaded_vtm')
 endif
 let g:loaded_vtm= 1
 
-if exists('*nvim_open_win')
-    let g:vtm_popup_window = get(g:, 'vtm_popup_window', 'floating')
-else
-    let g:vtm_popup_window = 'preview'
-endif
-
+let g:vtm_popup_window = get(g:, 'vtm_popup_window', 'floating')
 let g:vtm_preview_position = get(g:, 'vtm_preview_position', 'bo')
 let g:vtm_baidu_app_key = get(g:, 'vtm_baidu_app_key', '20190429000292722')
 let g:vtm_baidu_app_secret = get(g:, 'vtm_baidu_app_secret', 'sv566pogmFxLFUjaJY4e')

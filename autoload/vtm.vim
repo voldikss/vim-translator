@@ -21,6 +21,11 @@ else
     finish
 endif
 
+if g:vtm_popup_window == 'floating'
+    if !health#vtm#check_floating_window()
+        let g:vtm_popup_window = 'preview'
+    endif
+endif
 
 " note: this must be outside the function!!!
 let s:py_file_path = expand('<sfile>:p:h') . '/source/'
