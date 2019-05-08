@@ -151,7 +151,7 @@ function! s:OnOpen(contents) abort
     wincmd p
 
     augroup VtmClosePopup
-        autocmd CursorMoved,CursorMovedI,InsertEnter <buffer> call <SID>ClosePopup()
+        autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call <SID>ClosePopup()
     augroup END
 endfunction
 
