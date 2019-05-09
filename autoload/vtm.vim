@@ -218,16 +218,24 @@ function! s:IntoPopup() abort
     if winnr() == popup_winnr
         execute 'wincmd p'
     else
+        " we have set autocmd BufLeave to close the popup...
+        " here, disable the autocmd temporarily
+        " to prevent from closing popup when we want to jump into the popup
+        let s:disable_autocmd = 1
         execute popup_winnr . 'wincmd w'
+        " after entering the popup, enable the autocmd
+        unlet s:disable_autocmd
     endif
 endfunction
 
 function! s:ClosePopup() abort
     let popup_winnr = win_id2win(s:popup_win_id)
-    if popup_winnr != 0
-        execute popup_winnr . 'wincmd c'
+    if !exists('s:disable_autocmd')
+        if popup_winnr != 0
+            execute popup_winnr . 'wincmd c'
+        endif
+        autocmd! VtmClosePopup * <buffer>
     endif
-    autocmd! VtmClosePopup * <buffer>
 endfunction
 
 function! s:Echo(contents) abort
