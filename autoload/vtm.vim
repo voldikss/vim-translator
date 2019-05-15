@@ -3,7 +3,11 @@
 " @Last Modified by: voldikss
 " @Last Modified time: 2019-04-28 13:44:20
 
-if executable('python3')
+if exists('g:python3_host_prog')
+    let s:vtm_py_version = g:python3_host_prog
+elseif exists('g:python_host_prog')
+    let s:vtm_py_version = g:python_host_prog
+elseif executable('python3')
     let s:vtm_py_version = 'python3'
 elseif executable('python')
     let s:vtm_py_version = 'python'
