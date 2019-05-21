@@ -4,7 +4,7 @@
 
 A naive translate plugin for Vim/Neovim
 
-Supports floating window(for Neovim currently) and asynchronous run 
+Supports floating window(for Neovim currently) and asynchronous running
 
 ## Screenshot
 
@@ -132,7 +132,7 @@ Supports floating window(for Neovim currently) and asynchronous run
 
 **Note**: this option is only available in NeoVim
 
-This plugin has set syntax highlight for the popup window by default. 
+This plugin has already set syntax highlight for the popup window by default. 
 But you can also specify your own highlight color
 
 Here is the example on which you can just change the color value of each item:
@@ -153,8 +153,8 @@ hi vtmPopupNormal term=None ctermfg=255 ctermbg=234   guibg=#303030 guifg=#EEEEE
 @[iamcco](https://github.com/iamcco)
 
 ### Todo
-- [ ] Allow users to define their own translation functions with other APIs
-- [ ] Proxy support, not necessary
+- [ ] Allow users to define their own translation functions with customized APIs
+- [ ] Proxy support, but not necessary
 
 ### License
 MIT

@@ -17,66 +17,66 @@ License                 |vim-translate-me-license|
 
 
 ==============================================================================
-SCREENSHOT                                            *vim-translate-me-screenshot*
+SCREENSHOT                                         *vim-translate-me-screenshot*
 
 Vim/Neovim 翻译插件。支持 悬浮窗口 和 异步特性
 
 
 ==============================================================================
-INSTALL                                                  *vim-translate-me-install*
+INSTALL                                               *vim-translate-me-install*
 
 With vim-plug:
->
+    >
   Plug 'voldikss/vim-translate-me'
 <
 
 ==============================================================================
-COMMANDS                                                *vim-translate-me-commands*
+COMMANDS                                             *vim-translate-me-commands*
 
-`:Translate<CR>`
+:Translate<CR>~
 
     命令不带参数执行，翻译当前光标下的单词并在命令行回显
 
-`:Translate <word><CR>`
+:Translate <word><CR>~
 
     翻译单词 `<word>`，并在命令行回显翻译内容
 
-`:Translate <api> <word><CR>`
+:Translate <api> <word><CR>~
 
     使用指定的 `<api>` 翻译单词 `<word>` 并在命令行回显，可用 `<Tab>` 补全 `<api>` 参数
 
-`:TranslateW`
+:TranslateW~
 
     用法同上，但是在窗口中显示翻译内容
 
-`:TranslateR` 
+:TranslateR ~
 
     用法同上，但是会用翻译内容替换光标下单词
 
 ==============================================================================
-MAPPINGS                                                *vim-translate-me-mappings*
+MAPPINGS                                             *vim-translate-me-mappings*
 
-*<Plug>Translate*
+<Plug>Translate~
 
   普通模式，翻译光标下的文本，在命令行回显翻译内容
 
-*<Plug>TranslateV*
+<Plug>TranslateV~
 
   可视模式，翻译光标下的文本，在命令行回显翻译内容
 
-*<Plug>TranslateW*
+<Plug>TranslateW~
 
   普通模式，翻译光标下的文本，在窗口中显示翻译内容
 
-*<Plug>TranslateWV*
+<Plug>TranslateWV~
 
   可视模式，翻译光标下的文本，在窗口中显示翻译内容
 
-*<Plug>TranslateR*
+<Plug>TranslateR~
 
   普通模式，替换光标下的文本为翻译内容
 
-*<Plug>TranslateRV*
+<Plug>TranslateRV~
 
   可视模式，替换光标下的文本为翻译内容
 
@@ -91,51 +91,51 @@ MAPPINGS                                                *vim-translate-me-mappin
 
 
 ==============================================================================
-VARIABLES                                              *vim-translate-me-variables*
+VARIABLES                                           *vim-translate-me-variables*
 
-*g:vtm_popup_window*
+g:vtm_popup_window~
 
   显示翻译内容的窗口
   可选值： `'preview'`, `'floating'`
   默认值：如果检测到`floating`特性支持，则为`'floating'`，否则为`'preview'`
 
-*g:vtm_preview_position*
+g:vtm_preview_position~
 
   如果`g:vtm_popup_window`为`'preview'`，此选项决定preview 窗口的位置
   可选值：`'to'` 在顶部，`'bo'` 在底部（`:help to`查看详细说明）
   默认值：`'bo'`
 
-*g:vtm_default_mapping*
+g:vtm_default_mapping~
 
   可选值：`1` `0`
   默认值：`1`
 
-*g:vtm_youdao_app_key*
-*g:vtm_youdao_app_secret*
+g:vtm_youdao_app_key~
+g:vtm_youdao_app_secret~
 
   有道 api 的 `APPKEY` 和 `APP_SECRET` ，可以自己申请
   (https://ai.youdao.com/doc.s#guide)
   也可以使用默认的
 
-*g:vtm_baidu_app_key*
-*g:vtm_baidu_app_secret*
+g:vtm_baidu_app_key~
+g:vtm_baidu_app_secret~
 
   百度 api 的 `APPKEY` 和 `APP_SECRET` ，可以自己申请
   (https://api.fanyi.baidu.com/api/trans/product/index)
   也可以使用默认的
 
-*g:vtm_bing_app_secret_key*
+g:vtm_bing_app_secret_key~
 
   必应 api 的密钥，可以自己申请
   (https://docs.microsoft.com/zh-cn/azure/cognitive-services/translator/translator-text-how-to-signup)
   也可以使用默认的
 
-*g:vtm_yandex_app_secret_key*
+g:vtm_yandex_app_secret_key~
 
   Yandex api 的密钥，可以[自己申请](https://translate.yandex.com/developers/keys)
   也可以使用默认的
 
-*g:vtm_default_to_lang*
+g:vtm_default_to_lang~
 
   默认翻译的目标语言
 
@@ -143,7 +143,7 @@ VARIABLES                                              *vim-translate-me-variabl
 
   默认值：`'zh'`
 
-*g:vtm_default_api*
+g:vtm_default_api~
 
   默认使用的翻译接口
   可选值：`'youdao'`, `'baidu'`, `'bing'`, `'yandex'`
@@ -151,7 +151,7 @@ VARIABLES                                              *vim-translate-me-variabl
 
 
 ==============================================================================
-HIGHLIGHT                                        *vim-translate-me-highlight*
+HIGHLIGHT                                           *vim-translate-me-highlight*
 
 注意：此选项仅在 NeoVim 上有效
 
@@ -159,27 +159,27 @@ HIGHLIGHT                                        *vim-translate-me-highlight*
 
 配置示例，你只需要更改每个项目的颜色值即可
  >
-    hi vtmTitle       term=None ctermfg=135 guifg=#AE81FF cterm=bold    gui=bold
-    hi vtmQuery       term=None ctermfg=161 guifg=#F92672 cterm=bold    gui=bold
-    hi vtmTrans       term=None ctermfg=118 guifg=#A6E22E cterm=bold    gui=bold
-    hi vtmPhonetic    term=None ctermfg=193 guifg=#C4BE89 cterm=italic  gui=italic
-    hi vtmExplain     term=None ctermfg=144 guifg=#00FFFF
-    hi vtmProperty    term=None ctermfg=161 guifg=#FF00FF cterm=bold    gui=bold
-    " This item determines the background and foreground of the whole window
-    hi vtmPopupNormal term=None ctermfg=255 ctermbg=234   guibg=#303030 guifg=#EEEEEE
+  hi vtmTitle       term=None ctermfg=135 guifg=#AE81FF cterm=bold   gui=bold
+  hi vtmQuery       term=None ctermfg=161 guifg=#F92672 cterm=bold   gui=bold
+  hi vtmTrans       term=None ctermfg=118 guifg=#A6E22E cterm=bold   gui=bold
+  hi vtmPhonetic    term=None ctermfg=193 guifg=#C4BE89 cterm=italic gui=italic
+  hi vtmExplain     term=None ctermfg=144 guifg=#00FFFF
+  hi vtmProperty    term=None ctermfg=161 guifg=#FF00FF cterm=bold   gui=bold
+  " This item determines the background and foreground of the whole window
+  hi vtmPopupNormal term=None ctermfg=255 ctermbg=234 guibg=#303030 guifg=#EEEEEE
 <
 
 ==============================================================================
-HEALTH CHECK                                        *vim-translate-me-health-check*
+HEALTH CHECK                                     *vim-translate-me-health-check*
 
 运行
->
+    >
   :checkhealth
 <
 
 
 ==============================================================================
-REPOSITORY                                       *vim-translate-me-repository-page*
+REPOSITORY                                    *vim-translate-me-repository-page*
 
 |vim-translate-me| is developed at GitHub. Please make a new issue or PR to
 join development.
@@ -188,7 +188,7 @@ https://github.com/voldikss/vim-translate-me
 
 
 ==============================================================================
-LICENSE                                                  *vim-translate-me-license*
+LICENSE                                               *vim-translate-me-license*
 
 |vim-translate-me| is distributed under The MIT license.
 

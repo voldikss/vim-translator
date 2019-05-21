@@ -4,7 +4,7 @@
 
 Vim/Neovim 翻译插件
 
-支持悬浮窗口（目前只有Neovim支持）和异步（Vim 8 和 Neovim 都支持）
+支持悬浮窗口（目前只有Neovim支持）和异步（Vim 8 和 Neovim 都支持）特性
 
 ## 预览
 
@@ -131,7 +131,7 @@ Vim/Neovim 翻译插件
 
 **注意**：此选项仅在 NeoVim 上有效
 
-插件默认定义了一套颜色高亮，你也可以指定你自己的配色
+插件已经默认定义了一套颜色高亮，你也可以指定你自己喜欢的配色
 
 下面是配置示例，你只需要更改每个项目的颜色值即可
 ```vim
@@ -141,7 +141,7 @@ hi vtmTrans       term=None ctermfg=118 guifg=#A6E22E cterm=bold    gui=bold
 hi vtmPhonetic    term=None ctermfg=193 guifg=#C4BE89 cterm=italic  gui=italic
 hi vtmExplain     term=None ctermfg=144 guifg=#00FFFF
 hi vtmProperty    term=None ctermfg=161 guifg=#FF00FF cterm=bold    gui=bold
-" 这一选项决定了窗口整体的前景色和背景色
+" 这个高亮组决定了窗口整体的前景色和背景色
 hi vtmPopupNormal term=None ctermfg=255 ctermbg=234   guibg=#303030 guifg=#EEEEEE
 ```
 
@@ -150,8 +150,8 @@ hi vtmPopupNormal term=None ctermfg=255 ctermbg=234   guibg=#303030 guifg=#EEEEE
 @[iamcco](https://github.com/iamcco)
 
 ## Todo
-- [ ] Allow users to define their own translation functions with other APIs
-- [ ] Proxy support, not necessary
+- [ ] Allow users to define their own translation functions with customized APIs
+- [ ] Proxy support, but not necessary
 
 ## License
 MIT

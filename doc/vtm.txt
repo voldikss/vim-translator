@@ -16,7 +16,7 @@ License                 |vim-translate-me-license|
 
 
 ==============================================================================
-SCREENSHOT                                            *vim-translate-me-screenshot*
+SCREENSHOT                                         *vim-translate-me-screenshot*
 
 A naive translate plugin for Vim/Neovim
 
@@ -24,62 +24,67 @@ Supports floating window(for Neovim currently) and asynchronous run
 
 
 ==============================================================================
-INSTALL                                                  *vim-translate-me-install*
+INSTALL                                               *vim-translate-me-install*
 
 With vim-plug:
->
+    >
   Plug 'voldikss/vim-translate-me'
 <
 
 ==============================================================================
-COMMANDS                                                *vim-translate-me-commands*
+COMMANDS                                             *vim-translate-me-commands*
 
-`:Translate<CR>`
+:Translate<CR>~
 
-    Run the command without arguments to translate the text under the cursor, print in the cmdline
+    Run the command without arguments to translate the text under the cursor, 
+print in the cmdline
 
-`:Translate <word><CR>`
+:Translate <word><CR>~
 
     Translate `<word>`, print in the cmdline
 
-`:Translate <api> <word><CR>`
+:Translate <api> <word><CR>~
 
-    Translate `<word>` with specified `<api>`, print in the cmdline. Use <Tab> to complete `<api>` argument
+    Translate `<word>` with specified `<api>`, print in the cmdline. Use <Tab> to 
+complete `<api>` argument
 
-`:TranslateW`
+:TranslateW~
 
-    The same as `:Translate`, but it displays the translation in the popup window instead
+    The same as `:Translate`, but it displays the translation in the popup window 
+instead
 
-`:TranslateR`
+:TranslateR~
 
     The same as `:Translate`, but it replaces the current word with the translation
 
 ==============================================================================
 MAPPINGS                                                *vim-translate-me-mappings*
 
-*<Plug>Translate*
+<Plug>Translate~
 
   Normal mode: Translate the text under the cursor, print in the cmdline
 
-*<Plug>TranslateV*
+<Plug>TranslateV~
 
   Visual mode: Translate the text under the cursor, print in the cmdline
 
-*<Plug>TranslateW*
+<Plug>TranslateW~
 
   Normal mode: Translate the text under the cursor, display in the popup window
 
-*<Plug>TranslateWV*
+<Plug>TranslateWV~
 
   Visual mode: Translate the text under the cursor, display in the popup window
 
-*<Plug>TranslateR*
+<Plug>TranslateR~
 
-  Normal mode: Translate the text under the cursor and replace the text with the translation
+  Normal mode: Translate the text under the cursor and replace the text with 
+the translation
 
-*<Plug>TranslateRV*
+<Plug>TranslateRV~
 
-  Visual mode: Translate the text under the cursor and replace the text with the translation
+  Visual mode: Translate the text under the cursor and replace the text with 
+the translation
 
 Default keymappings~
  >
@@ -92,58 +97,60 @@ Default keymappings~
 
 
 ==============================================================================
-VARIABLES                                              *vim-translate-me-variables*
+VARIABLES                                           *vim-translate-me-variables*
 
-*g:vtm_popup_window*
+g:vtm_popup_window~
 
   The window that displays the translation
   Available: `'preview'`, `'floating'`
   Default：`floating` if `api-floatwin` was detected, otherwise `'preview'`
 
-*g:vtm_preview_position*
+g:vtm_preview_position~
 
-  If you have set `g:vtm_popup_window` to `'preview'`, this option specifies preview-window's position
-  Available: `'to'` indicates the preview-window should be opened on the top of the main window,
+  If you have set `g:vtm_popup_window` to `'preview'`, this option specifies 
+preview-window's position
+  Available: `'to'` indicates the preview-window should be opened on the top 
+of the main window,
     `'bo'` bottom instead(run `:help to` in vim to get instructions)
   Default: `'bo'`
 
-*g:vtm_default_mapping*
+g:vtm_default_mapping~
 
   Whether to use the default key mapping
   Available: `1` `0`
   Default: `1`
 
-*g:vtm_youdao_app_key*
-*g:vtm_youdao_app_secret*
+g:vtm_youdao_app_key~
+g:vtm_youdao_app_secret~
 
   `APPKEY` and `APP_SECRET` for [Youdao API](https://ai.youdao.com/doc.s#guide)
     You can apply for your own API key or use the built-in one
 
-*g:vtm_baidu_app_key*
-*g:vtm_baidu_app_secret*
+g:vtm_baidu_app_key~
+g:vtm_baidu_app_secret~
 
   `APPKEY` and `APP_SECRET` for [Baidu API](https://api.fanyi.baidu.com/api/trans/product/index)
     You can apply for your own API key or use the built-in one
 
-*g:vtm_bing_app_secret_key*
+g:vtm_bing_app_secret_key~
 
   `APPKEY` and `APP_SECRET` for [Bing API]
     (https://docs.microsoft.com/en-us/azure/cognitive-services/translator/translator-text-how-to-signup)
     You can apply for your own API key or use the built-in one
 
-*g:vtm_yandex_app_secret_key*
+g:vtm_yandex_app_secret_key~
 
   `APPKEY` and `APP_SECRET` for [Yandex API](https://translate.yandex.com/developers/keys)
     You can apply for your own API key or use the built-in one
 
-*g:vtm_default_to_lang*
+g:vtm_default_to_lang~
 
   Which language that the text will be translated to
   Available: Please refer to [Supported languages for every API]
     (https://github.com/voldikss/vim-translate-me/wiki)
   Default: `'zh'`
 
-*g:vtm_default_api*
+g:vtm_default_api~
 
   The default translation API you use
   Available: `'youdao'`, `'baidu'`, `'bing'`, `'yandex'`
@@ -151,7 +158,7 @@ VARIABLES                                              *vim-translate-me-variabl
 
 
 ==============================================================================
-HIGHLIGHT                                        *vim-translate-me-highlight*
+HIGHLIGHT                                           *vim-translate-me-highlight*
 
 Note: this option is only available in NeoVim
 
@@ -161,27 +168,27 @@ But you can also specify your own highlight color
 Here is the example on which you can just change the color value of each item:
 
  >
-    hi vtmTitle       term=None ctermfg=135 guifg=#AE81FF cterm=bold    gui=bold
-    hi vtmQuery       term=None ctermfg=161 guifg=#F92672 cterm=bold    gui=bold
-    hi vtmTrans       term=None ctermfg=118 guifg=#A6E22E cterm=bold    gui=bold
-    hi vtmPhonetic    term=None ctermfg=193 guifg=#C4BE89 cterm=italic  gui=italic
-    hi vtmExplain     term=None ctermfg=144 guifg=#00FFFF
-    hi vtmProperty    term=None ctermfg=161 guifg=#FF00FF cterm=bold    gui=bold
-    " This item determines the background and foreground of the whole window
-    hi vtmPopupNormal term=None ctermfg=255 ctermbg=234   guibg=#303030 guifg=#EEEEEE
+  hi vtmTitle       term=None ctermfg=135 guifg=#AE81FF cterm=bold   gui=bold
+  hi vtmQuery       term=None ctermfg=161 guifg=#F92672 cterm=bold   gui=bold
+  hi vtmTrans       term=None ctermfg=118 guifg=#A6E22E cterm=bold   gui=bold
+  hi vtmPhonetic    term=None ctermfg=193 guifg=#C4BE89 cterm=italic gui=italic
+  hi vtmExplain     term=None ctermfg=144 guifg=#00FFFF
+  hi vtmProperty    term=None ctermfg=161 guifg=#FF00FF cterm=bold   gui=bold
+  " This item determines the background and foreground of the whole window
+  hi vtmPopupNormal term=None ctermfg=255 ctermbg=234 guibg=#303030 guifg=#EEEEEE
 
 
 ==============================================================================
-HEALTH CHECK                                        *vim-translate-me-health-check*
+HEALTH CHECK                                     *vim-translate-me-health-check*
 
 Run
->
+    >
   :checkhealth
 <
 
 
 ==============================================================================
-REPOSITORY                                       *vim-translate-me-repository-page*
+REPOSITORY                                    *vim-translate-me-repository-page*
 
 |vim-translate-me| is developed at GitHub. Please make a new issue or PR to
 join development.
@@ -190,7 +197,7 @@ https://github.com/voldikss/vim-translate-me
 
 
 ==============================================================================
-LICENSE                                                  *vim-translate-me-license*
+LICENSE                                               *vim-translate-me-license*
 
 |vim-translate-me| is distributed under The MIT license.
 
