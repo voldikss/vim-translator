@@ -193,7 +193,15 @@ endfunction
 function! s:GetFloatingPosition(width, height) abort
     let bottom_line = line('w0') + winheight(0) - 1
     let curr_pos = getpos('.')
-    if curr_pos[1] + a:height <= bottom_line
+    let rownr = curr_pos[1]
+    let colnr = curr_pos[2]
+    " a long wrap line
+    if colnr > &columns
+        let colnr = colnr % &columns
+        let rownr += 1
+    endif
+
+    if rownr + a:height <= bottom_line
         let vert = 'N'
         let row = 1
     else
@@ -201,7 +209,7 @@ function! s:GetFloatingPosition(width, height) abort
         let row = 0
     endif
 
-    if curr_pos[2] + a:width <= &columns
+    if colnr + a:width <= &columns
         let hor = 'W'
         let col = 0
     else
