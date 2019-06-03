@@ -198,7 +198,7 @@ function! s:GetFloatingPosition(width, height) abort
     " a long wrap line
     if colnr > &columns
         let colnr = colnr % &columns
-        let rownr += 1
+        let rownr += colnr / &columns
     endif
 
     if rownr + a:height <= bottom_line
