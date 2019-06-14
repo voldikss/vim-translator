@@ -32,7 +32,9 @@ if g:vtm_popup_window == 'floating'
 endif
 
 " note: this must be outside the function!!!
-let s:py_file_path = expand('<sfile>:p:h') . '/source/'
+let s:cwd = expand('<sfile>:p:h')
+let s:py_file_path = s:cwd . '/source/'
+let s:history_file = s:cwd . '/../translate_history.data'
 
 " bing and yandex api only requires app secret key
 let s:api_key_secret = {
@@ -290,6 +292,35 @@ function! s:Replace(contents) abort
     unlet reg_tmp
 endfunction
 
+function! s:SaveInfo(contents) abort
+    if !g:vtm_save_history
+        return
+    endif
+
+    let query = a:contents['query']
+    let translation = a:contents['translation']
+
+    " if translation == query, it's not a valid translation. throw it
+    if query == translation
+        return
+    endif
+
+    if !filereadable(s:history_file)
+        call writefile([], s:history_file)
+    endif
+
+    let trans_data = readfile(s:history_file)
+    let trans_data += [query . "\t" . translation]
+    if len(trans_data) == g:vtm_max_history_count
+        call remove(trans_data, 0)
+    endif
+
+    let result = writefile(trans_data, s:history_file)
+    if result == -1
+        echoerr '[vim-translate-me] Failed to save the translation data.'
+    endif
+endfunction
+
 function! s:Start(type, data, event) abort
     " Since Nvim will return a v:t_list, while Vim will return a v:t_string
     if type(a:data) == 3
@@ -322,6 +353,7 @@ function! s:Start(type, data, event) abort
         else
             call s:Replace(contents)
         endif
+        call s:SaveInfo(contents)
     elseif a:event == 'stderr'
         echomsg '[vim-translate-me] ' . message
     endif
@@ -414,6 +446,15 @@ endfunction
 function! vtm#TranslateV(type) abort
     let select_text = s:GetVisualText()
     call vtm#Translate(select_text, a:type)
+endfunction
+
+function! vtm#TranslateF()
+    if !filereadable(s:history_file)
+        echoerr '[vim-translate-me] History file not exist yet'
+        return
+    endif
+    execute 'tabnew ' .  s:history_file
+    setlocal filetype=vtm_data
 endfunction
 
 function! vtm#Complete(arg_lead, cmd_line, cursor_pos)

@@ -83,6 +83,17 @@ Vim/Neovim 翻译插件
 
 - 默认值：如果 `g:vtm_default_to_lang` 设置为 `'zh'` 则该项默认为 `'baidu'`，否则为 `'bing'`
 
+#### **`g:vtm_save_history`**
+  
+> 是否保存查询历史
+
+- 默认值：1
+
+#### **`g:vtm_max_history_count`**
+  
+> 保存查询记录的数目
+
+- 默认值：1000
 
 ## 快捷键
 
@@ -126,6 +137,10 @@ Vim/Neovim 翻译插件
 #### `:TranslateR ...`
 
 > 用法同上，但是会用翻译内容替换光标下单词
+
+#### `:TranslateF`
+
+> 打开查询的历史记录文件
 
 ## 颜色高亮
 

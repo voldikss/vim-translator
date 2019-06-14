@@ -84,6 +84,17 @@ Supports floating window(for Neovim currently) and asynchronous running
 
 - Default: `'baidu'` if `g:vtm_default_to_lang` is set to `'zh'`, otherwise `'bing'`
 
+#### **`g:vtm_save_history`**
+  
+> Whether to save the translation history
+
+- Default: 1
+
+#### **`g:vtm_max_history_count`**
+  
+> Count for translation history items
+
+- Default: 1000
 
 ## Key Mapping
 
@@ -127,6 +138,10 @@ Supports floating window(for Neovim currently) and asynchronous running
 #### `:TranslateR...`
 
 > The same as `:Translate...`, but it replaces the current word with the translation
+
+#### `:TranslateF`
+
+> Open the translation history file
 
 ## Highlight
 

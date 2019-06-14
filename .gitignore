@@ -11,5 +11,6 @@ tmp.*
 /.idea
 build/
 __pycache__
+translate_history.data
 
 
