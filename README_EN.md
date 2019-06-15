@@ -94,7 +94,7 @@ Supports floating window(for Neovim currently) and asynchronous running
   
 > Count for translation history items
 
-- Default: 1000
+- Default: 5000
 
 ## Key Mapping
 

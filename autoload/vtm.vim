@@ -300,7 +300,7 @@ function! s:SaveInfo(contents) abort
     let query = a:contents['query']
     let translation = a:contents['translation']
 
-    " if translation == query, it's not a valid translation. throw it
+    " if translation == query, it's not a valid translation. throw it away
     if query == translation
         return
     endif
@@ -317,6 +317,7 @@ function! s:SaveInfo(contents) abort
         return
     endif
 
+    " must be improved...
     if len(trans_data) == g:vtm_max_history_count
         call remove(trans_data, 0)
     endif
