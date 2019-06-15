@@ -309,12 +309,19 @@ function! s:SaveInfo(contents) abort
         call writefile([], s:history_file)
     endif
 
+    let item = query . "\t" . translation
     let trans_data = readfile(s:history_file)
-    let trans_data += [query . "\t" . translation]
+
+    " duplicated
+    if index(trans_data, item) >= 0
+        return
+    endif
+
     if len(trans_data) == g:vtm_max_history_count
         call remove(trans_data, 0)
     endif
 
+    let trans_data += [item]
     let result = writefile(trans_data, s:history_file)
     if result == -1
         echoerr '[vim-translate-me] Failed to save the translation data.'
