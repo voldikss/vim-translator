@@ -54,7 +54,7 @@ function! s:check_vim_version() abort
 
     if v:version < 800
         call health#report_error(
-            \ 'Your vim is too old: ' . v:version . ' and not supported by the plugin'
+            \ 'Your vim is too old: ' . v:version . ' and not supported by the plugin' .
             \ 'Please install Vim 8.0 or later')
     endif
 endfunction
