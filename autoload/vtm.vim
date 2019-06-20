@@ -1,7 +1,7 @@
 " @Author: voldikss
 " @Date: 2019-04-24 22:20:55
 " @Last Modified by: voldikss
-" @Last Modified time: 2019-04-28 13:44:20
+" @Last Modified time: 2019-06-20 18:56:18
 
 if exists('g:python3_host_prog')
     let s:vtm_py_version = g:python3_host_prog
@@ -23,12 +23,6 @@ elseif exists('*job_start')
 else
     echoerr '[vim-translate-me] +job feature is required, please install lastest Neovim or Vim'
     finish
-endif
-
-if g:vtm_popup_window == 'floating'
-    if !health#vtm#check_floating_window()
-        let g:vtm_popup_window = 'preview'
-    endif
 endif
 
 " note: this must be outside the function!!!
@@ -80,6 +74,12 @@ endif
 
 function! s:Popup(contents) abort
     let [width, height] = s:GetFloatingSize(a:contents)
+
+    " Note: tmp for 0.3.7 .etc
+    if matchstr(execute('silent version'), 'NVIM v\zs[^\n-]*') < '0.4.0'
+        echomsg '[vim-translate-me] Will use preview window for displaying. To get floating window feature, please upgrade to NVIM v0.4.0'
+        let g:vtm_popup_window = 'preview'
+    endif
 
     if g:vtm_popup_window == 'floating'
         let [row, col, corner] = s:GetFloatingPosition(width, height)
