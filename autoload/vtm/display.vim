@@ -38,7 +38,7 @@ function! vtm#display#popup(contents) abort
         " make cursor go back to the original position
         call setpos('.', curr_pos)
         wincmd P
-        execute height . 'wincmd _'
+        execute height+1 . 'wincmd _'
         let s:popup_win_id = win_getid()
     endif
 

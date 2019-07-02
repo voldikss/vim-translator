@@ -12,7 +12,7 @@ if has('nvim')
     endfunction
 else
     function! s:onStdoutVim(type, event, ch, msg)
-        call s:start(a:type, msg, event)
+        call s:start(a:type, a:msg, a:event)
     endfunction
 
     function! s:onExitVim(ch, code)
