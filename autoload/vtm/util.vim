@@ -36,10 +36,13 @@ function! vtm#util#saveHistory(contents) abort
 
     let query = a:contents['query']
     let paraphrase = a:contents['paraphrase']
+    let explain = a:contents['explain']
 
-    " if paraphrase == query or no paraphrase, it's an invalid translation. 
-    " throw it away
-    if query ==? paraphrase || !len(paraphrase)
+    if len(paraphrase) && query !=? paraphrase
+        let item = PadEnd(query, 25) . paraphrase
+    elseif len(explain)
+        let item = PadEnd(query, 25) . explain[0]
+    else
         return
     endif
 
@@ -47,15 +50,13 @@ function! vtm#util#saveHistory(contents) abort
         call writefile([], g:vtm_history_file)
     endif
 
-    let item = PadEnd(query, 25). paraphrase
     let trans_data = readfile(g:vtm_history_file)
 
-    " duplicated
-    if index(trans_data, item) >= 0
+    " already in
+    if match(string(trans_data), query) >= 0
         return
     endif
 
-    " must be improved...
     if len(trans_data) == g:vtm_max_history_count
         call remove(trans_data, 0)
     endif
