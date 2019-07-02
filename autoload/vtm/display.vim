@@ -130,17 +130,8 @@ function! s:onOpenPreview(translation)
 endfunction
 
 function! s:winSize(translation) abort
-    let height = 0
-    let width = 0
-
-    for line in a:translation
-        let line_width = strdisplaywidth(line) + 1
-        if line_width > width
-            let width = line_width
-        endif
-        let height += 1
-    endfor
-
+    let width = max(map(copy(a:translation), 'strdisplaywidth(v:val) + 1'))
+    let height = len(a:translation)
     return [width, height]
 endfunction
 
@@ -186,7 +177,7 @@ endfunction
 
 function! vtm#display#echo(contents) abort
     let translation = s:buildTrans(a:contents)
-    let translation = map(translation, 'v:val[6:]') "len(📝) is 4(bytes count)
+    call map(translation, 'v:val[6:]') "len(📝) is 4(bytes count)
     let translation = translation[0] . ' ==> ' . join(translation[1:], ' ')
     call vtm#util#showMessage(translation)
 endfunction
