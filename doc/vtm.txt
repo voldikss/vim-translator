@@ -21,7 +21,7 @@ SCREENSHOT                                                      *vtm-screenshot*
 
 A naive translate plugin for Vim/Neovim
 
-Supports floating window(for Neovim currently) and asynchronous run
+Supports floating & popup and asynchronous running
 
 
 ==============================================================================

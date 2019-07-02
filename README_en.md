@@ -4,7 +4,7 @@
 
 A naive translate plugin for Vim/Neovim
 
-Supports floating window(for Neovim currently) and asynchronous running
+Supports floating & popup and asynchronous running
 
 ## Screenshot
 
@@ -24,7 +24,7 @@ Plug 'voldikss/vim-translate-me'
 ## Features
 
 - Async running
-- Floating window support
+- Floating(NeoVim) & popup(Vim) window support
 - Multiple translation engines
 - Allow to save and export translation history
 - Proxy available(http, socks4, socks5)

@@ -4,7 +4,7 @@
 
 Vim/Neovim 翻译插件
 
-支持悬浮窗口（目前只有Neovim支持）和异步（Vim 8 和 Neovim 都支持）特性
+支持弹窗(floating & popup)和异步特性
 
 ## 预览
 
@@ -18,7 +18,7 @@ Vim/Neovim 翻译插件
 
 ## 安装
 
-确保已经安装了 Python(2或3都行)
+确保已经安装了 Python(2或3)
 
 ```vim
 Plug 'voldikss/vim-translate-me'
@@ -26,8 +26,8 @@ Plug 'voldikss/vim-translate-me'
 
 ## 特性
 
-- 浮窗支持
-- 不阻塞当前编辑
+- 浮窗支持(floating & popup)
+- 不会阻塞当前编辑
 - 多种可选翻译引擎
 - 保存和导出查询记录
 - 支持代理(http, socks4, socks5)
@@ -139,6 +139,7 @@ hi def link vtmPopupNormal       NormalFloat
 
 ## Change log
 
+- 1.1.0 (2019-07-02): add popup support on vim81
 - 1.0.0 (2019-07-01): refactor
     - support proxy(http, socks4, socks5)
     - doesn't need app key/secret anymore, remove `g:vtm_...app_key/app_secret`
