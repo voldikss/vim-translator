@@ -1,29 +1,26 @@
 " @Author: voldikss
 " @Date: 2019-04-27 16:44:10
 " @Last Modified by: voldikss
-" @Last Modified time: 2019-04-28 13:35:36
+" @Last Modified time: 2019-06-30 21:35:52
+
 
 if exists('g:loaded_vtm')
     finish
 endif
 let g:loaded_vtm= 1
 
-let g:vtm_popup_window = get(g:, 'vtm_popup_window', 'floating')
-let g:vtm_preview_position = get(g:, 'vtm_preview_position', 'bo')
-let g:vtm_baidu_app_key = get(g:, 'vtm_baidu_app_key', '20190429000292722')
-let g:vtm_baidu_app_secret = get(g:, 'vtm_baidu_app_secret', 'sv566pogmFxLFUjaJY4e')
-let g:vtm_youdao_app_key = get(g:, 'vtm_youdao_app_key', '70d26c625f056dba')
-let g:vtm_youdao_app_secret = get(g:, 'vtm_youdao_app_secret', 'wqbp7g6MloxwmOTUGSkMghnIWxTGOyrp')
-let g:vtm_bing_app_secret_key = get(g:, 'vtm_bing_app_secret_key', '81d36c3ed9d4472ab270b165d7bfaf65')
-let g:vtm_yandex_app_secret_key = get(g:, 'vtm_yandex_app_secret_key', 'trnsl.1.1.20190430T070040Z.b4d258419bc606c3.c91de1b8a30d1e62228a51de3bf0a036160b2293')
 let g:vtm_default_to_lang = get(g:, 'vtm_default_to_lang', 'zh')
-let g:vtm_save_history = get(g:, 'vtm_save_history', 1)
+let g:vtm_enable_history = get(g:, 'vtm_enable_history', 1)
 let g:vtm_max_history_count = get(g:, 'vtm_max_history_count', 5000)
+let g:vtm_history_dir = get(g:, 'vtm_history_dir', expand('<sfile>:p:h'))
+let g:vtm_proxy_url = get(g:, 'vtm_proxy_url', '')
 
-if g:vtm_default_to_lang == 'zh'
-    let g:vtm_default_api = get(g:, 'vtm_default_api', 'baidu')
+let g:vtm_history_file = g:vtm_history_dir . '/../translation_history.data'
+
+if match(g:vtm_default_to_lang, 'zh') >= 0
+    let g:vtm_default_engine = get(g:, 'vtm_default_engine', 'ciba')
 else
-    let g:vtm_default_api = get(g:, 'vtm_default_api', 'bing')
+    let g:vtm_default_engine = get(g:, 'vtm_default_engine', 'google')
 endif
 
 if get(g:, 'vtm_default_mapping', 1)
@@ -71,6 +68,6 @@ if !exists(':TranslateR')
     command! -complete=customlist,vtm#Complete -nargs=* TranslateR exec 'normal viw<Esc>' | call vtm#Translate(<q-args>, 'replace')
 endif
 
-if !exists(':TranslateF')
-    command! -nargs=0   TranslateF call vtm#TranslateF()
+if !exists(':TranslateH')
+    command! -nargs=0   TranslateH call vtm#util#exportHistory()
 endif

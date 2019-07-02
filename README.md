@@ -1,6 +1,6 @@
 # vim-translate-me
 
-[@English Readme@](./README_EN.md)
+[@English Readme@](./README_en.md)
 
 Vim/Neovim 翻译插件
 
@@ -15,97 +15,81 @@ Vim/Neovim 翻译插件
 	<img src="https://user-images.githubusercontent.com/20282795/57177115-6b3e3e80-6e93-11e9-9a65-7556d5564a28.gif">
 </div>
 
+
 ## 安装
- - 确保已经安装了 Python(2或3都行)
 
- - 安装(这里用 vim-plug)
+确保已经安装了 Python(2或3都行)
 
-    ```vim
-    Plug 'voldikss/vim-translate-me'
+```vim
+Plug 'voldikss/vim-translate-me'
+```
 
-    :PlugInstall
-    ```
+## 特性
 
-## 变量
-#### **`g:vtm_popup_window`**
+- 浮窗支持
+- 不阻塞当前编辑
+- 多种可选翻译引擎
+- 保存和导出查询记录
+- 支持代理(http, socks4, socks5)
+- 不再需要 appid/appkey
 
-> 显示翻译内容的窗口
 
-- 可选值： `'preview'`, `'floating'`
-
-- 默认值：如果检测到`floating`特性支持，则为`'floating'`，否则为`'preview'`
-
-#### **`g:vtm_preview_position`**
-
-> 如果`g:vtm_popup_window`为`'preview'`，此选项决定preview 窗口的位置
-
-- 可选值：`'to'` 在顶部，`'bo'` 在底部（`:help to`查看详细说明）
-
-- 默认值：`'bo'`
+## 配置
 
 #### **`g:vtm_default_mapping`**
 
 > 是否使用默认快捷键
 
-- 可选值：`1` `0`
-
-- 默认值：`1`
-
-#### **`g:vtm_youdao_app_key`** & **`g:vtm_youdao_app_secret`**
-
-> 有道 api 的 `APPKEY` 和 `APP_SECRET` ，可以[自己申请](https://ai.youdao.com/doc.s#guide)，也可以使用默认的
-
-#### **`g:vtm_baidu_app_key`** & **`g:vtm_baidu_app_secret`**
-
-> 百度 api 的 `APPKEY` 和 `APP_SECRET` ，可以[自己申请](https://api.fanyi.baidu.com/api/trans/product/index)，也可以使用默认的
-
-#### **`g:vtm_bing_app_secret_key`**
-  
-> 必应 api 的密钥，可以[自己申请](https://docs.microsoft.com/zh-cn/azure/cognitive-services/translator/translator-text-how-to-signup)，也可以使用默认的
-
-#### **`g:vtm_yandex_app_secret_key`**
-  
-> Yandex api 的密钥，可以[自己申请](https://translate.yandex.com/developers/keys)，也可以使用默认的
+- 默认：`1`
 
 #### **`g:vtm_default_to_lang`**
-  
+ 
 > 默认翻译的目标语言
 
-- 可选值：参考[各 API 支持语言列表](https://github.com/voldikss/vim-translate-me/wiki)
+- 可选：参考[各 engine 支持语言列表](https://github.com/voldikss/vim-translate-me/wiki)
 
-- 默认值：`'zh'`
+- 默认：`'zh'`
 
-#### **`g:vtm_default_api`**
-  
-> 默认使用的翻译接口
+#### **`g:vtm_default_engine`**
+ 
+> 默认翻译接口
 
-- 可选值：`'youdao'`, `'baidu'`, `'bing'`, `yandex`
+- 可选：`'bing'`, `'ciba'`, `'google'`(可直连), `youdao`
 
-- 默认值：如果 `g:vtm_default_to_lang` 设置为 `'zh'` 则该项默认为 `'baidu'`，否则为 `'bing'`
+- 默认：`'ciba'`
 
-#### **`g:vtm_save_history`**
-  
-> 是否保存查询历史
+#### g:vtm_proxy_url
 
-- 默认值：1
+> 代理地址，如 `let g:vtm_proxy_url = 'socks5://127.0.0.1:1080'`
+
+- 默认：`''`
+
+#### **`g:vtm_enable_history`**
+ 
+> 是否保存查询历史记录
+
+- 默认：1
 
 #### **`g:vtm_max_history_count`**
-  
+ 
 > 保存查询记录的数目
 
-- 默认值：5000
+- 默认：5000
+
+#### **`g:vtm_history_dir`**
+
+> 历史记录文件的目录
+
+- 默认：插件根目录
 
 ## 快捷键
 
 - 默认快捷键
-
-    你也可以自己更改，把 `<Leader>d`, `<Leader>w` 或者 `<Leader>r` 配置为你设置的快捷键
-
     ```vim
-    " <Leader>t 翻译光标下的文本，在命令行回显翻译内容
+    " <Leader>t 翻译光标下的文本，在命令行回显
     nmap <silent> <Leader>t <Plug>Translate
     vmap <silent> <Leader>t <Plug>TranslateV
-    " Leader>w 翻译光标下的文本，在窗口中显示翻译内容
+    " Leader>w 翻译光标下的文本，在窗口中显示
     nmap <silent> <Leader>w <Plug>TranslateW
     vmap <silent> <Leader>w <Plug>TranslateWV
     " Leader>r 替换光标下的文本为翻译内容
@@ -113,60 +97,67 @@ Vim/Neovim 翻译插件
     vmap <silent> <Leader>r <Plug>TranslateRV
     ```
 
-- 在翻译窗口打开的情况下，通过 `<Leader>d` 在主窗口和翻译窗口之间跳转
-- 在翻译窗口中按 `q` 键关闭窗口
+- 再次使用`<Leader>w`，光标跳到翻译窗口
+
+- 按 `q` 键关闭翻译窗口
 
 ## 命令
 
-#### `:Translate<CR>`
+#### `:Translate [[engine] [word]]`
 
-> 命令不带参数执行，翻译当前光标下的单词并在命令行回显
+使用 `engine` 翻译单词 `word `并在命令行回显
 
-#### `:Translate <word><CR>`
+如果未指定 `word`，使用光标下单词
 
-> 翻译单词 `<word>`，并在命令行回显翻译内容
+如果未指定 `engine`，使 `g:vtm_default_engine` 用
 
-#### `:Translate <api> <word><CR>`
+#### `:TranslateW [[engine] [word]]`
 
-> 使用指定的 `<api>` 翻译单词 `<word>` 并在命令行回显，可用 `<Tab>` 补全 `<api>` 参数
+用法同上，但在窗口中显示
 
-#### `:TranslateW ...`
+#### `:TranslateR [[engine] [word]]`
 
-> 用法同上，但是在窗口中显示翻译内容
+用法同上，但会用翻译内容替换光标下单词
 
-#### `:TranslateR ...`
+#### `:TranslateH`
 
-> 用法同上，但是会用翻译内容替换光标下单词
-
-#### `:TranslateF`
-
-> 打开查询的历史记录文件
+导出历史记录
 
 ## 颜色高亮
 
 **注意**：此选项仅在 NeoVim 上有效
 
-插件已经默认定义了一套颜色高亮，你也可以指定你自己喜欢的配色
+下面是默认高亮配置，使用 `hi link` 配置自己喜欢的高亮
 
-下面是配置示例，你只需要更改每个项目的颜色值即可
 ```vim
-hi vtmTitle       term=None ctermfg=135 guifg=#AE81FF cterm=bold    gui=bold
-hi vtmQuery       term=None ctermfg=161 guifg=#F92672 cterm=bold    gui=bold
-hi vtmTrans       term=None ctermfg=118 guifg=#A6E22E cterm=bold    gui=bold
-hi vtmPhonetic    term=None ctermfg=193 guifg=#C4BE89 cterm=italic  gui=italic
-hi vtmExplain     term=None ctermfg=144 guifg=#00FFFF
-hi vtmProperty    term=None ctermfg=161 guifg=#FF00FF cterm=bold    gui=bold
-" 这个高亮组决定了窗口整体的前景色和背景色
-hi vtmPopupNormal term=None ctermfg=255 ctermbg=234   guibg=#303030 guifg=#EEEEEE
+hi def link vtmQuery             Identifier
+hi def link vtmParaphrase        Statement
+hi def link vtmPhonetic          Special
+hi def link vtmExplain           Comment
+hi def link vtmPopupNormal       NormalFloat
 ```
 
+## Change log
 
-## Credit
-@[iamcco](https://github.com/iamcco)
+- 1.0.0 (2019-07-01): refactor
+    - support proxy(http, socks4, socks5)
+    - doesn't need app key/secret anymore, remove `g:vtm_...app_key/app_secret`
+    - remove `'baidu'` and `'yandex'`
+    - remove `g:vtm_popup_window`, use `'floating'` as default, otherwise `'preview'`
+    - rename `g:vtm_default_api` to `g:vtm_default_engine`
+    - remove `g:vtm_preview_position`
+    - new option: `g:vtm_enable_history`
+    - new option: `g:vtm_max_history_count`
+    - new option: `g:vtm_history_dir`
+    - new command: `:TranslateH` to export translation history
+    - change default engine to `'ciba'` or `'google'`
+    - change default syntax highlight
 
-## Todo
-- [ ] Allow users to define their own translation functions with customized APIs
-- [ ] Proxy support, but not necessary
+## References
+
+- [dict.vim](https://github.com/iamcco/dict.vim)
+
 
 ## License
+
 MIT
