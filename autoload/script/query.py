@@ -143,24 +143,6 @@ class BasicTranslator(object):
         res['explain'] = None       # 详细翻译
         return res
 
-    def check_english(self, text):
-        for ch in text:
-            if ord(ch) >= 128:
-                return False
-        return True
-
-    def md5sum(self, text):
-        import hashlib
-        m = hashlib.md5()
-        if is_py3:
-            if isinstance(text, str):
-                text = text.encode('utf-8')
-        else:
-            if isinstance(text, unicode):
-                text = text.encode('utf-8')
-        m.update(text)
-        return m.hexdigest()
-
 
 class BingDict (BasicTranslator):
 
@@ -289,7 +271,6 @@ class YoudaoTranslator (BasicTranslator):
     def get_md5(self, value):
         import hashlib
         m = hashlib.md5()
-        # m.update(value)
         m.update(value.encode('utf-8'))
         return m.hexdigest()
 
