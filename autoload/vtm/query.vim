@@ -54,7 +54,6 @@ function! s:start(type, data, event) abort
     " On Nvim, this function will be executed twice, firstly it returns data, and then an empty string
     " Check the data value in order to prevent overlap
     if message == ''
-        let message = join(a:data, ' ')
         return
     endif
 
@@ -81,4 +80,3 @@ function! s:start(type, data, event) abort
         call vtm#util#showMessage(message)
     endif
 endfunction
-

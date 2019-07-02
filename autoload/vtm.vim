@@ -18,11 +18,7 @@ else
     finish
 endif
 
-if exists('*jobstart')
-    let g:job_cmd = 'jobstart'
-elseif exists('*job_start')
-    let g:job_cmd = 'job_start'
-else
+if !exists('*jobstart') && !exists('*job_start')
     let message = 'Job feature is required, please install lastest Neovim or Vim'
     call vtm#util#showMessage(message, 'error')
     finish

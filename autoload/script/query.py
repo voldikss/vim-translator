@@ -371,6 +371,7 @@ def main():
     res = translator.translate('auto', to_lang, text)
     if not res:
         sys.stderr.write("Translation failed")
+        sys.exit()
 
     sys.stdout.write(str(res))
 
