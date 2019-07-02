@@ -185,22 +185,9 @@ function! s:closePopup() abort
 endfunction
 
 function! vtm#display#echo(contents) abort
-    let translation = a:contents['query'] . ' ==> '
-
-    if len(a:contents['phonetic'])
-        let translation .= ' [' . a:contents['phonetic'] . '] '
-    endif
-
-    if len(a:contents['paraphrase'])
-        let translation .= a:contents['paraphrase'] . '. '
-    elseif !len(a:contents['explain'])
-        let translation .= a:contents['query'] . '. '
-    endif
-
-    if len(a:contents['explain'])
-        let translation .= join(get(a:contents, 'explain', []), ' ')
-    endif
-
+    let translation = s:buildTrans(a:contents)
+    let translation = map(translation, 'v:val[6:]') "len(📝) is 4(bytes count)
+    let translation = translation[0] . ' ==> ' . join(translation[1:], ' ')
     call vtm#util#showMessage(translation)
 endfunction
 
