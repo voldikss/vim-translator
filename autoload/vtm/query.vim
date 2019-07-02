@@ -72,7 +72,7 @@ function! s:start(type, data, event) abort
         if a:type == 'simple'
             call vtm#display#echo(contents)
         elseif a:type == 'complex'
-            call vtm#display#popup(contents)
+            call vtm#display#window(contents)
         else
             call vtm#display#replace(contents)
         endif
