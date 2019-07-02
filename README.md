@@ -155,6 +155,7 @@ hi def link vtmPopupNormal       NormalFloat
 ## References
 
 - [dict.vim](https://github.com/iamcco/dict.vim)
+- [translator](https://github.com/skywind3000/translator)
 
 
 ## License
