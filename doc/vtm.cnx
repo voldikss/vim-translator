@@ -113,8 +113,6 @@ g:vtm_history_dir                                *g:vtm_history_dir*
 ==============================================================================
 HIGHLIGHT                                                        *vtm-highlight*
 
-注意：此选项仅在 NeoVim 上有效
-
 下面是默认高亮配置，使用 `hi-link` 配置自己喜欢的高亮
  >
     hi def link vtmQuery             Identifier

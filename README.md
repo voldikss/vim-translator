@@ -125,8 +125,6 @@ Plug 'voldikss/vim-translate-me'
 
 ## 颜色高亮
 
-**注意**：此选项仅在 NeoVim 上有效
-
 下面是默认高亮配置，使用 `hi link` 配置自己喜欢的高亮
 
 ```vim

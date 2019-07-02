@@ -119,8 +119,6 @@ Export the translation history
 
 ## Highlight
 
-**Note**: this option is only available in NeoVim
-
 Here is the default highlight link. To customize, use `hi link`
 ```vim
 hi def link vtmQuery             Identifier

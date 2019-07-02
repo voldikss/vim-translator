@@ -113,8 +113,6 @@ g:vtm_history_dir                                *g:vtm_history_dir*
 ==============================================================================
 HIGHLIGHT                                                        *vtm-highlight*
 
-Note: this option is only available in NeoVim
-
 Here is the default highlight link. To customize, use `hi link`
  >
     hi def link vtmQuery             Identifier
