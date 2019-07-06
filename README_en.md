@@ -47,11 +47,11 @@ Plug 'voldikss/vim-translate-me'
 
 - Default: `'zh'`
 
-#### **`g:vtm_default_engine`**
+#### **`g:vtm_default_engines`**
 
-- Available: `'bing'`, `'ciba'`, `'google'`, `'youdao'`
+- Available: `'bing'`, `'ciba'`, `'google'`, `'youdao'`. You can specify more than one engines
 
-- Default: `'google'`
+- Default: `['google', 'bing']`
 
 #### **`g:vtm_proxy_url`**
 
@@ -101,7 +101,7 @@ Plug 'voldikss/vim-translate-me'
 
 Translate the `word` with `engine`, echo the result in the cmdline
 
-If no `engine`, use `g:vtm_default_engine`
+If no `engine`, use `g:vtm_default_engines`
 
 #### `:TranslateW [[engine] [word]]`
 

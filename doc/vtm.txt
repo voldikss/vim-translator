@@ -39,7 +39,7 @@ COMMANDS                                                          *vtm-commands*
 
     Translate the `word` with `engine`, echo the result in the cmdline
 
-    If no `engine`, use |g:vtm_default_engine|
+    If no `engine`, use |g:vtm_default_engines|
 
 :TranslateW [[engine] [word]]                          *:TranslateW*
 
@@ -82,11 +82,12 @@ g:vtm_default_to_lang                            *g:vtm_default_to_lang*
   Available: Refer to https://github.com/voldikss/vim-translate-me/wiki
   Default: `'zh'`
 
-g:vtm_default_engine                             *g:vtm_default_engine*
+g:vtm_default_engines                            *g:vtm_default_engines*
 
   Default translation engine
-  Available: `'bing'`, `'ciba'`, `'google'`, `'youdao'`
-  Default: `'google'`
+  Available: `'bing'`, `'ciba'`, `'google'`, `'youdao'`. You can specify more than
+one engines
+  Default: `['google', 'bing']`
 
 g:vtm_proxy_url                                  *g:vtm_proxy_url*
 

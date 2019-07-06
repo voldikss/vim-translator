@@ -50,13 +50,13 @@ Plug 'voldikss/vim-translate-me'
 
 - 默认：`'zh'`
 
-#### **`g:vtm_default_engine`**
+#### **`g:vtm_default_engines`**
  
 > 默认翻译接口
 
-- 可选：`'bing'`, `'ciba'`, `'google'`(可直连), `youdao`
+- 可选：`'bing'`, `'ciba'`, `'google'`(可直连), `youdao`。可选多个
 
-- 默认：`'ciba'`
+- 默认：`['ciba', 'youdao']`
 
 #### g:vtm_proxy_url
 
@@ -107,7 +107,7 @@ Plug 'voldikss/vim-translate-me'
 
 使用 `engine` 翻译单词 `word `并在命令行回显
 
-如果未指定 `engine`，使 `g:vtm_default_engine` 用
+如果未指定 `engine`，使用 `g:vtm_default_engines`
 
 #### `:TranslateW [[engine] [word]]`
 
@@ -135,6 +135,7 @@ hi def link vtmPopupNormal       NormalFloat
 
 ## Change log
 
+- 1.2.0 (2019-07-06): add multi-engine translation, change `g:vtm_default_engine` to `vtm_default_engines`
 - 1.1.0 (2019-07-02): add popup support on vim81
 - 1.0.0 (2019-07-01): refactor
     - support proxy(http, socks4, socks5)

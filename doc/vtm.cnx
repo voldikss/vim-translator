@@ -37,7 +37,7 @@ COMMANDS                                                          *vtm-commands*
 
     使用 `engine` 翻译单词 `word `并在命令行回显
 
-    如果未指定的 `engine`，使用|g:vtm_default_engine|
+    如果未指定的 `engine`，使用|g:vtm_default_engines|
 
 :TranslateW [[engine] [word]]                          *:TranslateW*
 
@@ -81,11 +81,11 @@ g:vtm_default_to_lang                            *g:vtm_default_to_lang*
   可选：参考[支持语言列表](https://github.com/voldikss/vim-translate-me/wiki)
   默认：`'zh'`
 
-g:vtm_default_engine                            *g:vtm_default_engine*
+g:vtm_default_engines                            *g:vtm_default_engines*
 
   默认使用的翻译接口
-  可选：`'bing'`, `'ciba'`, `'google'`, `'youdao'`
-  默认：`'ciba'`
+  可选：`'bing'`, `'ciba'`, `'google'`, `'youdao'`。可选多个
+  默认：`['ciba', 'youdao']`
 
 g:vtm_proxy_url                                  *g:vtm_proxy_url*
 
