@@ -1,4 +1,4 @@
-*vtm.cnx*              Vim/Neovim翻译插件            最后更新: 2019年7月1日
+*vtm.cnx*              Vim/Neovim翻译插件            最后更新: 2019年7月6日
 
 Author : voldikss <https://github.com/voldikss>
 
@@ -33,11 +33,9 @@ With vim-plug:
 ==============================================================================
 COMMANDS                                                          *vtm-commands*
 
-:Translate [[engine] [word]]                          *:Translate*
+:Translate [[engine] {word}]                          *:Translate*
 
     使用 `engine` 翻译单词 `word `并在命令行回显
-
-    如果未指定 `word`，使用光标下单词
 
     如果未指定的 `engine`，使用|g:vtm_default_engine|
 

@@ -103,11 +103,9 @@ Plug 'voldikss/vim-translate-me'
 
 ## 命令
 
-#### `:Translate [[engine] [word]]`
+#### `:Translate [[engine] {word}]`
 
 使用 `engine` 翻译单词 `word `并在命令行回显
-
-如果未指定 `word`，使用光标下单词
 
 如果未指定 `engine`，使 `g:vtm_default_engine` 用
 

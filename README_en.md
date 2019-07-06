@@ -97,13 +97,11 @@ Plug 'voldikss/vim-translate-me'
 
 ## Command
 
-#### `:Translate [[engine] [word]]`
+#### `:Translate [[engine] {word}]`
 
 Translate the `word` with `engine`, echo the result in the cmdline
 
 If no `engine`, use `g:vtm_default_engine`
-
-If not `word`, use the word under the text
 
 #### `:TranslateW [[engine] [word]]`
 
