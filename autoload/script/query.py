@@ -92,7 +92,7 @@ class BasicTranslator(object):
             r = urlopen(req, timeout=5)
         except (URLError, HTTPError, socket.timeout):
             sys.stderr.write("Timed out, please check your network")
-            sys.exit()
+            return None
 
         if is_py3:
             charset = r.headers.get_param('charset') or 'utf-8'
@@ -113,7 +113,7 @@ class BasicTranslator(object):
             import socks
         except ImportError:
             sys.stderr.write("pySocks module should be installed")
-            sys.exit()
+            return None
 
         proxy_types = {
             'http': socks.PROXY_TYPE_HTTP,
@@ -166,9 +166,10 @@ class BingDict (BasicTranslator):
             'Accept-Language': 'en-US,en;q=0.5'
         }
         resp = self.http_get(url, None, headers)
-        self._trans['query'] = text
-        self._trans['phonetic'] = self.get_phonetic(resp)
-        self._trans['explain'] = self.get_explain(resp)
+        if resp:
+            self._trans['query'] = text
+            self._trans['phonetic'] = self.get_phonetic(resp)
+            self._trans['explain'] = self.get_explain(resp)
         return self._trans
 
     def get_phonetic(self, html):
@@ -201,16 +202,17 @@ class CibaTranslator (BasicTranslator):
         req['t'] = tl
         req['w'] = text
         r = self.http_get(url, req, None)
-        resp = json.loads(r)
-        self._trans['query'] = text
-        self._trans['paraphrase'] = ''
-        if 'content' in resp:
-            if 'ph_en' in resp['content']:
-                self._trans['phonetic'] = '[' + resp['content']['ph_en'] + ']'
-            if 'out' in resp['content']:
-                self._trans['paraphrase'] = resp['content']['out']
-            if 'word_mean' in resp['content']:
-                self._trans['explain'] = resp['content']['word_mean']
+        if r:
+            resp = json.loads(r)
+            self._trans['query'] = text
+            self._trans['paraphrase'] = ''
+            if 'content' in resp:
+                if 'ph_en' in resp['content']:
+                    self._trans['phonetic'] = '[' + resp['content']['ph_en'] + ']'
+                if 'out' in resp['content']:
+                    self._trans['paraphrase'] = resp['content']['out']
+                if 'word_mean' in resp['content']:
+                    self._trans['explain'] = resp['content']['word_mean']
         return self._trans
 
 
@@ -235,10 +237,11 @@ class GoogleTranslator (BasicTranslator):
         self.text = text
         url = self.get_url(sl, tl, text)
         r = self.http_get(url)
-        obj = json.loads(r)
-        self._trans['query'] = text
-        self._trans['paraphrase'] = self.get_paraphrase(obj)
-        self._trans['explain'] = self.get_explain(obj)
+        if r:
+            obj = json.loads(r)
+            self._trans['query'] = text
+            self._trans['paraphrase'] = self.get_paraphrase(obj)
+            self._trans['explain'] = self.get_explain(obj)
         return self._trans
 
     def get_paraphrase(self, obj):
@@ -300,10 +303,11 @@ class YoudaoTranslator (BasicTranslator):
             'typoResult': 'true'
         }
         r = self.http_post(self.url, data, header)
-        obj = json.loads(r)
-        self._trans['query'] = text
-        self._trans['paraphrase'] = self.get_paraphrase(obj)
-        self._trans['explain'] = self.get_explain(obj)
+        if r:
+            obj = json.loads(r)
+            self._trans['query'] = text
+            self._trans['paraphrase'] = self.get_paraphrase(obj)
+            self._trans['explain'] = self.get_explain(obj)
         return self._trans
 
     def get_paraphrase(self, obj):
