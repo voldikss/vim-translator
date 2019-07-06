@@ -85,7 +85,7 @@ function! s:buildContent(translations)
         endif
 
         if len(t['phonetic'])
-            let phonetic = phonetic_marker . '[' . t['phonetic'] . ']'
+            let phonetic = phonetic_marker . t['phonetic']
             call add(content, phonetic)
         endif
 

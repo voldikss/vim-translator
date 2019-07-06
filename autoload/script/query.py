@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 import socket
 import sys
 import time
@@ -167,29 +168,25 @@ class BingDict (BasicTranslator):
         res = Translation()
         res['engine'] = self._name
         res['query'] = text
-        res['explain'] = self.get_explain(text, resp)
+        res['phonetic'] = self.get_phonetic(resp)
+        res['explain'] = self.get_explain(resp)
         return res
 
-    def get_explain(self, word, html):
-        try:
-            from bs4 import BeautifulSoup
-        except ImportError:
-            sys.stderr.write("Install bs4 module to use bing translator")
-            sys.exit()
+    def get_phonetic(self, html):
+        if not html:
+            return ''
+        m = re.findall(r'<span class="ht_attr" lang=".*?">(.*?)</span>', html)
+        return m[0].strip()
+
+    def get_explain(self, html):
         if not html:
             return []
-        soup = BeautifulSoup(html, 'lxml')
-        if soup.find('h4').text.strip() != word:
-            return []
-        lis = soup.find_all('li')
-        trans = []
-        for item in lis:
-            t = item.get_text()
-            if t:
-                trans.append(t)
-        if not trans:
-            return []
-        return trans
+        m = re.findall(
+            r'<span class="ht_pos">(.*?)</span><span class="ht_trs">(.*?)</span>', html)
+        expls = []
+        for item in m:
+            expls.append('%s %s' % item)
+        return expls
 
 
 class CibaTranslator (BasicTranslator):
@@ -213,7 +210,7 @@ class CibaTranslator (BasicTranslator):
         res['paraphrase'] = ''
         if 'content' in resp:
             if 'ph_en' in resp['content']:
-                res['phonetic'] = resp['content']['ph_en']
+                res['phonetic'] = '[' + resp['content']['ph_en'] + ']'
             if 'out' in resp['content']:
                 res['paraphrase'] = resp['content']['out']
             if 'word_mean' in resp['content']:

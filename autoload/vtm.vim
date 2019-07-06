@@ -68,6 +68,7 @@ function! vtm#Translate(args, type) abort
                 let engines = g:vtm_default_engines
                 let word = arg1
             else
+                let engines = [engine]
                 let word = arg1[l:pos+1 :]
             endif
         endif
