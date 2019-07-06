@@ -55,7 +55,7 @@ class Translation:
         pass
 
     def __new__(self):
-        return self.translation
+        return copy.deepcopy(self.translation)
 
     def __str__(self):
         return str(self.translation)
@@ -63,9 +63,11 @@ class Translation:
 
 class BasicTranslator(object):
 
-    def __init__(self, name, **argv):
+    def __init__(self, name):
         self._name = name
         self._agent = None
+        self._trans = Translation()
+        self._trans['engine'] = name
 
     def request(self, url, data=None, post=False, header=None):
         if header:
@@ -138,18 +140,17 @@ class BasicTranslator(object):
         print(self.request(test_url))
 
     def translate(self, sl, tl, text):
-        res = Translation()
-        res['query'] = text         # 需要翻译的文本
-        res['paraphrase'] = None    # 简单翻译
-        res['phonetic'] = None      # 读音
-        res['explain'] = None       # 详细翻译
-        return res
+        self._trans['query'] = text         # 需要翻译的文本
+        self._trans['paraphrase'] = None    # 简单翻译
+        self._trans['phonetic'] = None      # 读音
+        self._trans['explain'] = None       # 详细翻译
+        return self._trans
 
 
 class BingDict (BasicTranslator):
 
-    def __init__(self, **argv):
-        super(BingDict, self).__init__('bingdict', **argv)
+    def __init__(self, name='bing'):
+        super(BingDict, self).__init__(name)
         self._agent = 'Mozilla/5.0 (X11; Linux x86_64; rv:50.0) Gecko/20100101'
         self._agent += ' Firefox/50.0'
         self._url = 'http://bing.com/dict/SerpHoverTrans'
@@ -165,12 +166,10 @@ class BingDict (BasicTranslator):
             'Accept-Language': 'en-US,en;q=0.5'
         }
         resp = self.http_get(url, None, headers)
-        res = Translation()
-        res['engine'] = self._name
-        res['query'] = text
-        res['phonetic'] = self.get_phonetic(resp)
-        res['explain'] = self.get_explain(resp)
-        return res
+        self._trans['query'] = text
+        self._trans['phonetic'] = self.get_phonetic(resp)
+        self._trans['explain'] = self.get_explain(resp)
+        return self._trans
 
     def get_phonetic(self, html):
         if not html:
@@ -191,8 +190,8 @@ class BingDict (BasicTranslator):
 
 class CibaTranslator (BasicTranslator):
 
-    def __init__(self, **argv):
-        super(CibaTranslator, self).__init__('ciba', **argv)
+    def __init__(self, name='ciba'):
+        super(CibaTranslator, self).__init__(name)
 
     def translate(self, sl, tl, text):
         url = 'https://fy.iciba.com/ajax.php'
@@ -203,25 +202,22 @@ class CibaTranslator (BasicTranslator):
         req['w'] = text
         r = self.http_get(url, req, None)
         resp = json.loads(r)
-        res = Translation()
-        # todo, write this code once in the basictranslator
-        res['engine'] = self._name
-        res['query'] = text
-        res['paraphrase'] = ''
+        self._trans['query'] = text
+        self._trans['paraphrase'] = ''
         if 'content' in resp:
             if 'ph_en' in resp['content']:
-                res['phonetic'] = '[' + resp['content']['ph_en'] + ']'
+                self._trans['phonetic'] = '[' + resp['content']['ph_en'] + ']'
             if 'out' in resp['content']:
-                res['paraphrase'] = resp['content']['out']
+                self._trans['paraphrase'] = resp['content']['out']
             if 'word_mean' in resp['content']:
-                res['explain'] = resp['content']['word_mean']
-        return res
+                self._trans['explain'] = resp['content']['word_mean']
+        return self._trans
 
 
 class GoogleTranslator (BasicTranslator):
 
-    def __init__(self, **argv):
-        super(GoogleTranslator, self).__init__('google', **argv)
+    def __init__(self, name='google'):
+        super(GoogleTranslator, self).__init__(name)
         self._agent = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0)'
         self._agent += ' Gecko/20100101 Firefox/59.0'
 
@@ -240,12 +236,10 @@ class GoogleTranslator (BasicTranslator):
         url = self.get_url(sl, tl, text)
         r = self.http_get(url)
         obj = json.loads(r)
-        res = Translation()
-        res['engine'] = self._name
-        res['query'] = text
-        res['paraphrase'] = self.get_paraphrase(obj)
-        res['explain'] = self.get_explain(obj)
-        return res
+        self._trans['query'] = text
+        self._trans['paraphrase'] = self.get_paraphrase(obj)
+        self._trans['explain'] = self.get_explain(obj)
+        return self._trans
 
     def get_paraphrase(self, obj):
         paraphrase = ''
@@ -267,8 +261,8 @@ class GoogleTranslator (BasicTranslator):
 
 class YoudaoTranslator (BasicTranslator):
 
-    def __init__(self, **argv):
-        super(YoudaoTranslator, self).__init__('youdao', **argv)
+    def __init__(self, name='youdao'):
+        super(YoudaoTranslator, self).__init__(name)
         self.url = 'https://fanyi.youdao.com/translate_o?smartresult=dict&smartresult=rule'
         self.D = "ebSeFb%=XZ%T[KZ)c(sy!"
 
@@ -307,12 +301,10 @@ class YoudaoTranslator (BasicTranslator):
         }
         r = self.http_post(self.url, data, header)
         obj = json.loads(r)
-        res = Translation()
-        res['engine'] = self._name
-        res['query'] = text
-        res['paraphrase'] = self.get_paraphrase(obj)
-        res['explain'] = self.get_explain(obj)
-        return res
+        self._trans['query'] = text
+        self._trans['paraphrase'] = self.get_paraphrase(obj)
+        self._trans['explain'] = self.get_explain(obj)
+        return self._trans
 
     def get_paraphrase(self, obj):
         translation = ''
