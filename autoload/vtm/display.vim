@@ -15,7 +15,7 @@ function! vtm#display#window(translations) abort
             let padding = (width - len(line)) / 2
             let padding_t = vtm#util#repeat('-', padding)
             let content[i] = padding_t . content[i] . padding_t
-        elseif match(line, '{{') == 0 && width > len(line)
+        elseif match(line, '@') == 0 && width > len(line)
             let padding = (width - len(line)) / 2
             let padding_t = vtm#util#repeat(' ', padding)
             let content[i] = padding_t . content[i] . padding_t
@@ -73,10 +73,10 @@ function! s:buildContent(translations)
     let explain_marker = ' 📝 '
 
     let content = []
-    call add(content, '{{' . a:translations[0]['query'] . '}}')
+    call add(content, '@ ' . a:translations[0]['query'] . ' @' )
 
     for t in a:translations
-        call add(content, ' ') " todo
+        call add(content, '')
         call add(content, '------' . t['engine'] . '------')
 
         if len(t['paraphrase'])
@@ -113,6 +113,8 @@ function! s:onOpenFloating(translation)
     setlocal bufhidden=wipe
     setlocal signcolumn=no
     setlocal filetype=vtm
+    setlocal noautoindent
+    setlocal nosmartindent
     setlocal nowrap
     setlocal nobuflisted
     setlocal noswapfile
