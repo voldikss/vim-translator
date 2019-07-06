@@ -4,10 +4,23 @@
 " @Last Modified time: 2019-07-02 20:06:34
 
 
-function! vtm#display#window(contents) abort
-    let translation = s:buildTrans(a:contents)
-    let [width, height] = s:winSize(translation)
+function! vtm#display#window(translations) abort
+    let content = s:buildContent(a:translations)
+    let [width, height] = s:winSize(content)
     let [row, col, vert, hor] = s:winPos(width, height)
+
+    for i in range(len(content))
+        let line = content[i]
+        if match(line, '---') == 0 && width > len(line)
+            let padding = (width - len(line)) / 2
+            let padding_t = vtm#util#repeat('-', padding)
+            let content[i] = padding_t . content[i] . padding_t
+        elseif match(line, '{{') == 0 && width > len(line)
+            let padding = (width - len(line)) / 2
+            let padding_t = vtm#util#repeat(' ', padding)
+            let content[i] = padding_t . content[i] . padding_t
+        endif
+    endfor
 
     if has('nvim') && exists('*nvim_win_set_config')
         let vtm_window_type = 'floating'
@@ -27,7 +40,7 @@ function! vtm#display#window(contents) abort
             \ 'height': height,
             \ }
         call nvim_open_win(bufnr('%'), v:true, options)
-        call s:onOpenFloating(translation)
+        call s:onOpenFloating(content)
     elseif vtm_window_type == 'popup'
         let vert = vert == 'N' ? 'top' : 'bot'
         let hor = hor == 'W' ? 'left' : 'right'
@@ -42,51 +55,52 @@ function! vtm#display#window(contents) abort
             \ 'minheight': height
             \ }
         let winid = popup_create('', options)
-        call s:onOpenPopup(winid, translation)
+        call s:onOpenPopup(winid, content)
     else
         let curr_pos = getpos('.')
         execute 'noswapfile bo pedit!'
         call setpos('.', curr_pos)
         wincmd P
         execute height+1 . 'wincmd _'
-        call s:onOpenPreview(translation)
+        call s:onOpenPreview(content)
     endif
 endfunction
 
-function! s:buildTrans(contents)
-    let query_marker = ' 🔍 '
+function! s:buildContent(translations)
+    " let query_marker = ' 🔍 '
     let paraphrase_marker = ' 🌀 '
     let phonetic_marker = ' 🔉 '
     let explain_marker = ' 📝 '
 
-    let translation = []
-    let query = query_marker . a:contents['query']
-    call add(translation, query)
+    let content = []
+    call add(content, '{{' . a:translations[0]['query'] . '}}')
 
-    if len(a:contents['paraphrase'])
-        let paraphrase = paraphrase_marker . a:contents['paraphrase']
-        call add(translation, paraphrase)
-    elseif !len(a:contents['explain'])
-        let paraphrase = paraphrase_marker . a:contents['query']
-        call add(translation, paraphrase)
-    endif
+    for t in a:translations
+        call add(content, ' ') " todo
+        call add(content, '------' . t['engine'] . '------')
 
-    if len(a:contents['phonetic'])
-        let phonetic = phonetic_marker . '[' . a:contents['phonetic'] . ']'
-        call add(translation, phonetic)
-    endif
+        if len(t['paraphrase'])
+            let paraphrase = paraphrase_marker . t['paraphrase']
+            call add(content, paraphrase)
+        endif
 
-    if len(a:contents['explain'])
-        for expl in a:contents['explain']
-            let expl = trim(expl)
-            if len(expl)
-                let explain = explain_marker . expl
-                call add(translation, explain)
-            endif
-        endfor
-    endif
+        if len(t['phonetic'])
+            let phonetic = phonetic_marker . '[' . t['phonetic'] . ']'
+            call add(content, phonetic)
+        endif
 
-    return translation
+        if len(t['explain'])
+            for expl in t['explain']
+                let expl = trim(expl)
+                if len(expl)
+                    let explain = explain_marker . expl
+                    call add(content, explain)
+                endif
+            endfor
+        endif
+    endfor
+
+    return content
 endfunction
 
 function! s:onOpenFloating(translation)
@@ -99,6 +113,7 @@ function! s:onOpenFloating(translation)
     setlocal bufhidden=wipe
     setlocal signcolumn=no
     setlocal filetype=vtm
+    setlocal nowrap
     setlocal nobuflisted
     setlocal noswapfile
     setlocal nocursorline
@@ -175,22 +190,42 @@ function! s:closePopup() abort
     endfor
 endfunction
 
-function! vtm#display#echo(contents) abort
-    let translation = s:buildTrans(a:contents)
-    call map(translation, 'v:val[6:]') "len(📝) is 4(bytes count)
-    let translation = translation[0] . ' ==> ' . join(translation[1:], ' ')
+function! vtm#display#echo(translations) abort
+    let add_phonetic = v:false
+    let add_paraphrase = v:false
+    let add_explain = v:false
+
+    let content = []
+    for t in a:translations
+        if len(t['phonetic']) && !add_phonetic
+            call add(content, t['phonetic'])
+            let add_phonetic = v:true
+        endif
+        if len(t['paraphrase']) && !add_paraphrase
+            call add(content, t['paraphrase'])
+            let add_paraphrase = v:true
+        endif
+        if len(t['explain']) && !add_explain
+            call add(content, join(t['explain'], '; '))
+            let add_explain = v:true
+        endif
+    endfor
+
+    let translation = a:translations[0]['query'] . ' ==>' . join(content, ' ')
     call vtm#util#showMessage(translation)
 endfunction
 
-function! vtm#display#replace(contents) abort
-    let paraphrase = a:contents['paraphrase']
-    if !len(paraphrase)
-        call vtm#util#showMessage('No paraphrases for the replacement', 'warning')
-        return
-    endif
-    let reg_tmp = @a
-    let @a = paraphrase
-    normal! gv"ap
-    let @a = reg_tmp
-    unlet reg_tmp
+function! vtm#display#replace(translations) abort
+    for t in a:translations
+        if len(t['paraphrase'])
+            let reg_tmp = @a
+            let @a = t['paraphrase']
+            normal! gv"ap
+            let @a = reg_tmp
+            unlet reg_tmp
+            return
+        endif
+    endfor
+
+    call vtm#util#showMessage('No paraphrases for the replacement', 'warning')
 endfunction

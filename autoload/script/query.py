@@ -37,6 +37,7 @@ else:
 
 class Translation:
     translation = {
+        'engine': '',
         'query': '',
         'phonetic': '',
         'paraphrase': '',
@@ -164,6 +165,7 @@ class BingDict (BasicTranslator):
         }
         resp = self.http_get(url, None, headers)
         res = Translation()
+        res['engine'] = self._name
         res['query'] = text
         res['explain'] = self.get_explain(text, resp)
         return res
@@ -205,6 +207,8 @@ class CibaTranslator (BasicTranslator):
         r = self.http_get(url, req, None)
         resp = json.loads(r)
         res = Translation()
+        # todo, write this code once in the basictranslator
+        res['engine'] = self._name
         res['query'] = text
         res['paraphrase'] = ''
         if 'content' in resp:
@@ -240,6 +244,7 @@ class GoogleTranslator (BasicTranslator):
         r = self.http_get(url)
         obj = json.loads(r)
         res = Translation()
+        res['engine'] = self._name
         res['query'] = text
         res['paraphrase'] = self.get_paraphrase(obj)
         res['explain'] = self.get_explain(obj)
@@ -306,6 +311,7 @@ class YoudaoTranslator (BasicTranslator):
         r = self.http_post(self.url, data, header)
         obj = json.loads(r)
         res = Translation()
+        res['engine'] = self._name
         res['query'] = text
         res['paraphrase'] = self.get_paraphrase(obj)
         res['explain'] = self.get_explain(obj)
@@ -348,7 +354,7 @@ ENGINES = {
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--text', required=True)
-    parser.add_argument('--engine', required=True)
+    parser.add_argument('--engines', nargs='+', required=True)
     parser.add_argument('--toLang', required=True)
     parser.add_argument('--proxy', required=False)
     args = parser.parse_args()
@@ -356,26 +362,22 @@ def main():
     text = args.text.strip('\'')
     text = text.strip('\"')
     text = text.strip()
-    engine = args.engine
+    engines = args.engines
     to_lang = args.toLang
 
-    cls = ENGINES.get(engine)
-    if not cls:
-        sys.stderr.write(
-            "Engine name: %s was not found. Use google translator" % engine)
-        cls = ENGINES.get('google')
+    translation = []
+    for e in engines:
+        cls = ENGINES.get(e)
+        if not cls:
+            sys.stderr.write("Invalid engine name %s" % e)
+            continue
+        translator = cls()
+        if args.proxy:
+            translator.set_proxy(args.proxy)
+        res = translator.translate('auto', to_lang, text)
+        translation.append(copy.deepcopy(res))
 
-    translator = cls()
-
-    if args.proxy:
-        translator.set_proxy(args.proxy)
-
-    res = translator.translate('auto', to_lang, text)
-    if not res:
-        sys.stderr.write("Translation failed")
-        sys.exit()
-
-    sys.stdout.write(str(res))
+    sys.stdout.write(str(translation))
 
 
 if __name__ == '__main__':

@@ -51,21 +51,21 @@ function! vtm#Translate(args, type) abort
     " argument: ''
     if arg1 == ''
         let word = expand("<cword>")
-        let engine = g:vtm_default_engine
+        let engines = g:vtm_default_engines
     else
         let pos = match(arg1,' ')
         " `:Translate test<CR>` == call vtm#Translate('test', 'simple')
         " argument: 'test'
         if pos < 0
             let word = arg1
-            let engine = g:vtm_default_engine
+            let engines = g:vtm_default_engines
         " `:Translate youdao test<CR>` == call vtm#Translate('youdao test', 'simple')
         " argument: 'youdao test'
         else
             " split arg1 to get engine and word
             let engine = arg1[: pos-1]
             if index(['bing', 'ciba', 'google', 'youdao'], engine) < 0
-                let engine = g:vtm_default_engine
+                let engines = g:vtm_default_engines
                 let word = arg1
             else
                 let word = arg1[l:pos+1 :]
@@ -77,7 +77,7 @@ function! vtm#Translate(args, type) abort
 
     let cmd = s:vtm_python_host . ' ' . s:py_file
         \ . ' --text '      . shellescape(word)
-        \ . ' --engine '    . engine
+        \ . ' --engines '    . join(engines, ' ')
         \ . ' --toLang '    . g:vtm_default_to_lang
         \ . (len(g:vtm_proxy_url) > 0 ? (' --proxy ' . g:vtm_proxy_url) : '')
 

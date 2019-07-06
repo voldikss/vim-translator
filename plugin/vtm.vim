@@ -18,9 +18,9 @@ let g:vtm_proxy_url = get(g:, 'vtm_proxy_url', '')
 let g:vtm_history_file = g:vtm_history_dir . '/../translation_history.data'
 
 if match(g:vtm_default_to_lang, 'zh') >= 0
-    let g:vtm_default_engine = get(g:, 'vtm_default_engine', 'ciba')
+    let g:vtm_default_engines = get(g:, 'vtm_default_engines', ['ciba', 'youdao'])
 else
-    let g:vtm_default_engine = get(g:, 'vtm_default_engine', 'google')
+    let g:vtm_default_engines = get(g:, 'vtm_default_engines', ['google', 'bing'])
 endif
 
 if get(g:, 'vtm_default_mapping', 1)

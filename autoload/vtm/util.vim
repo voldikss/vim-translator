@@ -29,22 +29,26 @@ function! vtm#util#showMessage(message, ...) abort
     echohl None
 endfunction
 
-function! vtm#util#saveHistory(contents) abort
+function! vtm#util#saveHistory(translations) abort
     if !g:vtm_enable_history
         return
     endif
 
-    let query = a:contents['query']
-    let paraphrase = a:contents['paraphrase']
-    let explain = a:contents['explain']
+    for t in a:translations
+        let query = t['query']
+        let paraphrase = t['paraphrase']
+        let explain = t['explain']
 
-    if len(paraphrase) && query !=? paraphrase
-        let item = PadEnd(query, 25) . paraphrase
-    elseif len(explain)
-        let item = PadEnd(query, 25) . explain[0]
-    else
-        return
-    endif
+        if len(explain)
+            let item = s:PadEnd(query, 25) . paraphrase
+            break
+        elseif len(paraphrase) && query !=? paraphrase
+            let item = s:PadEnd(query, 25) . explain[0]
+            break
+        else
+            return
+        endif
+    endfor
 
     if !filereadable(g:vtm_history_file)
         call writefile([], g:vtm_history_file)
@@ -84,7 +88,7 @@ function! vtm#util#exportHistory() abort
     hi def link vtmHistoryTrans String
 endfunction
 
-function! PadEnd(text, length) abort
+function! s:PadEnd(text, length) abort
     let text = a:text
     let len = len(text)
     if len < a:length
@@ -92,6 +96,14 @@ function! PadEnd(text, length) abort
             let text .= ' '
         endfor
     endif
+    return text
+endfunction
+
+function! vtm#util#repeat(text, count)
+    let text = a:text
+    for i in range(a:count-1)
+        let text .= a:text
+    endfor
     return text
 endfunction
 
@@ -105,7 +117,7 @@ function! vtm#util#visualSelect() abort
 endfunction
 
 function! vtm#util#version()
-    return '1.1.0'
+    return '1.2.0'
 endfunction
 
 function! vtm#util#breakChangeNotify()
@@ -137,7 +149,7 @@ function! vtm#util#breakChangeNotify()
             call vtm#util#showMessage('Break Change Notice(Sincerely): ', 'warning')
         endif
         let notice = 1
-        let message = "Option 'g:vtm_default_api' has been changed to 'g:vtm_default_engine'"
+        let message = "Option 'g:vtm_default_api' has been changed to 'g:vtm_default_engines'"
         call vtm#util#showMessage(message, 'warning')
 
         let engines = ['bing', 'ciba', 'google', 'youdao']

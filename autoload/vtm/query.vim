@@ -67,15 +67,15 @@ function! s:start(type, data, event) abort
     let message = substitute(message, '\\u\(\x\{4\}\)', '\=nr2char("0x".submatch(1),1)', 'g')
 
     if a:event == 'stdout'
-        let contents = eval(message)
+        let translations = eval(message)
         if a:type == 'simple'
-            call vtm#display#echo(contents)
+            call vtm#display#echo(translations)
         elseif a:type == 'complex'
-            call vtm#display#window(contents)
+            call vtm#display#window(translations)
         else
-            call vtm#display#replace(contents)
+            call vtm#display#replace(translations)
         endif
-        call vtm#util#saveHistory(contents)
+        call vtm#util#saveHistory(translations)
     elseif a:event == 'stderr'
         call vtm#util#showMessage(message)
     endif
