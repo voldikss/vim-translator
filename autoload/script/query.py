@@ -210,6 +210,8 @@ class CibaTranslator (BasicTranslator):
         if 'content' in resp:
             if 'ph_en' in resp['content']:
                 res['phonetic'] = resp['content']['ph_en']
+            if 'out' in resp['content']:
+                res['paraphrase'] = resp['content']['out']
             if 'word_mean' in resp['content']:
                 res['explain'] = resp['content']['word_mean']
         return res
