@@ -40,10 +40,10 @@ function! vtm#util#saveHistory(translations) abort
         let explain = t['explain']
 
         if len(explain)
-            let item = s:PadEnd(query, 25) . paraphrase
+            let item = s:PadEnd(query, 25) . explain[0]
             break
         elseif len(paraphrase) && query !=? paraphrase
-            let item = s:PadEnd(query, 25) . explain[0]
+            let item = s:PadEnd(query, 25) . paraphrase
             break
         else
             return
