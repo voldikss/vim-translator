@@ -100,8 +100,8 @@ function! s:PadEnd(text, length) abort
 endfunction
 
 function! vtm#util#repeat(text, count)
-    let text = a:text
-    for i in range(a:count-1)
+    let text = ''
+    for i in range(a:count)
         let text .= a:text
     endfor
     return text
