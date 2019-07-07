@@ -117,7 +117,7 @@ function! vtm#util#visualSelect() abort
 endfunction
 
 function! vtm#util#version()
-    return '1.2.0'
+    return '1.2.1'
 endfunction
 
 function! vtm#util#breakChangeNotify()

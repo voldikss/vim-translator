@@ -93,17 +93,21 @@ Plug 'voldikss/vim-translate-me'
 
 ## 命令
 
-#### `:Translate [[engine] {word}]`
+#### `:Translate [-e engine] [-w word] [-l to_lang]`
 
-使用 `engine` 翻译单词 `word `并在命令行回显
+使用 `engine` 将单词 `word ` 翻译为目标语言 `to_lang`并在命令行回显
 
 如果未指定 `engine`，使用 `g:vtm_default_engines`
 
-#### `:TranslateW [[engine] [word]]`
+如果未指定 `word`, 使用光标下单词
+
+如果未指定 `to_lang`, 使用 `g:vtm_default_to_lang`
+
+#### `:TranslateW [-e engine] [-w word] [-l to_lang]`
 
 用法同上，但在窗口中显示
 
-#### `:TranslateR [[engine] [word]]`
+#### `:TranslateR [-e engine] [-w word] [-l to_lang]`
 
 用法同上，但会用翻译内容替换光标下单词
 
@@ -125,6 +129,7 @@ hi def link vtmPopupNormal       NormalFloat
 
 ## Change log
 
+- 1.2.1 (2019-07-07): better arguments method for commands
 - 1.2.0 (2019-07-06): add multi-engine translation, change `g:vtm_default_engine` to `vtm_default_engines`
 - 1.1.0 (2019-07-02): add popup support on vim81
 - 1.0.0 (2019-07-01): refactor

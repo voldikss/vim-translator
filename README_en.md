@@ -6,14 +6,6 @@ A naive translate plugin for Vim/Neovim
 
 Supports floating & popup and asynchronous running
 
-## Screenshot
-
-<div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/57177114-6aa5a800-6e93-11e9-9ab3-7a6a99bef70e.gif">
-</div>
-<div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/57177115-6b3e3e80-6e93-11e9-9a65-7556d5564a28.gif">
-</div>
 
 ## Installation
 
@@ -97,17 +89,21 @@ Plug 'voldikss/vim-translate-me'
 
 ## Command
 
-#### `:Translate [[engine] {word}]`
+#### `:Translate [-e engine] [-w word] [-l to_lang]`
 
-Translate the `word` with `engine`, echo the result in the cmdline
+Translate the `word` to target language `to_lang` with `engine`, echo the result in the cmdline
 
 If no `engine`, use `g:vtm_default_engines`
 
-#### `:TranslateW [[engine] [word]]`
+If no `word`, use the word under the cursor
+
+If no `to_lang`, use `g:vtm_default_to_lang`
+
+#### `:TranslateW [-e engine] [-w word] [-l to_lang]`
 
 The same as `:Translate...`, display the translation in the popup window
 
-#### `:TranslateR [[engine] [word]]`
+#### `:TranslateR [-e engine] [-w word] [-l to_lang]`
 
 The same as `:Translate...`, replace the current word with the translation
 
@@ -135,3 +131,16 @@ hi def link vtmPopupNormal       NormalFloat
 ### License
 
 MIT
+
+
+## Screenshots
+
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/60756783-78fb7600-a034-11e9-8e3c-e9d098910077.gif" width=800>
+</div>
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/60756784-79940c80-a034-11e9-8eec-401eab18a23a.gif" width=800>
+</div>
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/60757869-c1ba2b80-a042-11e9-8e81-80a2bbfa1427.PNG" width=800>
+</div>

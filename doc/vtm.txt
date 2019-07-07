@@ -1,4 +1,4 @@
-*vtm.txt*      A Vim/Neovim plugin for translation     Last change: 2019 July 6
+*vtm.txt*      A Vim/Neovim plugin for translation     Last change: 2019 July 7
 
 Author : voldikss <https://github.com/voldikss>
 
@@ -35,21 +35,26 @@ With vim-plug:
 ==============================================================================
 COMMANDS                                                          *vtm-commands*
 
-:Translate [[engine] {word}]                          *:Translate*
+:Translate [-e engine] [-w word] [-l to_lang]                 *:Translate*
 
-    Translate the `word` with `engine`, echo the result in the cmdline
+    Translate the `word` to target language `to_lang` with `engine`, 
+    echo the result in the cmdline
+    
+    If no `engine`, use `g:vtm_default_engines`
+    
+    If no `word`, use the word under the cursor
+    
+    If no `to_lang`, use `g:vtm_default_to_lang`
 
-    If no `engine`, use |g:vtm_default_engines|
-
-:TranslateW [[engine] [word]]                          *:TranslateW*
+:TranslateW [-e engine] [-w word] [-l to_lang]                 *:TranslateW*
 
     Display the translation in the popup window 
 
-:TranslateR [[engine] [word]]                          *:TranslateR*
+:TranslateR [-e engine] [-w word] [-l to_lang]                 *:TranslateR*
 
     Replace the current word with the translation
 
-:TranslateH                                         *:TranslateH*
+:TranslateH                                                    *:TranslateH*
 
     Export translation history
 

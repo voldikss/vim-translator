@@ -1,4 +1,4 @@
-*vtm.cnx*              Vim/Neovim翻译插件            最后更新: 2019年7月6日
+*vtm.cnx*              Vim/Neovim翻译插件            最后更新: 2019年7月7日
 
 Author : voldikss <https://github.com/voldikss>
 
@@ -33,21 +33,25 @@ With vim-plug:
 ==============================================================================
 COMMANDS                                                          *vtm-commands*
 
-:Translate [[engine] {word}]                          *:Translate*
+:Translate [-e engine] [-w word] [-l to_lang]                 *:Translate*
 
-    使用 `engine` 翻译单词 `word `并在命令行回显
+    使用 `engine` 将单词 `word ` 翻译为目标语言 `to_lang`并在命令行回显
+    
+    如果未指定 `engine`，使用 `g:vtm_default_engines`
+    
+    如果未指定 `word`, 使用光标下单词
+    
+    如果未指定 `to_lang`, 使用 `g:vtm_default_to_lang`
 
-    如果未指定的 `engine`，使用|g:vtm_default_engines|
-
-:TranslateW [[engine] [word]]                          *:TranslateW*
+:TranslateW [-e engine] [-w word] [-l to_lang]                 *:TranslateW*
 
     用法同上，但是在窗口中显示翻译内容
 
-:TranslateR [[engine] [word]]                          *:TranslateR*
+:TranslateR [-e engine] [-w word] [-l to_lang]                 *:TranslateR*
 
     用法同上，但是会用翻译内容替换光标下单词
 
-:TranslateH                                         *:TranslateH*
+:TranslateH                                                    *:TranslateH*
 
     导出历史记录
 
