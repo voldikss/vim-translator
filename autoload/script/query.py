@@ -147,10 +147,10 @@ class BasicTranslator(object):
         return self._trans
 
 
-class BingDict (BasicTranslator):
+class BingTranslator (BasicTranslator):
 
     def __init__(self, name='bing'):
-        super(BingDict, self).__init__(name)
+        super(BingTranslator, self).__init__(name)
         self._agent = 'Mozilla/5.0 (X11; Linux x86_64; rv:50.0) Gecko/20100101'
         self._agent += ' Firefox/50.0'
         self._url = 'http://bing.com/dict/SerpHoverTrans'
@@ -161,7 +161,6 @@ class BingDict (BasicTranslator):
 
         url = self._url + '?q=' + url_quote(text)
         headers = {
-            'Host': 'cn.bing.com',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.5'
         }
@@ -339,7 +338,7 @@ class YoudaoTranslator (BasicTranslator):
 ENGINES = {
     'google': GoogleTranslator,
     'youdao': YoudaoTranslator,
-    'bing': BingDict,
+    'bing': BingTranslator,
     'ciba': CibaTranslator,
 }
 
@@ -375,7 +374,7 @@ def main():
 
 if __name__ == '__main__':
     def test1():
-        t = BingDict()
+        t = BingTranslator()
         r = t.translate('', '', 'good')
         print(r)
 
