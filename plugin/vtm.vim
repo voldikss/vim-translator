@@ -49,9 +49,9 @@ if get(g:, 'vtm_default_mapping', 1)
     endif
 endif
 
-nmap <silent> <Plug>Translate   :call vtm#Translate(expand("<cword>"), "simple")<CR>
+nmap <silent> <Plug>Translate   :call vtm#Translate('-w ' . expand("<cword>"), "simple")<CR>
 vmap <silent> <Plug>TranslateV  :<C-U>call vtm#TranslateV("simple")<CR>
-nmap <silent> <Plug>TranslateW  :call vtm#Translate(expand("<cword>"), "complex")<CR>
+nmap <silent> <Plug>TranslateW  :call vtm#Translate('-w ' . expand("<cword>"), "complex")<CR>
 vmap <silent> <Plug>TranslateWV :<C-U>call vtm#TranslateV("complex")<CR>
 nmap <silent> <Plug>TranslateR  viw:<C-U>call vtm#TranslateV("replace")<CR>
 vmap <silent> <Plug>TranslateRV :<C-U>call vtm#TranslateV("replace")<CR>

@@ -28,8 +28,6 @@ endif
 let s:py_file = expand('<sfile>:p:h') . '/script/query.py'
 
 function! vtm#Translate(args, type) abort
-    " a:args: 'word' or 'word engine'
-
     " jump to popup or close popup
     if a:type == 'complex'
         if &filetype == 'vtm'
@@ -45,33 +43,48 @@ function! vtm#Translate(args, type) abort
         endif
     endif
 
-    let arg1 = substitute(a:args, '^\s*\(.\{-}\)\s*$', '\1', '')
+    let args = substitute(a:args, '^\s*\(.\{-}\)\s*$', '\1', '')
 
-    " `:Translate<CR>` == call vtm#Translate(expand("<cword>"), 'simple')
-    " argument: ''
-    if arg1 == ''
-        let word = expand("<cword>")
-        let engines = g:vtm_default_engines
-    else
-        let pos = match(arg1,' ')
-        " `:Translate test<CR>` == call vtm#Translate('test', 'simple')
-        " argument: 'test'
-        if pos < 0
-            let word = arg1
-            let engines = g:vtm_default_engines
-        " `:Translate youdao test<CR>` == call vtm#Translate('youdao test', 'simple')
-        " argument: 'youdao test'
+    let argmap = {
+        \ 'engines': [],
+        \ 'word': '',
+        \ 'lang': ''
+        \ }
+    let flag = ''
+    for arg in split(args, ' ')
+        if index(['-e', '--engines'], arg) >= 0
+            let flag = 'engines'
+        elseif index(['-w', '--word'], arg) >= 0
+            let flag = 'word'
+        elseif index(['-l', '--lang'], arg) >= 0
+            let flag = 'lang'
         else
-            " split arg1 to get engine and word
-            let engine = arg1[: pos-1]
-            if index(['bing', 'ciba', 'google', 'youdao'], engine) < 0
-                let engines = g:vtm_default_engines
-                let word = arg1
+            if flag == 'word'
+                let argmap[flag] .= ' ' . arg
+            elseif flag == 'lang'
+                let argmap[flag] = arg
             else
-                let engines = [engine]
-                let word = arg1[l:pos+1 :]
+                call add(argmap[flag], arg)
             endif
         endif
+    endfor
+
+    if trim(argmap['word']) == ''
+        let word = expand("<cword>")
+    else
+        let word = argmap['word']
+    endif
+
+    if argmap['engines'] == []
+        let engines = g:vtm_default_engines
+    else
+        let engines = argmap['engines']
+    endif
+
+    if argmap['lang'] == ''
+        let to_lang = g:vtm_default_to_lang
+    else
+        let to_lang = argmap['lang']
     endif
 
     let word = substitute(word, '[\n\|\r]\+', '. ', 'g')
@@ -79,7 +92,7 @@ function! vtm#Translate(args, type) abort
     let cmd = s:vtm_python_host . ' ' . s:py_file
         \ . ' --text '      . shellescape(word)
         \ . ' --engines '    . join(engines, ' ')
-        \ . ' --toLang '    . g:vtm_default_to_lang
+        \ . ' --toLang '    . to_lang
         \ . (len(g:vtm_proxy_url) > 0 ? (' --proxy ' . g:vtm_proxy_url) : '')
 
     call vtm#query#jobStart(cmd, a:type)
@@ -87,20 +100,40 @@ endfunction
 
 function! vtm#TranslateV(type) abort
     let select_text = vtm#util#visualSelect()
-    call vtm#Translate(select_text, a:type)
+    call vtm#Translate('-w ' . select_text, a:type)
 endfunction
 
 function! vtm#Complete(arg_lead, cmd_line, cursor_pos) abort
     let engines = ['bing', 'ciba', 'google', 'youdao']
+    let args_prompt = ['-e', '--engines', '-w', '--word', '-l', '--lang']
+
     let cmd_line_before_cursor = a:cmd_line[:a:cursor_pos - 1]
     let args = split(cmd_line_before_cursor, '\v\\@<!(\\\\)*\zs\s+', 1)
     call remove(args, 0)
+
     if len(args) == 1
-        let candidates = engines
-        let prefix = args[0]
-        if !empty(prefix)
-            let candidates = filter(engines, 'v:val[:len(prefix) - 1] == prefix')
+        if args[0] == ''
+            return sort(args_prompt)
+        else
+            let prefix = args[-1]
+            let candidates = filter(engines+args_prompt, 'v:val[:len(prefix) - 1] == prefix')
+            return sort(candidates)
         endif
-        return sort(candidates)
+    elseif len(args) > 1
+        if args[-1] == ''
+            if index(['-e', '--engines'], args[-2]) >= 0
+                return sort(engines)
+            elseif index(['-w', '--word'], args[-2]) >= 0
+                return
+            elseif index(['-l', '--lang'], args[-2]) >= 0
+                return
+            else
+                return sort(engines + args_prompt)
+            endif
+        else
+            let prefix = args[-1]
+            let candidates = filter(engines+args_prompt, 'v:val[:len(prefix) - 1] == prefix')
+            return sort(candidates)
+        endif
     endif
 endfunction
