@@ -6,16 +6,6 @@ Vim/Neovim 翻译插件
 
 支持弹窗(floating & popup)和异步特性
 
-## 预览
-
-<div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/60756783-78fb7600-a034-11e9-8e3c-e9d098910077.gif">
-</div>
-<div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/60756784-79940c80-a034-11e9-8eec-401eab18a23a.gif">
-</div>
-
-
 ## 安装
 
 确保已经安装了 Python(2或3)
@@ -160,3 +150,16 @@ hi def link vtmPopupNormal       NormalFloat
 ## License
 
 MIT
+
+
+## Screenshots
+
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/60756783-78fb7600-a034-11e9-8e3c-e9d098910077.gif" width=800>
+</div>
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/60756784-79940c80-a034-11e9-8eec-401eab18a23a.gif" width=800>
+</div>
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/60757869-c1ba2b80-a042-11e9-8e81-80a2bbfa1427.PNG" width=800>
+</div>
