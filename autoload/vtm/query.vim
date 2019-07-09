@@ -68,14 +68,27 @@ function! s:start(type, data, event) abort
 
     if a:event == 'stdout'
         let translations = eval(message)
-        if a:type == 'simple'
-            call vtm#display#echo(translations)
-        elseif a:type == 'complex'
-            call vtm#display#window(translations)
-        else
-            call vtm#display#replace(translations)
+
+        let has_trans = 0
+        for t in translations
+            for i in keys(t)
+                if len(t[i]) && i != 'engine'
+                    let has_trans = 1
+                    break
+                endif
+            endfor
+        endfor
+
+        if has_trans
+            if a:type == 'simple'
+                call vtm#display#echo(translations)
+            elseif a:type == 'complex'
+                call vtm#display#window(translations)
+            else
+                call vtm#display#replace(translations)
+            endif
+            call vtm#util#saveHistory(translations)
         endif
-        call vtm#util#saveHistory(translations)
     elseif a:event == 'stderr'
         call vtm#util#showMessage(message)
     endif
