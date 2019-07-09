@@ -91,7 +91,8 @@ class BasicTranslator(object):
         try:
             r = urlopen(req, timeout=5)
         except (URLError, HTTPError, socket.timeout):
-            sys.stderr.write("Timed out, please check your network")
+            sys.stderr.write(
+                "Engine %s timed out, please check your network" % self._name)
             return None
 
         if is_py3:
@@ -207,7 +208,8 @@ class CibaTranslator (BasicTranslator):
             self._trans['paraphrase'] = ''
             if 'content' in resp:
                 if 'ph_en' in resp['content']:
-                    self._trans['phonetic'] = '[' + resp['content']['ph_en'] + ']'
+                    self._trans['phonetic'] = '[' + \
+                        resp['content']['ph_en'] + ']'
                 if 'out' in resp['content']:
                     self._trans['paraphrase'] = resp['content']['out']
                 if 'word_mean' in resp['content']:
