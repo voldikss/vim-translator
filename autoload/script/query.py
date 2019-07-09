@@ -266,7 +266,7 @@ class YoudaoTranslator (BasicTranslator):
     def __init__(self, name='youdao'):
         super(YoudaoTranslator, self).__init__(name)
         self.url = 'https://fanyi.youdao.com/translate_o?smartresult=dict&smartresult=rule'
-        self.D = "ebSeFb%=XZ%T[KZ)c(sy!"
+        self.D = "97_3(jkMYg@T[KZQmqjTK"
 
     def get_md5(self, value):
         import hashlib
