@@ -92,7 +92,7 @@ class BasicTranslator(object):
             r = urlopen(req, timeout=5)
         except (URLError, HTTPError, socket.timeout):
             sys.stderr.write(
-                "Engine %s timed out, please check your network" % self._name)
+                "Engine %s timed out, please check your network\n" % self._name)
             return None
 
         if is_py3:

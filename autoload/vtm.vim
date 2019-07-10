@@ -87,7 +87,7 @@ function! vtm#Translate(args, type) abort
         let to_lang = argmap['lang']
     endif
 
-    let word = substitute(word, '[\n\|\r]\+', '. ', 'g')
+    let word = substitute(trim(word), '[\n\|\r]\+', '. ', 'g')
 
     let cmd = s:vtm_python_host . ' ' . s:py_file
         \ . ' --text '      . shellescape(word)

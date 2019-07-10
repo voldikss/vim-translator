@@ -33,7 +33,7 @@ function! vtm#query#jobStart(cmd, type) abort
             \ 'err_cb': function('s:onStdoutVim', [a:type, 'stderr']),
             \ 'exit_cb': function('s:onExitVim'),
             \ 'out_io': 'pipe',
-            \ 'err_io': 'out',
+            \ 'err_io': 'pipe',
             \ 'in_io': 'null',
             \ 'out_mode': 'nl',
             \ 'err_mode': 'nl',
