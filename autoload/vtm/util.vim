@@ -116,6 +116,10 @@ function! vtm#util#visualSelect() abort
     return select_text
 endfunction
 
+function! vtm#util#safeTrim(text)
+    return substitute(a:text, "^\\s*\\(.\\{-}\\)\\(\\n\\|\\s\\)*$", '\1', '')
+endfunction
+
 function! vtm#util#version()
     return '1.2.1'
 endfunction

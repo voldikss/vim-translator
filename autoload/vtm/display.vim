@@ -91,7 +91,7 @@ function! s:buildContent(translations)
 
         if len(t['explain'])
             for expl in t['explain']
-                let expl = trim(expl)
+                let expl = vtm#util#safeTrim(expl)
                 if len(expl)
                     let explain = explain_marker . expl
                     call add(content, explain)
