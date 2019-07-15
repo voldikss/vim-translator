@@ -213,7 +213,7 @@ function! vtm#display#echo(translations) abort
         endif
     endfor
 
-    let translation = a:translations[0]['query'] . ' ==>' . join(content, ' ')
+    let translation = a:translations[0]['query'] . ' ==> ' . join(content, ' ')
     call vtm#util#showMessage(translation)
 endfunction
 
