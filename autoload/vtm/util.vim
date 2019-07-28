@@ -1,7 +1,7 @@
 " @Author: voldikss
 " @Date: 2019-06-20 19:45:42
 " @Last Modified by: voldikss
-" @Last Modified time: 2019-06-20 19:45:42
+" @Last Modified time: 2019-07-28 19:08:16
 
 
 function! vtm#util#showMessage(message, ...) abort
@@ -121,7 +121,7 @@ function! vtm#util#safeTrim(text)
 endfunction
 
 function! vtm#util#version()
-    return '1.2.1'
+    return '1.2.2'
 endfunction
 
 function! vtm#util#breakChangeNotify()
