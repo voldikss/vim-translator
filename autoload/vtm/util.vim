@@ -1,7 +1,7 @@
 " @Author: voldikss
 " @Date: 2019-06-20 19:45:42
 " @Last Modified by: voldikss
-" @Last Modified time: 2019-07-28 19:08:16
+" @Last Modified time: 2019-08-01 07:40:53
 
 
 function! vtm#util#showMessage(message, ...) abort
@@ -125,49 +125,4 @@ function! vtm#util#version()
 endfunction
 
 function! vtm#util#breakChangeNotify()
-    let notice = 0
-    let outdated_options = [
-        \ 'g:vtm_preview_position',
-        \ 'g:vtm_popup_window',
-        \ 'g:vtm_youdao_app_key',
-        \ 'g:vtm_youdao_app_secret',
-        \ 'g:vtm_baidu_app_key',
-        \ 'g:vtm_baidu_app_secret',
-        \ 'g:vtm_bing_app_secret_key',
-        \ 'g:vtm_yandex_app_secret_key'
-        \ ]
-
-    for o in outdated_options
-        if exists(o)
-            if !notice
-                call vtm#util#showMessage('Break Change Notice(Sincerely): ', 'warning')
-            endif
-            let notice = 1
-            let message = "Option '" . o . "' was deprecated"
-            call vtm#util#showMessage(message, 'warning')
-        endif
-    endfor
-
-    if exists('g:vtm_default_api')
-        if !notice
-            call vtm#util#showMessage('Break Change Notice(Sincerely): ', 'warning')
-        endif
-        let notice = 1
-        let message = "Option 'g:vtm_default_api' has been changed to 'g:vtm_default_engines'"
-        call vtm#util#showMessage(message, 'warning')
-
-        let engines = ['bing', 'ciba', 'google', 'youdao']
-        if index(engines, g:vtm_default_api) < 0
-            let message = "API '" . g:vtm_default_api . "'" . ' was deprecated.'
-            let message .= " Available engines: " . string(engines)
-            call vtm#util#showMessage(message, 'warning')
-        endif
-    endif
-
-    if notice
-        let message = "Please refer to the lastest change log for more information:"
-        call vtm#util#showMessage(message, 'warning')
-        let message = "https://github.com/voldikss/vim-translate-me/tree/master#change-log"
-        call vtm#util#showMessage(message, 'warning')
-    endif
 endfunction
