@@ -1,7 +1,7 @@
 " @Author: voldikss
 " @Date: 2019-06-20 20:09:44
 " @Last Modified by: voldikss
-" @Last Modified time: 2019-07-02 20:06:34
+" @Last Modified time: 2019-08-01 07:44:58
 
 
 function! vtm#display#window(translations) abort
@@ -83,7 +83,7 @@ function! s:buildContent(translations)
         endif
 
         if len(t['phonetic'])
-            let phonetic = phonetic_marker . t['phonetic']
+            let phonetic = phonetic_marker . '[' . t['phonetic'] . ']'
             call add(content, phonetic)
         endif
 

@@ -175,7 +175,8 @@ class BingTranslator (BasicTranslator):
     def get_phonetic(self, html):
         if not html:
             return ''
-        m = re.findall(r'<span class="ht_attr" lang=".*?">(.*?)</span>', html)
+        m = re.findall(
+            r'<span class="ht_attr" lang=".*?">\[(.*?)\] </span>', html)
         return m[0].strip()
 
     def get_explain(self, html):
@@ -208,8 +209,7 @@ class CibaTranslator (BasicTranslator):
             self._trans['paraphrase'] = ''
             if 'content' in resp:
                 if 'ph_en' in resp['content']:
-                    self._trans['phonetic'] = '[' + \
-                        resp['content']['ph_en'] + ']'
+                    self._trans['phonetic'] = resp['content']['ph_en']
                 if 'out' in resp['content']:
                     self._trans['paraphrase'] = resp['content']['out']
                 if 'word_mean' in resp['content']:
