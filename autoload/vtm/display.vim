@@ -12,13 +12,9 @@ function! vtm#display#window(translations) abort
     for i in range(len(content))
         let line = content[i]
         if match(line, '---') == 0 && width > len(line)
-            let padding = (width - len(line)) / 2
-            let padding_t = vtm#util#repeat('-', padding)
-            let content[i] = padding_t . content[i] . padding_t
+            let content[i] = vtm#util#pad(content[i], width, '-')
         elseif match(line, '@') == 0 && width > len(line)
-            let padding = (width - len(line)) / 2
-            let padding_t = vtm#util#repeat(' ', padding)
-            let content[i] = padding_t . content[i] . padding_t
+            let content[i] = vtm#util#pad(content[i], width, ' ')
         endif
     endfor
 
@@ -31,12 +27,13 @@ function! vtm#display#window(translations) abort
     endif
 
     if vtm_window_type == 'floating'
+        " why `width + 2`? ==> set foldcolumn=1
         let options = {
             \ 'relative': 'cursor',
             \ 'anchor': vert . hor,
             \ 'row': row,
             \ 'col': col,
-            \ 'width': width,
+            \ 'width': width + 2,
             \ 'height': height,
             \ }
         call nvim_open_win(bufnr('%'), v:true, options)
@@ -51,6 +48,7 @@ function! vtm#display#window(translations) abort
             \ 'line': line,
             \ 'col': 'cursor',
             \ 'moved': 'any',
+            \ 'padding': [0, 1, 0, 1],
             \ 'minwidth': width,
             \ 'minheight': height
             \ }
@@ -67,10 +65,10 @@ function! vtm#display#window(translations) abort
 endfunction
 
 function! s:buildContent(translations)
-    " let query_marker = ' 🔍 '
-    let paraphrase_marker = ' 🌀 '
-    let phonetic_marker = ' 🔉 '
-    let explain_marker = ' 📝 '
+    " let query_marker = '🔍 '
+    let paraphrase_marker = '🌀 '
+    let phonetic_marker = '🔉 '
+    let explain_marker = '📝 '
 
     let content = []
     call add(content, '@ ' . a:translations[0]['query'] . ' @' )
@@ -109,6 +107,7 @@ function! s:onOpenFloating(translation)
     normal gg
     nmap <silent> <buffer> q :close<CR>
 
+    setlocal foldcolumn=1
     setlocal buftype=nofile
     setlocal bufhidden=wipe
     setlocal signcolumn=no

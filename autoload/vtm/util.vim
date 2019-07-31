@@ -99,11 +99,11 @@ function! s:PadEnd(text, length) abort
     return text
 endfunction
 
-function! vtm#util#repeat(text, count)
-    let text = ''
-    for i in range(a:count)
-        let text .= a:text
-    endfor
+function! vtm#util#pad(text, width, char)
+    let padding_size = (a:width - len(a:text)) / 2
+    let padding = repeat(a:char, padding_size)
+    let padend = repeat(a:char, (a:width - len(a:text)) % 2)
+    let text = padding . a:text . padding . padend
     return text
 endfunction
 
