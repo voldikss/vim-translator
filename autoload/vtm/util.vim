@@ -34,16 +34,16 @@ function! vtm#util#saveHistory(translations) abort
         return
     endif
 
-    for t in a:translations
-        let query = t['query']
+    let text = a:translations['text']
+    for t in a:translations['results']
         let paraphrase = t['paraphrase']
         let explain = t['explain']
 
         if len(explain)
-            let item = s:PadEnd(query, 25) . explain[0]
+            let item = s:PadEnd(text, 25) . explain[0]
             break
-        elseif len(paraphrase) && query !=? paraphrase
-            let item = s:PadEnd(query, 25) . paraphrase
+        elseif len(paraphrase) && text !=? paraphrase
+            let item = s:PadEnd(text, 25) . paraphrase
             break
         else
             return
@@ -57,7 +57,7 @@ function! vtm#util#saveHistory(translations) abort
     let trans_data = readfile(g:vtm_history_file)
 
     " already in
-    if match(string(trans_data), query) >= 0
+    if match(string(trans_data), text) >= 0
         return
     endif
 

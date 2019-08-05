@@ -39,23 +39,18 @@ else:
 class Translation:
     translation = {
         'engine': '',
-        'query': '',
         'phonetic': '',
         'paraphrase': '',
         'explain': []
     }
 
-    def __init__(self):
-        pass
+    def __new__(self, engine):
+        translation = copy.deepcopy(self.translation)
+        translation['engine'] = engine
+        return translation
 
     def __setitem__(self, k, v):
         self.translation.update({k: v})
-
-    def __getitem__(self, k):
-        pass
-
-    def __new__(self):
-        return copy.deepcopy(self.translation)
 
     def __str__(self):
         return str(self.translation)
@@ -66,8 +61,7 @@ class BasicTranslator(object):
     def __init__(self, name):
         self._name = name
         self._agent = None
-        self._trans = Translation()
-        self._trans['engine'] = name
+        self._trans = Translation(name)
 
     def request(self, url, data=None, post=False, header=None):
         if header:
@@ -141,7 +135,6 @@ class BasicTranslator(object):
         print(self.request(test_url))
 
     def translate(self, sl, tl, text):
-        self._trans['query'] = text         # 需要翻译的文本
         self._trans['paraphrase'] = None    # 简单翻译
         self._trans['phonetic'] = None      # 读音
         self._trans['explain'] = None       # 详细翻译
@@ -166,10 +159,10 @@ class BingTranslator (BasicTranslator):
             'Accept-Language': 'en-US,en;q=0.5'
         }
         resp = self.http_get(url, None, headers)
-        if resp:
-            self._trans['query'] = text
-            self._trans['phonetic'] = self.get_phonetic(resp)
-            self._trans['explain'] = self.get_explain(resp)
+        if not resp:
+            return
+        self._trans['phonetic'] = self.get_phonetic(resp)
+        self._trans['explain'] = self.get_explain(resp)
         return self._trans
 
     def get_phonetic(self, html):
@@ -205,7 +198,9 @@ class CibaTranslator (BasicTranslator):
         r = self.http_get(url, req, None)
         if r:
             resp = json.loads(r)
-            self._trans['query'] = text
+            if not resp:
+                return
+
             self._trans['paraphrase'] = ''
             if 'content' in resp:
                 if 'ph_en' in resp['content']:
@@ -238,11 +233,11 @@ class GoogleTranslator (BasicTranslator):
         self.text = text
         url = self.get_url(sl, tl, text)
         r = self.http_get(url)
-        if r:
-            obj = json.loads(r)
-            self._trans['query'] = text
-            self._trans['paraphrase'] = self.get_paraphrase(obj)
-            self._trans['explain'] = self.get_explain(obj)
+        if not r:
+            return
+        obj = json.loads(r)
+        self._trans['paraphrase'] = self.get_paraphrase(obj)
+        self._trans['explain'] = self.get_explain(obj)
         return self._trans
 
     def get_paraphrase(self, obj):
@@ -304,11 +299,11 @@ class YoudaoTranslator (BasicTranslator):
             'typoResult': 'true'
         }
         r = self.http_post(self.url, data, header)
-        if r:
-            obj = json.loads(r)
-            self._trans['query'] = text
-            self._trans['paraphrase'] = self.get_paraphrase(obj)
-            self._trans['explain'] = self.get_explain(obj)
+        if not r:
+            return
+        obj = json.loads(r)
+        self._trans['paraphrase'] = self.get_paraphrase(obj)
+        self._trans['explain'] = self.get_explain(obj)
         return self._trans
 
     def get_paraphrase(self, obj):
@@ -359,7 +354,10 @@ def main():
     engines = args.engines
     to_lang = args.toLang
 
-    translation = []
+    translation = {}
+    translation['text'] = text
+    translation['status'] = 0
+    translation['results'] = []
     for e in engines:
         cls = ENGINES.get(e)
         if not cls:
@@ -369,8 +367,9 @@ def main():
         if args.proxy:
             translator.set_proxy(args.proxy)
         res = translator.translate('auto', to_lang, text)
-        translation.append(copy.deepcopy(res))
-
+        if res:
+            translation['status'] = 1
+            translation['results'].append(copy.deepcopy(res))
     sys.stdout.write(str(translation))
 
 

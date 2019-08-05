@@ -65,15 +65,14 @@ function! vtm#display#window(translations) abort
 endfunction
 
 function! s:buildContent(translations)
-    " let query_marker = '🔍 '
     let paraphrase_marker = '🌀 '
     let phonetic_marker = '🔉 '
     let explain_marker = '📝 '
 
     let content = []
-    call add(content, '@ ' . a:translations[0]['query'] . ' @' )
+    call add(content, '@ ' . a:translations['text'] . ' @' )
 
-    for t in a:translations
+    for t in a:translations['results']
         call add(content, '')
         call add(content, '------' . t['engine'] . '------')
 
@@ -192,32 +191,32 @@ function! s:closePopup() abort
 endfunction
 
 function! vtm#display#echo(translations) abort
-    let add_phonetic = v:false
-    let add_paraphrase = v:false
-    let add_explain = v:false
+    let has_phonetic = v:false
+    let has_paraphrase = v:false
+    let has_explain = v:false
 
     let content = []
-    for t in a:translations
-        if len(t['phonetic']) && !add_phonetic
-            call add(content, t['phonetic'])
-            let add_phonetic = v:true
+    for t in a:translations['results']
+        if len(t['phonetic']) && !has_phonetic
+            call add(content, '[' . t['phonetic'] . ']')
+            let has_phonetic = v:true
         endif
-        if len(t['paraphrase']) && !add_paraphrase
+        if len(t['paraphrase']) && !has_paraphrase
             call add(content, t['paraphrase'])
-            let add_paraphrase = v:true
+            let has_paraphrase = v:true
         endif
-        if len(t['explain']) && !add_explain
-            call add(content, join(t['explain'], '; '))
-            let add_explain = v:true
+        if len(t['explain']) && !has_explain
+            call add(content, join(t['explain'], ' '))
+            let has_explain = v:true
         endif
     endfor
 
-    let translation = a:translations[0]['query'] . ' ==> ' . join(content, ' ')
+    let translation = a:translations['text'] . ' ==> ' . join(content, ' ')
     call vtm#util#showMessage(translation)
 endfunction
 
 function! vtm#display#replace(translations) abort
-    for t in a:translations
+    for t in a:translations['results']
         if len(t['paraphrase'])
             let reg_tmp = @a
             let @a = t['paraphrase']

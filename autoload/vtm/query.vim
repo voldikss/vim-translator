@@ -53,7 +53,7 @@ function! s:start(type, data, event) abort
 
     " On Nvim, this function will be executed twice, firstly it returns data, and then an empty string
     " Check the data value in order to prevent overlap
-    if message == ''
+    if vtm#util#safeTrim(message) == ''
         return
     endif
 
@@ -68,27 +68,18 @@ function! s:start(type, data, event) abort
 
     if a:event == 'stdout'
         let translations = eval(message)
-
-        let has_trans = 0
-        for t in translations
-            for i in keys(t)
-                if len(t[i]) && i != 'engine'
-                    let has_trans = 1
-                    break
-                endif
-            endfor
-        endfor
-
-        if has_trans
-            if a:type == 'simple'
-                call vtm#display#echo(translations)
-            elseif a:type == 'complex'
-                call vtm#display#window(translations)
-            else
-                call vtm#display#replace(translations)
-            endif
-            call vtm#util#saveHistory(translations)
+        if type(translations) != 4 && !translations['status']
+          call vtm#util#showMessage('Translation failed', 'error')
         endif
+
+        if a:type == 'simple'
+            call vtm#display#echo(translations)
+        elseif a:type == 'complex'
+            call vtm#display#window(translations)
+        else
+            call vtm#display#replace(translations)
+        endif
+        call vtm#util#saveHistory(translations)
     elseif a:event == 'stderr'
         call vtm#util#showMessage(message)
     endif
