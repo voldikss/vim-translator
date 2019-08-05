@@ -4,7 +4,7 @@
 " @Last Modified time: 2019-07-23 20:35:10
 
 if exists('b:current_syntax')
-    finish
+  finish
 endif
 
 syn match vtmQuery               /\v\@.*\@/
@@ -13,7 +13,7 @@ syn match vtmPhonetic            /\v🔉.*$/
 syn match vtmExplain             /\v📝.*/
 syn match vtmDelimiter           /\v\-.*\-/
 syn match vtmNormal              /\v.*/ contains=
-    \ vtmQuery,vtmParaphrase,vtmPhonetic,vtmExplain,vtmDelimiter
+  \ vtmQuery,vtmParaphrase,vtmPhonetic,vtmExplain,vtmDelimiter
 
 hi def link vtmQuery             Identifier
 hi def link vtmParaphrase        Statement
