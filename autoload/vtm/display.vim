@@ -124,7 +124,7 @@ function! s:onOpenFloating(translation)
     setlocal winhighlight=Normal:vtmFloatingNormal
   endif
 
-  wincmd p
+  noautocmd wincmd p
 
   augroup VtmClosePopup
     autocmd!
