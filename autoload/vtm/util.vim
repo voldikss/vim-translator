@@ -121,7 +121,7 @@ function! vtm#util#safeTrim(text)
 endfunction
 
 function! vtm#util#version()
-  return '1.2.2'
+  return '1.2.3'
 endfunction
 
 function! vtm#util#breakChangeNotify()
