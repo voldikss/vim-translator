@@ -75,6 +75,11 @@ function! vtm#Translate(args, type) abort
     let word = argmap['word']
   endif
 
+  if vtm#util#safeTrim(word) == ''
+    call vtm#util#showMessage('No words selected', 'warning')
+    return
+  endif
+
   if argmap['engines'] == []
     let engines = g:vtm_default_engines
   else
