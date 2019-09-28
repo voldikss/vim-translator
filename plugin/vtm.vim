@@ -15,6 +15,8 @@ let g:vtm_history_enable = get(g:, 'vtm_history_enable', 1)
 let g:vtm_history_count = get(g:, 'vtm_history_count', 5000)
 let g:vtm_history_dir = get(g:, 'vtm_history_dir', expand('<sfile>:p:h'))
 let g:vtm_history_file = g:vtm_history_dir . '/../translation_history.data'
+let g:vtm_popup_max_width = get(g:, 'vtm_popup_max_width', 80)
+let g:vtm_popup_max_height = get(g:, 'vtm_popup_max_height', 20)
 
 if match(g:vtm_target_lang, 'zh') >= 0
   let g:vtm_default_engines = get(g:, 'vtm_default_engines', ['ciba', 'youdao'])

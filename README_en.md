@@ -6,13 +6,14 @@ A naive translate plugin for Vim/Neovim
 
 Supports floating & popup and asynchronous running
 
-
 ## Installation
 
 Make sure you have Python(2 or 3)
+
 ```vim
 Plug 'voldikss/vim-translate-me'
 ```
+
 ## Features
 
 - Async running
@@ -21,7 +22,6 @@ Plug 'voldikss/vim-translate-me'
 - Allow to save and export translation history
 - Proxy available(http, socks4, socks5)
 - Doesn't need appid/appkey
-
 
 ## Configuration
 
@@ -67,21 +67,33 @@ Plug 'voldikss/vim-translate-me'
 
 - Default: Directory of this plugin
 
+#### **`g:vtm_popup_max_width`**
+
+> Max-width of the popup/floating window
+
+- Default: 80
+
+#### **`g:vtm_popup_max_height`**
+
+> Max-height of popup/floating window
+
+- Default: 20
 
 ## Key Mapping
 
 - Default key mappings
-    ```vim
-    " Echo translation in the cmdline
-    nmap <silent> <Leader>t <Plug>Translate
-    vmap <silent> <Leader>t <Plug>TranslateV
-    " Display translation in the popup window
-    nmap <silent> <Leader>w <Plug>TranslateW
-    vmap <silent> <Leader>w <Plug>TranslateWV
-    " Replace the text with translation
-    nmap <silent> <Leader>r <Plug>TranslateR
-    vmap <silent> <Leader>r <Plug>TranslateRV
-    ```
+
+  ```vim
+  " Echo translation in the cmdline
+  nmap <silent> <Leader>t <Plug>Translate
+  vmap <silent> <Leader>t <Plug>TranslateV
+  " Display translation in the popup window
+  nmap <silent> <Leader>w <Plug>TranslateW
+  vmap <silent> <Leader>w <Plug>TranslateWV
+  " Replace the text with translation
+  nmap <silent> <Leader>r <Plug>TranslateR
+  vmap <silent> <Leader>r <Plug>TranslateRV
+  ```
 
 - Type `Leader>w` again to jump into the popup window and again to jump back
 
@@ -114,6 +126,7 @@ Export the translation history
 ## Highlight
 
 Here is the default highlight link. To customize, use `hi link`
+
 ```vim
 hi def link vtmQuery             Identifier
 hi def link vtmParaphrase        Statement
@@ -122,16 +135,13 @@ hi def link vtmExplain           Comment
 hi def link vtmPopupNormal       NormalFloat
 ```
 
-
 ## References
 
 - [dict.vim](https://github.com/iamcco/dict.vim)
 
-
 ### License
 
 MIT
-
 
 ## Screenshots
 

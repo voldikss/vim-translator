@@ -71,6 +71,18 @@ Plug 'voldikss/vim-translate-me'
 
 - 默认：插件根目录
 
+#### **`g:vtm_popup_max_width`**
+
+> 弹窗的最大宽度
+
+- 默认：80
+
+#### **`g:vtm_popup_max_height`**
+
+> 弹窗的最大高度
+
+- 默认：20
+
 ## 快捷键
 
 - 默认快捷键
@@ -129,6 +141,9 @@ hi def link vtmPopupNormal       NormalFloat
 
 ## Change log
 
+- 1.2.5 (2019-09-28): Add options
+  - `g:vtm_popup_max_width`
+  - `g:vtm_popup_max_height`
 - 1.2.4 (2019-09-28): rename variables
   - rename `g:vtm_default_to_lang` to `g:vtm_target_lang`
   - rename `g:vtm_enable_history` to `g:vtm_history_enable`

@@ -6,7 +6,7 @@
 
 function! vtm#display#window(translations) abort
   let content = s:buildContent(a:translations)
-  let [width, height] = s:winSize(content)
+  let [width, height] = s:winSize(content, g:vtm_popup_max_width, g:vtm_popup_max_height)
   let [row, col, vert, hor] = s:winPos(width, height)
 
   for i in range(len(content))
@@ -27,7 +27,7 @@ function! vtm#display#window(translations) abort
   endif
 
   if vtm_window_type == 'floating'
-    " why `width + 2`? ==> set foldcolumn=1
+    " `width + 2`? ==> set foldcolumn=1
     let options = {
       \ 'relative': 'cursor',
       \ 'anchor': vert . hor,
@@ -113,7 +113,7 @@ function! s:onOpenFloating(translation)
   setlocal filetype=vtm
   setlocal noautoindent
   setlocal nosmartindent
-  setlocal nowrap
+  setlocal wrap
   setlocal nobuflisted
   setlocal noswapfile
   setlocal nocursorline
@@ -144,9 +144,24 @@ function! s:onOpenPreview(translation)
   call s:onOpenFloating(a:translation)
 endfunction
 
-function! s:winSize(translation) abort
-  let width = max(map(copy(a:translation), 'strdisplaywidth(v:val) + 1'))
-  let height = len(a:translation)
+function! s:winSize(translation, max_width, max_height) abort
+  let width = 0
+  let height = 0
+
+  for line in a:translation
+    let line_width = strdisplaywidth(line)
+    if line_width > a:max_width
+      let width = a:max_width
+      let height += line_width / a:max_width + 1
+    else
+      let width = max([line_width, width])
+      let height += 1
+    endif
+  endfor
+
+  if height > a:max_height
+    let height = a:max_height
+  endif
   return [width, height]
 endfunction
 
