@@ -47,7 +47,7 @@ Plug 'voldikss/vim-translate-me'
 
 - 默认：`['ciba', 'youdao']`
 
-#### g:vtm_proxy_url
+#### **`g:vtm_proxy_url`**
 
 > 代理地址，如 `let g:vtm_proxy_url = 'socks5://127.0.0.1:1080'`
 
@@ -142,8 +142,8 @@ hi def link vtmPopupNormal       NormalFloat
 ## Change log
 
 - 1.2.5 (2019-09-28): Add options
-  - `g:vtm_popup_max_width`
-  - `g:vtm_popup_max_height`
+  - add `g:vtm_popup_max_width`
+  - add `g:vtm_popup_max_height`
 - 1.2.4 (2019-09-28): rename variables
   - rename `g:vtm_default_to_lang` to `g:vtm_target_lang`
   - rename `g:vtm_enable_history` to `g:vtm_history_enable`
