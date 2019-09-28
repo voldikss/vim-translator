@@ -204,11 +204,11 @@ class CibaTranslator (BasicTranslator):
             self._trans['paraphrase'] = ''
             if 'content' in resp:
                 if 'ph_en' in resp['content']:
-                    self._trans['phonetic'] = resp['content']['ph_en']
+                    self._trans['phonetic'] = resp['content']['ph_en'] or ''  # sometimes it responses `None`
                 if 'out' in resp['content']:
-                    self._trans['paraphrase'] = resp['content']['out']
+                    self._trans['paraphrase'] = resp['content']['out'] or ''
                 if 'word_mean' in resp['content']:
-                    self._trans['explain'] = resp['content']['word_mean']
+                    self._trans['explain'] = resp['content']['word_mean'] or ''
         return self._trans
 
 
