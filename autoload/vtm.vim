@@ -25,7 +25,7 @@ if !exists('*jobstart') && !exists('*job_start')
 endif
 
 " note: this must be outside the function!!!
-let s:py_file = expand('<sfile>:p:h') . '/script/query.py'
+let s:py_file = expand('<sfile>:p:h') . '/../script/query.py'
 
 function! vtm#Translate(args, type) abort
   " jump to popup or close popup
