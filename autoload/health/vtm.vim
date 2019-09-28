@@ -5,7 +5,7 @@
 
 function! s:check_job() abort
   if exists('*jobstart') || exists('*job_start')
-    call health#report_ok('Async check passed')
+    call health#report_ok('Async is OK')
   else
     call health#report_error('+job feature is required to execute network request')
   endif
@@ -21,7 +21,7 @@ function! s:check_floating_window() abort
   " nvim, but doesn't have floating window
   if !exists('*nvim_open_win')
     call health#report_error(
-      \ 'Floating window is missed on the current version Nvim', 
+      \ 'Floating window is missed on the current version Nvim',
       \ 'Upgrade your Nvim to the HEAD of 0.4.0-dev")'
       \ )
     return
@@ -37,40 +37,33 @@ function! s:check_floating_window() abort
       \ 'height': 1,
       \ })
     call nvim_win_close(test_win, v:true)
-  catch /^Vim\%((\a\+)\)\=:E119/	
+  catch /^Vim\%((\a\+)\)\=:E119/
     call health#report_error(
-      \ 'The newest floating window feature is missed on the current version Nvim', 
+      \ 'The newest floating window feature is missed on the current version Nvim',
       \ 'Upgrade your Nvim to the HEAD of 0.4.0-dev")'
       \ )
     return
   endtry
 
-  call health#report_ok('Floating window check passed')
+  call health#report_ok('Floating window is OK')
 endfunction
 
 function! s:check_python() abort
-  if executable('python')
-    call health#report_ok('Python check passed')
+  if exists('g:python3_host_prog')
+    let vtm_python_host = g:python3_host_prog
+  elseif executable('python3')
+    let vtm_python_host = 'python3'
+  elseif executable('python')
+    let vtm_python_host = 'python'
   else
-    call health#report_error('Python is required but not installed or executable')
+    call health#report_error('Python is not executable')
+    return
   endif
-endfunction
-
-function! s:check_vim_version() abort
-  if has('nvim')
-    return 
-  endif
-
-  if v:version < 800
-    call health#report_error(
-      \ 'Your vim is too old: ' . v:version . ' and not supported by the plugin' .
-      \ 'Please install Vim 8.0 or later')
-  endif
+  call health#report_ok('Using '.vtm_python_host)
 endfunction
 
 function! health#vtm#check() abort
   call s:check_job()
   call s:check_floating_window()
   call s:check_python()
-  call s:check_vim_version()
 endfunction
