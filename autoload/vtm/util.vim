@@ -12,7 +12,7 @@ function! vtm#util#showMessage(message, ...) abort
   endif
 
   if type(a:message) != 1
-    let message = string(message)
+    let message = string(a:message)
   else
     let message = a:message
   endif
@@ -25,7 +25,7 @@ function! vtm#util#showMessage(message, ...) abort
     echohl ErrorMsg
   endif
 
-  echomsg '[vim-translate-me] ' . a:message
+  echomsg '[vim-translate-me] ' . message
   echohl None
 endfunction
 
