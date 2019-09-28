@@ -9,15 +9,14 @@ if exists('g:loaded_vtm')
 endif
 let g:loaded_vtm= 1
 
-let g:vtm_default_to_lang = get(g:, 'vtm_default_to_lang', 'zh')
-let g:vtm_enable_history = get(g:, 'vtm_enable_history', 1)
-let g:vtm_max_history_count = get(g:, 'vtm_max_history_count', 5000)
-let g:vtm_history_dir = get(g:, 'vtm_history_dir', expand('<sfile>:p:h'))
+let g:vtm_target_lang = get(g:, 'vtm_target_lang', 'zh')
 let g:vtm_proxy_url = get(g:, 'vtm_proxy_url', '')
-
+let g:vtm_history_enable = get(g:, 'vtm_history_enable', 1)
+let g:vtm_history_count = get(g:, 'vtm_history_count', 5000)
+let g:vtm_history_dir = get(g:, 'vtm_history_dir', expand('<sfile>:p:h'))
 let g:vtm_history_file = g:vtm_history_dir . '/../translation_history.data'
 
-if match(g:vtm_default_to_lang, 'zh') >= 0
+if match(g:vtm_target_lang, 'zh') >= 0
   let g:vtm_default_engines = get(g:, 'vtm_default_engines', ['ciba', 'youdao'])
 else
   let g:vtm_default_engines = get(g:, 'vtm_default_engines', ['google', 'bing'])

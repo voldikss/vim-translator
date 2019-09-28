@@ -1,6 +1,8 @@
 *vtm.cnx*              Vim/Neovim翻译插件            最后更新: 2019年7月7日
 
 Author : voldikss <https://github.com/voldikss>
+*Note:* This file maybe outdated, please refer to
+github.com/voldikss/vim-translate-me
 
 ==============================================================================
 CONTENTS                                                          *vtm-contents*

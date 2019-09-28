@@ -87,7 +87,7 @@ function! vtm#Translate(args, type) abort
   endif
 
   if argmap['lang'] == ''
-    let to_lang = g:vtm_default_to_lang
+    let to_lang = g:vtm_target_lang
   else
     let to_lang = argmap['lang']
   endif

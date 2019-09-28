@@ -30,7 +30,7 @@ function! vtm#util#showMessage(message, ...) abort
 endfunction
 
 function! vtm#util#saveHistory(translations) abort
-  if !g:vtm_enable_history
+  if !g:vtm_history_enable
     return
   endif
 
@@ -61,7 +61,7 @@ function! vtm#util#saveHistory(translations) abort
     return
   endif
 
-  if len(trans_data) == g:vtm_max_history_count
+  if len(trans_data) == g:vtm_history_count
     call remove(trans_data, 0)
   endif
 
@@ -121,7 +121,7 @@ function! vtm#util#safeTrim(text)
 endfunction
 
 function! vtm#util#version()
-  return '1.2.3'
+  return '1.2.4'
 endfunction
 
 function! vtm#util#breakChangeNotify()

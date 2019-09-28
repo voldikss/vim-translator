@@ -31,7 +31,7 @@ Plug 'voldikss/vim-translate-me'
 
 - Default: `1`
 
-#### **`g:vtm_default_to_lang`**
+#### **`g:vtm_target_lang`**
 
 > Target language
 
@@ -51,13 +51,13 @@ Plug 'voldikss/vim-translate-me'
 
 - Default: `''`
 
-#### **`g:vtm_enable_history`**
+#### **`g:vtm_history_enable`**
 
 > Whether to save the translation history
 
 - Default: 1
 
-#### **`g:vtm_max_history_count`**
+#### **`g:vtm_history_count`**
 
 - Default: 5000
 
@@ -97,7 +97,7 @@ If no `engine`, use `g:vtm_default_engines`
 
 If no `word`, use the word under the cursor
 
-If no `to_lang`, use `g:vtm_default_to_lang`
+If no `to_lang`, use `g:vtm_target_lang`
 
 #### `:TranslateW [-e engine] [-w word] [-l to_lang]`
 

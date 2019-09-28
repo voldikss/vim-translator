@@ -1,6 +1,8 @@
 *vtm.txt*      A Vim/Neovim plugin for translation     Last change: 2019 July 7
 
 Author : voldikss <https://github.com/voldikss>
+*Note:* This file maybe outdated, please refer to
+github.com/voldikss/vim-translate-me
 
 ==============================================================================
 CONTENTS                                                          *vtm-contents*

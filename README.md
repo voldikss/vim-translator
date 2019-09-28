@@ -31,7 +31,7 @@ Plug 'voldikss/vim-translate-me'
 
 - 默认：`1`
 
-#### **`g:vtm_default_to_lang`**
+#### **`g:vtm_target_lang`**
 
 > 默认翻译的目标语言
 
@@ -53,13 +53,13 @@ Plug 'voldikss/vim-translate-me'
 
 - 默认：`''`
 
-#### **`g:vtm_enable_history`**
+#### **`g:vtm_history_enable`**
 
 > 是否保存查询历史记录
 
 - 默认：1
 
-#### **`g:vtm_max_history_count`**
+#### **`g:vtm_history_count`**
 
 > 保存查询记录的数目
 
@@ -101,7 +101,7 @@ Plug 'voldikss/vim-translate-me'
 
 如果未指定 `word`, 使用光标下单词
 
-如果未指定 `to_lang`, 使用 `g:vtm_default_to_lang`
+如果未指定 `to_lang`, 使用 `g:vtm_target_lang`
 
 #### `:TranslateW [-e engine] [-w word] [-l to_lang]`
 
@@ -129,6 +129,10 @@ hi def link vtmPopupNormal       NormalFloat
 
 ## Change log
 
+- 1.2.4 (2019-09-28): rename variables
+  - rename `g:vtm_default_to_lang` to `g:vtm_target_lang`
+  - rename `g:vtm_enable_history` to `g:vtm_history_enable`
+  - rename `g:vtm_max_history_count` to `g:vtm_history_count`
 - 1.2.2 (2019-07-28): bugs fixed
 - 1.2.1 (2019-07-07): better arguments method for commands
 - 1.2.0 (2019-07-06): add multi-engine translation, change `g:vtm_default_engine` to `vtm_default_engines`
@@ -140,8 +144,8 @@ hi def link vtmPopupNormal       NormalFloat
   - remove `g:vtm_popup_window`, use `'floating'` as default, otherwise `'preview'`
   - rename `g:vtm_default_api` to `g:vtm_default_engine`
   - remove `g:vtm_preview_position`
-  - new option: `g:vtm_enable_history`
-  - new option: `g:vtm_max_history_count`
+  - new option: `g:vtm_history_enable`
+  - new option: `g:vtm_history_count`
   - new option: `g:vtm_history_dir`
   - new command: `:TranslateH` to export translation history
   - change default engine to `'ciba'` or `'google'`
@@ -175,6 +179,6 @@ MIT
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/voldikss)
 
 - Wechat
-<div>
-	<img src="https://user-images.githubusercontent.com/20282795/62786670-a933aa00-baf5-11e9-9941-6d2551758faa.jpg" width=400>
-</div>
+  <div>
+  	<img src="https://user-images.githubusercontent.com/20282795/62786670-a933aa00-baf5-11e9-9941-6d2551758faa.jpg" width=400>
+  </div>
