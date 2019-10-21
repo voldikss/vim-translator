@@ -122,6 +122,7 @@ function! s:onOpenFloating(translation)
   " only available in nvim
   if has('nvim')
     setlocal winhighlight=Normal:vtmFloatingNormal
+    setlocal winhighlight=FoldColumn:vtmFloatingNormal
   endif
 
   noautocmd wincmd p
