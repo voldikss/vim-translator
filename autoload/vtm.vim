@@ -3,29 +3,15 @@
 " @Last Modified by: voldikss
 " @Last Modified time: 2019-07-02 07:42:40
 
-
-call vtm#util#breakChangeNotify()
+let s:py_file = expand('<sfile>:p:h') . '/../script/query.py'
 
 if exists('g:python3_host_prog')
   let s:vtm_python_host = g:python3_host_prog
 elseif executable('python3')
   let s:vtm_python_host = 'python3'
-elseif executable('python')
-  let s:vtm_python_host = 'python'
 else
-  let errMsg = 'Python is not installed, please install python3 first'
-  call vtm#util#showMessage(errMsg, 'error')
-  finish
+  let s:vtm_python_host = 'python'
 endif
-
-if !exists('*jobstart') && !exists('*job_start')
-  let message = 'Job feature is required, please install lastest Neovim or Vim'
-  call vtm#util#showMessage(message, 'error')
-  finish
-endif
-
-" note: this must be outside the function!!!
-let s:py_file = expand('<sfile>:p:h') . '/../script/query.py'
 
 function! vtm#Translate(args, type) abort
   " jump to popup or close popup
