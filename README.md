@@ -4,11 +4,17 @@
 
 Vim/Neovim 翻译插件
 
-支持弹窗(floating & popup)和异步特性
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/60756783-78fb7600-a034-11e9-8e3c-e9d098910077.gif" width=800>
+</div>
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/60756784-79940c80-a034-11e9-8eec-401eab18a23a.gif" width=800>
+</div>
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/60757869-c1ba2b80-a042-11e9-8e81-80a2bbfa1427.PNG" width=800>
+</div>
 
 ## 安装
-
-确保已经安装了 Python(2 或 3)
 
 ```vim
 Plug 'voldikss/vim-translate-me'
@@ -18,10 +24,10 @@ Plug 'voldikss/vim-translate-me'
 
 - 浮窗支持(floating & popup)
 - 不会阻塞当前编辑
-- 多种可选翻译引擎
+- 多个可选翻译引擎
 - 保存和导出查询记录
 - 支持代理(http, socks4, socks5)
-- 不再需要 appid/appkey
+- 不需要 appid/appkey
 
 ## 配置
 
@@ -57,7 +63,7 @@ Plug 'voldikss/vim-translate-me'
 
 > 是否保存查询历史记录
 
-- 默认：1
+- 默认：0
 
 #### **`g:vtm_history_count`**
 
@@ -75,13 +81,13 @@ Plug 'voldikss/vim-translate-me'
 
 > 弹窗的最大宽度
 
-- 默认：80
+- 默认：`0.6*&columns`
 
 #### **`g:vtm_popup_max_height`**
 
 > 弹窗的最大高度
 
-- 默认：20
+- 默认：`0.6*&lines`
 
 ## 快捷键
 
@@ -139,33 +145,6 @@ hi def link vtmExplain           Comment
 hi def link vtmPopupNormal       NormalFloat
 ```
 
-## Change log
-
-- 1.2.5 (2019-09-28): Add options
-  - add `g:vtm_popup_max_width`
-  - add `g:vtm_popup_max_height`
-- 1.2.4 (2019-09-28): rename variables
-  - rename `g:vtm_default_to_lang` to `g:vtm_target_lang`
-  - rename `g:vtm_enable_history` to `g:vtm_history_enable`
-  - rename `g:vtm_max_history_count` to `g:vtm_history_count`
-- 1.2.2 (2019-07-28): bugs fixed
-- 1.2.1 (2019-07-07): better arguments method for commands
-- 1.2.0 (2019-07-06): add multi-engine translation, change `g:vtm_default_engine` to `vtm_default_engines`
-- 1.1.0 (2019-07-02): add popup support on vim81
-- 1.0.0 (2019-07-01): refactor
-  - support proxy(http, socks4, socks5)
-  - doesn't need app key/secret anymore, remove `g:vtm_...app_key/app_secret`
-  - remove `'baidu'` and `'yandex'`
-  - remove `g:vtm_popup_window`, use `'floating'` as default, otherwise `'preview'`
-  - rename `g:vtm_default_api` to `g:vtm_default_engine`
-  - remove `g:vtm_preview_position`
-  - new option: `g:vtm_history_enable`
-  - new option: `g:vtm_history_count`
-  - new option: `g:vtm_history_dir`
-  - new command: `:TranslateH` to export translation history
-  - change default engine to `'ciba'` or `'google'`
-  - change default syntax highlight
-
 ## References
 
 - [dict.vim](https://github.com/iamcco/dict.vim)
@@ -175,18 +154,6 @@ hi def link vtmPopupNormal       NormalFloat
 
 MIT
 
-## Screenshots
-
-<div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/60756783-78fb7600-a034-11e9-8e3c-e9d098910077.gif" width=800>
-</div>
-<div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/60756784-79940c80-a034-11e9-8eec-401eab18a23a.gif" width=800>
-</div>
-<div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/60757869-c1ba2b80-a042-11e9-8e81-80a2bbfa1427.PNG" width=800>
-</div>
-
 ## Donation
 
 - Paypal
@@ -194,6 +161,38 @@ MIT
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://paypal.me/voldikss)
 
 - Wechat
-  <div>
-  	<img src="https://user-images.githubusercontent.com/20282795/62786670-a933aa00-baf5-11e9-9941-6d2551758faa.jpg" width=400>
-  </div>
+
+<div>
+<img src="https://user-images.githubusercontent.com/20282795/64410950-b3c66c80-d0be-11e9-8500-973382366324.jpg" width=150>
+</div>
+
+## Change log
+
+- 1.2.6 (2019-10-27): Update default values of
+  - `g:vtm_popup_max_width`
+  - `g:vtm_popup_max_height`
+  - `g:vtm_history_enable`
+- 1.2.5 (2019-09-28): Add options
+  - `g:vtm_popup_max_width`
+  - `g:vtm_popup_max_height`
+- 1.2.4 (2019-09-28): Rename variables
+  - `g:vtm_default_to_lang` to `g:vtm_target_lang`
+  - `g:vtm_enable_history` to `g:vtm_history_enable`
+  - `g:vtm_max_history_count` to `g:vtm_history_count`
+- 1.2.2 (2019-07-28): Fix bugs
+- 1.2.1 (2019-07-07): Better cmdline arguments
+- 1.2.0 (2019-07-06): Add multi-engine translation, change `g:vtm_default_engine` to `vtm_default_engines`
+- 1.1.0 (2019-07-02): Add popup support on vim81
+- 1.0.0 (2019-07-01): Refactor
+  - support proxy(http, socks4, socks5)
+  - remove `g:vtm_...app_key/app_secret`
+  - remove `'baidu'` and `'yandex'`
+  - remove `g:vtm_popup_window`, use `'floating'` as default, otherwise `'preview'`
+  - rename `g:vtm_default_api` to `g:vtm_default_engine`
+  - remove `g:vtm_preview_position`
+  - add `g:vtm_history_enable`
+  - add `g:vtm_history_count`
+  - add `g:vtm_history_dir`
+  - add `:TranslateH`
+  - modify default engine
+  - modify default syntax highlight

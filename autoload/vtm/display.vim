@@ -6,7 +6,15 @@
 
 function! vtm#display#window(translations) abort
   let content = s:buildContent(a:translations)
-  let [width, height] = s:winSize(content, g:vtm_popup_max_width, g:vtm_popup_max_height)
+  let max_height =
+    \ g:vtm_popup_max_height == v:null
+    \ ? float2nr(0.6*&lines)
+    \ : float2nr(g:vtm_popup_max_height)
+  let max_width =
+    \ g:vtm_popup_max_width == v:null
+    \ ? float2nr(0.6*&columns)
+    \ : float2nr(g:vtm_popup_max_width)
+  let [width, height] = s:winSize(content, max_width, max_height)
   let [row, col, vert, hor] = s:winPos(width, height)
 
   for i in range(len(content))
