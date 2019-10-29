@@ -43,6 +43,8 @@ class Translation:
         'paraphrase': '',
         'explain': []
     }
+    def __init__(self, engine):
+        pass
 
     def __new__(self, engine):
         translation = copy.deepcopy(self.translation)
