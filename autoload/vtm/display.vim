@@ -57,7 +57,9 @@ function! vtm#display#window(translations) abort
       \ 'col': 'cursor',
       \ 'moved': 'any',
       \ 'padding': [0, 1, 0, 1],
+      \ 'maxwidth': width,
       \ 'minwidth': width,
+      \ 'maxheight': height,
       \ 'minheight': height
       \ }
     let winid = popup_create('', options)
@@ -127,6 +129,7 @@ function! s:onOpenFloating(translation)
   setlocal nocursorline
   setlocal nonumber
   setlocal norelativenumber
+  setlocal nospell
   " only available in nvim
   if has('nvim')
     setlocal winhighlight=Normal:vtmFloatingNormal
@@ -147,6 +150,11 @@ function! s:onOpenPopup(winid, translation)
     call setbufline(bufnr, l, a:translation[l-1])
   endfor
   call setbufvar(bufnr, '&filetype', 'vtm')
+  call setbufvar(bufnr, '&spell', 0)
+  call setbufvar(bufnr, '&wrap', 1)
+  call setbufvar(bufnr, '&number', 1)
+  call setbufvar(bufnr, '&relativenumber', 0)
+  call setbufvar(bufnr, '&foldcolumn', 0)
 endfunction
 
 function! s:onOpenPreview(translation)
