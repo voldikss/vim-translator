@@ -195,7 +195,7 @@ function! s:build_lines(translations)
 
     if len(t['explain'])
       for expl in t['explain']
-        let expl = vtm#util#safeTrim(expl)
+        let expl = vtm#util#safe_trim(expl)
         if len(expl)
           let explain = explain_marker . expl
           call add(content, explain)
@@ -283,7 +283,7 @@ function! vtm#display#echo(translations) abort
   endfor
 
   let translation = a:translations['text'] . ' ==> ' . join(content, ' ')
-  call vtm#util#showMessage(translation)
+  call vtm#util#show_msg(translation)
 endfunction
 
 function! vtm#display#replace(translations) abort
@@ -298,5 +298,5 @@ function! vtm#display#replace(translations) abort
     endif
   endfor
 
-  call vtm#util#showMessage('No paraphrases for the replacement', 'warning')
+  call vtm#util#show_msg('No paraphrases for the replacement', 'warning')
 endfunction

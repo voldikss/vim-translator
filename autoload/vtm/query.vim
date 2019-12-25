@@ -4,34 +4,34 @@
 " @Last Modified time: 2019-06-30 21:35:47
 
 if has('nvim')
-  function! s:onStdoutNvim(type, jobid, data, event)
+  function! s:on_stdout_nvim(type, jobid, data, event)
     call s:start(a:type, a:data, a:event)
   endfunction
 
-  function! s:onExitNvim(jobid, code, event)
+  function! s:on_exit_nvim(jobid, code, event)
   endfunction
 else
-  function! s:onStdoutVim(type, event, ch, msg)
+  function! s:on_stdout_vim(type, event, ch, msg)
     call s:start(a:type, a:msg, a:event)
   endfunction
 
-  function! s:onExitVim(ch, code)
+  function! s:on_exit_vim(ch, code)
   endfunction
 endif
 
-function! vtm#query#jobStart(cmd, type) abort
+function! vtm#query#job_start(cmd, type) abort
   if has('nvim')
     let callback = {
-      \ 'on_stdout': function('s:onStdoutNvim', [a:type]),
-      \ 'on_stderr': function('s:onStdoutNvim', [a:type]),
-      \ 'on_exit': function('s:onExitNvim')
+      \ 'on_stdout': function('s:on_stdout_nvim', [a:type]),
+      \ 'on_stderr': function('s:on_stdout_nvim', [a:type]),
+      \ 'on_exit': function('s:on_exit_nvim')
     \ }
     call jobstart(a:cmd, callback)
   else
     let callback = {
-      \ 'out_cb': function('s:onStdoutVim', [a:type, 'stdout']),
-      \ 'err_cb': function('s:onStdoutVim', [a:type, 'stderr']),
-      \ 'exit_cb': function('s:onExitVim'),
+      \ 'out_cb': function('s:on_stdout_vim', [a:type, 'stdout']),
+      \ 'err_cb': function('s:on_stdout_vim', [a:type, 'stderr']),
+      \ 'exit_cb': function('s:on_exit_vim'),
       \ 'out_io': 'pipe',
       \ 'err_io': 'pipe',
       \ 'in_io': 'null',
@@ -53,7 +53,7 @@ function! s:start(type, data, event) abort
 
   " On Nvim, this function will be executed twice, firstly it returns data, and then an empty string
   " Check the data value in order to prevent overlap
-  if vtm#util#safeTrim(message) == ''
+  if vtm#util#safe_trim(message) == ''
     return
   endif
 
@@ -69,18 +69,18 @@ function! s:start(type, data, event) abort
   if a:event == 'stdout'
     let translations = eval(message)
     if type(translations) != 4 && !translations['status']
-      call vtm#util#showMessage('Translation failed', 'error')
+      call vtm#util#show_msg('Translation failed', 'error')
     endif
 
-    if a:type == 'simple'
+    if a:type == 'echo'
       call vtm#display#echo(translations)
-    elseif a:type == 'complex'
+    elseif a:type == 'window'
       call vtm#display#window(translations)
     else
       call vtm#display#replace(translations)
     endif
-    call vtm#util#saveHistory(translations)
+    call vtm#util#save_history(translations)
   elseif a:event == 'stderr'
-    call vtm#util#showMessage(message)
+    call vtm#util#show_msg(message)
   endif
 endfunction

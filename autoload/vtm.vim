@@ -13,9 +13,9 @@ else
   let s:vtm_python_host = 'python'
 endif
 
-function! vtm#Translate(args, type) abort
+function! vtm#translate(args, display) abort
   " jump to popup or close popup
-  if a:type == 'complex'
+  if a:display == 'window'
     if &filetype == 'vtm'
       wincmd c
       return
@@ -24,7 +24,13 @@ function! vtm#Translate(args, type) abort
     endif
   endif
 
-  let args = substitute(a:args, '^\s*\(.\{-}\)\s*$', '\1', '')
+  if a:args == ''
+    let select_text = vtm#util#visual_select()
+    let args = '-w ' . select_text
+  else
+    let args = a:args
+  endif
+  let args = substitute(args, '^\s*\(.\{-}\)\s*$', '\1', '')
 
   let argmap = {
     \ 'engines': [],
@@ -50,14 +56,14 @@ function! vtm#Translate(args, type) abort
     endif
   endfor
 
-  if vtm#util#safeTrim(argmap['word']) == ''
+  if vtm#util#safe_trim(argmap['word']) == ''
     let word = expand("<cword>")
   else
     let word = argmap['word']
   endif
 
-  if vtm#util#safeTrim(word) == ''
-    call vtm#util#showMessage('No words selected', 'warning')
+  if vtm#util#safe_trim(word) == ''
+    call vtm#util#show_msg('No words selected', 'warning')
     return
   endif
 
@@ -73,7 +79,7 @@ function! vtm#Translate(args, type) abort
     let to_lang = argmap['lang']
   endif
 
-  let word = substitute(vtm#util#safeTrim(word), '[\n\|\r]\+', '. ', 'g')
+  let word = substitute(vtm#util#safe_trim(word), '[\n\|\r]\+', '. ', 'g')
 
   let cmd = s:vtm_python_host . ' ' . s:py_file
     \ . ' --text '      . shellescape(word)
@@ -81,15 +87,10 @@ function! vtm#Translate(args, type) abort
     \ . ' --toLang '    . to_lang
     \ . (len(g:vtm_proxy_url) > 0 ? (' --proxy ' . g:vtm_proxy_url) : '')
 
-  call vtm#query#jobStart(cmd, a:type)
+  call vtm#query#job_start(cmd, a:display)
 endfunction
 
-function! vtm#TranslateV(type) abort
-  let select_text = vtm#util#visualSelect()
-  call vtm#Translate('-w ' . select_text, a:type)
-endfunction
-
-function! vtm#Complete(arg_lead, cmd_line, cursor_pos) abort
+function! vtm#complete(arg_lead, cmd_line, cursor_pos) abort
   let engines = ['bing', 'ciba', 'google', 'youdao']
   let args_prompt = ['-e', '--engines', '-w', '--word', '-l', '--lang']
 

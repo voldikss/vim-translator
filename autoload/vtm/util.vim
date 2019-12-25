@@ -4,7 +4,7 @@
 " @Last Modified time: 2019-08-01 07:40:53
 
 
-function! vtm#util#showMessage(message, ...) abort
+function! vtm#util#show_msg(message, ...) abort
   if a:0 == 0
     let msgType = 'info'
   else
@@ -29,7 +29,7 @@ function! vtm#util#showMessage(message, ...) abort
   echohl None
 endfunction
 
-function! vtm#util#saveHistory(translations) abort
+function! vtm#util#save_history(translations) abort
   if !g:vtm_history_enable
     return
   endif
@@ -40,10 +40,10 @@ function! vtm#util#saveHistory(translations) abort
     let explain = t['explain']
 
     if len(explain)
-      let item = s:PadEnd(text, 25) . explain[0]
+      let item = s:padding_end(text, 25) . explain[0]
       break
     elseif len(paraphrase) && text !=? paraphrase
-      let item = s:PadEnd(text, 25) . paraphrase
+      let item = s:padding_end(text, 25) . paraphrase
       break
     else
       return
@@ -69,14 +69,14 @@ function! vtm#util#saveHistory(translations) abort
   let result = writefile(trans_data, g:vtm_history_file)
   if result == -1
     let message = 'Failed to save the translation data.'
-    call vtm#util#showMessage(message, 'warning')
+    call vtm#util#show_msg(message, 'warning')
   endif
 endfunction
 
-function! vtm#util#exportHistory() abort
+function! vtm#util#export_history() abort
   if !filereadable(g:vtm_history_file)
     let message = 'History file not exist yet'
-    call vtm#util#showMessage(message, 'error')
+    call vtm#util#show_msg(message, 'error')
     return
   endif
 
@@ -88,7 +88,7 @@ function! vtm#util#exportHistory() abort
   hi def link vtmHistoryTrans String
 endfunction
 
-function! s:PadEnd(text, length) abort
+function! s:padding_end(text, length) abort
   let text = a:text
   let len = len(text)
   if len < a:length
@@ -107,7 +107,7 @@ function! vtm#util#padding(text, width, char)
   return text
 endfunction
 
-function! vtm#util#visualSelect() abort
+function! vtm#util#visual_select() abort
   let reg_tmp = @a
   normal! gv"ay
   let select_text=@a
@@ -116,10 +116,6 @@ function! vtm#util#visualSelect() abort
   return select_text
 endfunction
 
-function! vtm#util#safeTrim(text)
+function! vtm#util#safe_trim(text)
   return substitute(a:text, "^\\s*\\(.\\{-}\\)\\(\\n\\|\\s\\)*$", '\1', '')
-endfunction
-
-function! vtm#util#version()
-  call vtm#util#showMessage('version 1.2.6', 'info')
 endfunction

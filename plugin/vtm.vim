@@ -50,25 +50,25 @@ if get(g:, 'vtm_default_mapping', 1)
   endif
 endif
 
-nmap <silent> <Plug>Translate   :call vtm#Translate('-w ' . expand("<cword>"), "simple")<CR>
-vmap <silent> <Plug>TranslateV  :<C-U>call vtm#TranslateV("simple")<CR>
-nmap <silent> <Plug>TranslateW  :call vtm#Translate('-w ' . expand("<cword>"), "complex")<CR>
-vmap <silent> <Plug>TranslateWV :<C-U>call vtm#TranslateV("complex")<CR>
-nmap <silent> <Plug>TranslateR  viw:<C-U>call vtm#TranslateV("replace")<CR>
-vmap <silent> <Plug>TranslateRV :<C-U>call vtm#TranslateV("replace")<CR>
+nmap <silent> <Plug>Translate   :call vtm#translate('-w ' . expand('<cword>'), 'echo')<CR>
+vmap <silent> <Plug>TranslateV  :<C-U>call vtm#translate('', 'echo')<CR>
+nmap <silent> <Plug>TranslateW  :call vtm#translate('-w ' . expand('<cword>'), 'window')<CR>
+vmap <silent> <Plug>TranslateWV :<C-U>call vtm#translate('', 'window')<CR>
+nmap <silent> <Plug>TranslateR  viw:<C-U>call vtm#translate('', 'replace')<CR>
+vmap <silent> <Plug>TranslateRV :<C-U>call vtm#translate('', 'replace')<CR>
 
 if !exists(':Translate')
-  command! -complete=customlist,vtm#Complete -nargs=* Translate call vtm#Translate(<q-args>, 'simple')
+  command! -complete=customlist,vtm#complete -nargs=* Translate call vtm#translate(<q-args>, 'echo')
 endif
 
 if !exists(':TranslateW')
-  command! -complete=customlist,vtm#Complete -nargs=* TranslateW call vtm#Translate(<q-args>, 'complex')
+  command! -complete=customlist,vtm#complete -nargs=* TranslateW call vtm#translate(<q-args>, 'window')
 endif
 
 if !exists(':TranslateR')
-  command! -complete=customlist,vtm#Complete -nargs=* TranslateR exec 'normal viw<Esc>' | call vtm#Translate(<q-args>, 'replace')
+  command! -complete=customlist,vtm#complete -nargs=* TranslateR exec 'normal viw<Esc>' | call vtm#translate(<q-args>, 'replace')
 endif
 
 if !exists(':TranslateH')
-  command! -nargs=0   TranslateH call vtm#util#exportHistory()
+  command! -nargs=0   TranslateH call vtm#util#export_history()
 endif
