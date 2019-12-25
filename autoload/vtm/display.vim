@@ -5,7 +5,7 @@
 
 
 function! vtm#display#window(translations) abort
-  let content = s:buildContent(a:translations)
+  let Lines = s:build_lines(a:translations)
   let max_height =
     \ g:vtm_popup_max_height == v:null
     \ ? float2nr(0.6*&lines)
@@ -14,15 +14,15 @@ function! vtm#display#window(translations) abort
     \ g:vtm_popup_max_width == v:null
     \ ? float2nr(0.6*&columns)
     \ : float2nr(g:vtm_popup_max_width)
-  let [width, height] = s:winSize(content, max_width, max_height)
-  let [row, col, vert, hor] = s:winPos(width, height)
+  let [width, height] = s:get_floatwin_size(Lines, max_width, max_height)
+  let [y_offset, x_offset, vert, hor] = s:get_floatwin_pos(width, height)
 
-  for i in range(len(content))
-    let line = content[i]
-    if match(line, '---') == 0 && width > len(line)
-      let content[i] = vtm#util#pad(content[i], width, '-')
-    elseif match(line, '@') == 0 && width > len(line)
-      let content[i] = vtm#util#pad(content[i], width, ' ')
+  for i in range(len(Lines))
+    let line = Lines[i]
+    if match(line, '───') == 0 && width > strdisplaywidth(line)
+      let Lines[i] = vtm#util#padding(Lines[i], width, '─')
+    elseif match(line, '⟦') == 0 && width > strdisplaywidth(line)
+      let Lines[i] = vtm#util#padding(Lines[i], width, ' ')
     endif
   endfor
 
@@ -35,17 +35,58 @@ function! vtm#display#window(translations) abort
   endif
 
   if vtm_window_type == 'floating'
-    " `width + 2`? ==> set foldcolumn=1
-    let options = {
-      \ 'relative': 'cursor',
+    let main_winnr = winnr()
+    let cursor_pos=getcurpos()
+    let hpos=cursor_pos[1]-line('w0')
+    let vpos=cursor_pos[2]
+
+    ""
+    " TODO:
+    " use 'relative': 'cursor' for the border window
+    " use 'relative':'win'(which behaviors not as expected...) for content window
+    let opts = {
+      \ 'relative': 'win',
+      \ 'bufpos': [0,0],
       \ 'anchor': vert . hor,
-      \ 'row': row,
-      \ 'col': col,
-      \ 'width': width + 2,
+      \ 'row': hpos + y_offset + (vert == 'N' ? 1 : -1),
+      \ 'col': vpos + x_offset + (hor == 'W' ? 1 : -1),
+      \ 'width': width,
       \ 'height': height,
+      \ 'style':'minimal'
       \ }
-    call nvim_open_win(bufnr('%'), v:true, options)
-    call s:onOpenFloating(content)
+    let s:vtm_bufnr = nvim_create_buf(v:false, v:true)
+    let vtm_winid = nvim_open_win(s:vtm_bufnr, v:false, opts)
+    call nvim_buf_set_lines(s:vtm_bufnr, 0, -1, v:false, Lines)
+    call nvim_buf_set_option(s:vtm_bufnr, 'filetype', 'vtm')
+
+    let border_opts = {
+      \ 'relative': 'win',
+      \ 'bufpos': [0,0],
+      \ 'anchor': vert . hor,
+      \ 'row': hpos + y_offset,
+      \ 'col': vpos + x_offset,
+      \ 'width': width + 2,
+      \ 'height': height + 2,
+      \ 'style':'minimal'
+      \ }
+
+    let top = "┌" . repeat("─", width) . "┐"
+    let mid = "│" . repeat(" ", width) . "│"
+    let bot = "└" . repeat("─", width) . "┘"
+    let lines = [top] + repeat([mid], height) + [bot]
+    let s:border_bufnr = nvim_create_buf(v:false, v:true)
+    call nvim_buf_set_lines(s:border_bufnr, 0, -1, v:true, lines)
+    call nvim_open_win(s:border_bufnr, v:false, border_opts)
+
+    " Note: this line must be put after creating the border_win!
+    let s:vtm_winnr = win_id2win(vtm_winid)
+
+    augroup vtm_close
+      autocmd!
+      autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call s:close_vtm_window()
+      exe 'autocmd BufLeave,BufWipeout,BufDelete <buffer=' . s:vtm_bufnr . '> exe "bw ' . s:border_bufnr . '"'
+    augroup END
+
   elseif vtm_window_type == 'popup'
     let vert = vert == 'N' ? 'top' : 'bot'
     let hor = hor == 'W' ? 'left' : 'right'
@@ -56,35 +97,91 @@ function! vtm#display#window(translations) abort
       \ 'line': line,
       \ 'col': 'cursor',
       \ 'moved': 'any',
-      \ 'padding': [0, 1, 0, 1],
+      \ 'padding': [0, 0, 0, 0],
+      \ 'border': [1, 1, 1, 1],
       \ 'maxwidth': width,
       \ 'minwidth': width,
       \ 'maxheight': height,
       \ 'minheight': height
       \ }
     let winid = popup_create('', options)
-    call s:onOpenPopup(winid, content)
+    let bufnr = winbufnr(winid)
+    for l in range(1, len(Lines))
+      call setbufline(bufnr, l, Lines[l-1])
+    endfor
+    call setbufvar(bufnr, '&filetype', 'vtm')
+    call setbufvar(bufnr, '&spell', 0)
+    call setbufvar(bufnr, '&wrap', 1)
+    call setbufvar(bufnr, '&number', 1)
+    call setbufvar(bufnr, '&relativenumber', 0)
+    call setbufvar(bufnr, '&foldcolumn', 0)
   else
     let curr_pos = getpos('.')
     execute 'noswapfile bo pedit!'
     call setpos('.', curr_pos)
     wincmd P
     execute height+1 . 'wincmd _'
-    call s:onOpenPreview(content)
+    enew!
+    let s:vtm_winnr = winnr()
+    let s:vtm_bufnr = bufnr() " NOTE: this line must be put after `enew`
+    call append(0, Lines)
+    normal gg
+
+    setlocal foldcolumn=1
+    setlocal buftype=nofile
+    setlocal bufhidden=wipe
+    setlocal signcolumn=no
+    setlocal filetype=vtm
+    setlocal wrap nospell
+    setlocal nonumber norelativenumber
+    setlocal noautoindent nosmartindent
+    setlocal nobuflisted noswapfile nocursorline
+    noautocmd wincmd p
+
+    augroup vtm_close
+      autocmd!
+      autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call s:close_vtm_window()
+    augroup END
   endif
 endfunction
 
-function! s:buildContent(translations)
-  let paraphrase_marker = '🌀 '
+""
+" Only available for floating winndow and preview window
+function! vtm#display#try_jump_into()
+  if exists('s:vtm_bufnr') && bufexists(s:vtm_bufnr)
+    noautocmd exe s:vtm_winnr . ' wincmd w'
+    return v:true
+  endif
+  return v:false
+endfunction
+
+""
+" Close floating or preview window
+function! s:close_vtm_window() abort
+  if exists('s:vtm_bufnr') && bufexists(s:vtm_bufnr)
+    exe 'bw ' . s:vtm_bufnr
+  endif
+  if exists('s:border_bufnr') && bufexists(s:border_bufnr)
+    exe 'bw ' . s:border_bufnr
+  endif
+  if exists('#vtm_close')
+    autocmd! vtm_close * <buffer>
+  endif
+endfunction
+
+""
+" Style always makes me frantic
+function! s:build_lines(translations)
+  let paraphrase_marker = '⏺ '
   let phonetic_marker = '🔉 '
-  let explain_marker = '📝 '
+  let explain_marker = '⏺ '
 
   let content = []
-  call add(content, '@ ' . a:translations['text'] . ' @' )
+  call add(content, '⟦ ' . a:translations['text'] . ' ⟧' )
 
   for t in a:translations['results']
     call add(content, '')
-    call add(content, '------' . t['engine'] . '------')
+    call add(content, '─── ' . t['engine'] . ' ───')
 
     if len(t['paraphrase'])
       let paraphrase = paraphrase_marker . t['paraphrase']
@@ -110,58 +207,7 @@ function! s:buildContent(translations)
   return content
 endfunction
 
-function! s:onOpenFloating(translation)
-  enew!
-  call append(0, a:translation)
-  normal gg
-  nmap <silent> <buffer> q :close<CR>
-
-  setlocal foldcolumn=1
-  setlocal buftype=nofile
-  setlocal bufhidden=wipe
-  setlocal signcolumn=no
-  setlocal filetype=vtm
-  setlocal noautoindent
-  setlocal nosmartindent
-  setlocal wrap
-  setlocal nobuflisted
-  setlocal noswapfile
-  setlocal nocursorline
-  setlocal nonumber
-  setlocal norelativenumber
-  setlocal nospell
-  " only available in nvim
-  if has('nvim')
-    setlocal winhighlight=Normal:vtmFloatingNormal
-    setlocal winhighlight=FoldColumn:vtmFloatingNormal
-  endif
-
-  noautocmd wincmd p
-
-  augroup VtmClosePopup
-    autocmd!
-    autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call s:closePopup()
-  augroup END
-endfunction
-
-function! s:onOpenPopup(winid, translation)
-  let bufnr = winbufnr(a:winid)
-  for l in range(1, len(a:translation))
-    call setbufline(bufnr, l, a:translation[l-1])
-  endfor
-  call setbufvar(bufnr, '&filetype', 'vtm')
-  call setbufvar(bufnr, '&spell', 0)
-  call setbufvar(bufnr, '&wrap', 1)
-  call setbufvar(bufnr, '&number', 1)
-  call setbufvar(bufnr, '&relativenumber', 0)
-  call setbufvar(bufnr, '&foldcolumn', 0)
-endfunction
-
-function! s:onOpenPreview(translation)
-  call s:onOpenFloating(a:translation)
-endfunction
-
-function! s:winSize(translation, max_width, max_height) abort
+function! s:get_floatwin_size(translation, max_width, max_height) abort
   let width = 0
   let height = 0
 
@@ -182,7 +228,10 @@ function! s:winSize(translation, max_width, max_height) abort
   return [width, height]
 endfunction
 
-function! s:winPos(width, height) abort
+""
+" x_offset and y_offset values are presetted according to the border's position
+" see border_opts
+function! s:get_floatwin_pos(width, height) abort
   let bottom_line = line('w0') + winheight(0) - 1
   let curr_pos = getpos('.')
   let rownr = curr_pos[1]
@@ -195,31 +244,21 @@ function! s:winPos(width, height) abort
 
   if rownr + a:height <= bottom_line
     let vert = 'N'
-    let row = 1
+    let y_offset = 2
   else
     let vert = 'S'
-    let row = 0
+    let y_offset = 1
   endif
 
   if colnr + a:width <= &columns
     let hor = 'W'
-    let col = 0
+    let x_offset = -1
   else
     let hor = 'E'
-    let col = 1
+    let x_offset = 0
   endif
 
-  return [row, col, vert, hor]
-endfunction
-
-function! s:closePopup() abort
-  for winnr in range(1, winnr('$'))
-    if getbufvar(winbufnr(winnr), '&filetype') == 'vtm'
-      execute winnr . 'wincmd c'
-      autocmd! VtmClosePopup * <buffer>
-      return
-    endif
-  endfor
+  return [y_offset, x_offset, vert, hor]
 endfunction
 
 function! vtm#display#echo(translations) abort

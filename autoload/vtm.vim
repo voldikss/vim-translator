@@ -19,13 +19,8 @@ function! vtm#Translate(args, type) abort
     if &filetype == 'vtm'
       wincmd c
       return
-    else
-      for winnr in range(1, winnr('$'))
-        if getbufvar(winbufnr(winnr),'&filetype') == 'vtm'
-          noautocmd wincmd p
-          return
-        endif
-      endfor
+    elseif vtm#display#try_jump_into()
+      return
     endif
   endif
 
