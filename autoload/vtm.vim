@@ -6,7 +6,7 @@
 let s:py_file = expand('<sfile>:p:h') . '/../script/query.py'
 
 if exists('g:python3_host_prog')
-  let s:vtm_python_host = g:python3_host_prog
+  let s:vtm_python_host = shellescape(g:python3_host_prog)
 elseif executable('python3')
   let s:vtm_python_host = 'python3'
 else
