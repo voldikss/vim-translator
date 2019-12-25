@@ -13,7 +13,7 @@ else
   let s:vtm_python_host = 'python'
 endif
 
-function! vtm#translate(args, display) abort
+function! vtm#translate(args, display, visualmode) abort
   " jump to popup or close popup
   if a:display == 'window'
     if &filetype == 'vtm'
@@ -25,20 +25,36 @@ function! vtm#translate(args, display) abort
   endif
 
   if a:args == ''
-    let select_text = vtm#util#visual_select()
+    let select_text = a:visualmode ? vtm#util#visual_select() : expand('<cword>')
     let args = '-w ' . select_text
   else
     let args = a:args
   endif
   let args = substitute(args, '^\s*\(.\{-}\)\s*$', '\1', '')
 
+  let [args_obj, success] = s:parse_args(args)
+  if success != v:true
+    call vtm#util#show_msg('Error arguments', 'error')
+    return
+  endif
+
+  let cmd = s:vtm_python_host . ' ' . s:py_file
+    \ . ' --text '      . shellescape(args_obj.word)
+    \ . ' --engines '    . join(args_obj.engines, ' ')
+    \ . ' --toLang '    . args_obj.to_lang
+    \ . (len(g:vtm_proxy_url) > 0 ? (' --proxy ' . g:vtm_proxy_url) : '')
+
+  call vtm#query#job_start(cmd, a:display)
+endfunction
+
+function! s:parse_args(argstr)
   let argmap = {
     \ 'engines': [],
     \ 'word': '',
     \ 'lang': ''
     \ }
   let flag = ''
-  for arg in split(args, ' ')
+  for arg in split(a:argstr, ' ')
     if index(['-e', '--engines'], arg) >= 0
       let flag = 'engines'
     elseif index(['-w', '--word'], arg) >= 0
@@ -50,44 +66,33 @@ function! vtm#translate(args, display) abort
         let argmap[flag] .= ' ' . arg
       elseif flag == 'lang'
         let argmap[flag] = arg
+      elseif flag == 'engines'
+        call add(argmap.engines, arg)
       else
-        call add(argmap[flag], arg)
+        return [argmap, v:false]
       endif
     endif
   endfor
 
-  if vtm#util#safe_trim(argmap['word']) == ''
-    let word = expand("<cword>")
-  else
-    let word = argmap['word']
+  if vtm#util#safe_trim(argmap.word) == ''
+    let argmap.word= vtm#util#safe_trim(expand('<cword>>'))
   endif
 
-  if vtm#util#safe_trim(word) == ''
+  if argmap.word == ''
     call vtm#util#show_msg('No words selected', 'warning')
     return
   endif
+  let argmap.word = substitute(argmap.word, '[\n\|\r]\+', '. ', 'g')
 
-  if argmap['engines'] == []
-    let engines = g:vtm_default_engines
-  else
-    let engines = argmap['engines']
+  if argmap.engines == []
+    let argmap.engines = g:vtm_default_engines
   endif
 
-  if argmap['lang'] == ''
-    let to_lang = g:vtm_target_lang
-  else
-    let to_lang = argmap['lang']
+  if argmap.lang == ''
+    let argmap.to_lang = g:vtm_target_lang
   endif
 
-  let word = substitute(vtm#util#safe_trim(word), '[\n\|\r]\+', '. ', 'g')
-
-  let cmd = s:vtm_python_host . ' ' . s:py_file
-    \ . ' --text '      . shellescape(word)
-    \ . ' --engines '    . join(engines, ' ')
-    \ . ' --toLang '    . to_lang
-    \ . (len(g:vtm_proxy_url) > 0 ? (' --proxy ' . g:vtm_proxy_url) : '')
-
-  call vtm#query#job_start(cmd, a:display)
+  return [argmap, v:true]
 endfunction
 
 function! vtm#complete(arg_lead, cmd_line, cursor_pos) abort
