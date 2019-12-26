@@ -46,7 +46,7 @@ function! vtm#translate(args, display, visualmode) abort
     return
   endif
 
-  let cmd = shellescape(s:vtm_python_host) . ' ' . s:py_file
+  let cmd = s:vtm_python_host . ' ' . s:py_file
     \ . ' --text '      . shellescape(args_obj.word)
     \ . ' --engines '    . join(args_obj.engines, ' ')
     \ . ' --toLang '    . args_obj.to_lang
@@ -71,7 +71,7 @@ function! s:parse_args(argstr) abort
       let flag = 'lang'
     else
       if flag == 'word'
-        let argmap[flag] .= ' ' . arg
+        let argmap[flag] .= arg
       elseif flag == 'lang'
         let argmap[flag] = arg
       elseif flag == 'engines'
