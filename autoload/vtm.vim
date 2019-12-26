@@ -4,9 +4,10 @@
 " @Last Modified time: 2019-07-02 07:42:40
 
 let s:py_file = expand('<sfile>:p:h') . '/../script/query.py'
+let s:vtm_healthcheck = v:false
 
 if exists('g:python3_host_prog')
-  let s:vtm_python_host = shellescape(g:python3_host_prog)
+  let s:vtm_python_host = g:python3_host_prog
 elseif executable('python3')
   let s:vtm_python_host = 'python3'
 else
@@ -20,6 +21,13 @@ function! vtm#translate(args, display, visualmode) abort
       wincmd c
       return
     elseif vtm#display#try_jump_into()
+      return
+    endif
+  endif
+
+  if !s:vtm_healthcheck
+    let s:vtm_healthcheck = vtm#util#healthcheck(s:vtm_python_host)
+    if !s:vtm_healthcheck
       return
     endif
   endif
@@ -38,7 +46,7 @@ function! vtm#translate(args, display, visualmode) abort
     return
   endif
 
-  let cmd = s:vtm_python_host . ' ' . s:py_file
+  let cmd = shellescape(s:vtm_python_host) . ' ' . s:py_file
     \ . ' --text '      . shellescape(args_obj.word)
     \ . ' --engines '    . join(args_obj.engines, ' ')
     \ . ' --toLang '    . args_obj.to_lang
