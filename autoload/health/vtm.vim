@@ -5,24 +5,18 @@
 
 function! s:check_job() abort
   if exists('*jobstart') || exists('*job_start')
-    call health#report_ok('Async is OK')
+    call health#report_ok('Async check passed')
   else
-    call health#report_error('+job feature is required to execute network request')
+    call health#report_error('Job feature is required but not found')
   endif
 endfunction
 
 function! s:check_floating_window() abort
-  " vim instead of nvim
-  if !has('nvim')
-    call health#report_error("Floating window was not supported on Vim")
-    return
-  endif
-
   " nvim, but doesn't have floating window
   if !exists('*nvim_open_win')
     call health#report_error(
       \ 'Floating window is missed on the current version Nvim',
-      \ 'Upgrade your Nvim to the HEAD of 0.4.0-dev")'
+      \ 'Upgrade your Nvim")'
       \ )
     return
   endif
@@ -40,12 +34,11 @@ function! s:check_floating_window() abort
   catch /^Vim\%((\a\+)\)\=:E119/
     call health#report_error(
       \ 'The newest floating window feature is missed on the current version Nvim',
-      \ 'Upgrade your Nvim to the HEAD of 0.4.0-dev")'
+      \ 'Upgrade your Nvim")'
       \ )
     return
   endtry
-
-  call health#report_ok('Floating window is OK')
+  call health#report_ok('Floating window check passed')
 endfunction
 
 function! s:check_python() abort
@@ -56,7 +49,7 @@ function! s:check_python() abort
   elseif executable('python')
     let vtm_python_host = 'python'
   else
-    call health#report_error('Python is not executable')
+    call health#report_error('Python is required but not found')
     return
   endif
   call health#report_ok('Using '.vtm_python_host)

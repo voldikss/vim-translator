@@ -28,7 +28,7 @@ function! vtm#display#window(translations) abort
 
   if has('nvim') && exists('*nvim_win_set_config')
     let vtm_window_type = 'floating'
-  elseif has('textprop')
+  elseif has('textprop') && has('patch-8.1.1522')
     let vtm_window_type = 'popup'
   else
     let vtm_window_type = 'preview'
