@@ -56,15 +56,19 @@ g:translator_enable_history                      *g:translator_enable_history*
 
 				Default: `v:false`
 
-g:translator_popup_max_width                  *g:translator_popup_max_width*
+g:translator_window_max_width                  *g:translator_window_max_width*
 
 				Max width value of the popup/floating window
 				Default: `0.6*&columns`
 
-g:translator_popup_max_height                *g:translator_popup_max_height*
+g:translator_window_max_height                *g:translator_window_max_height*
 
 				Max width value of the popup/floating height
 				Default: `0.6*&lines`
+
+g:translator_window_borderchars              *g:translator_window_borderchars*
+
+                                Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
 
 
 ==============================================================================

@@ -53,17 +53,21 @@ Plug 'voldikss/vim-translator'
 
 - Default: `v:false`
 
-#### **`g:translator_popup_max_width`**
+#### **`g:translator_window_max_width`**
 
 > Max width value of the popup/floating window
 
 - Default: `0.6*&columns`
 
-#### **`g:translator_popup_max_height`**
+#### **`g:translator_window_max_height`**
 
 > Max height value of popup/floating window
 
 - Default: `0.6*&lines`
+
+#### **`g:translator_window_borderchars`**
+
+- Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
 
 ## Key Mappings
 

@@ -7,13 +7,13 @@
 function! translator#display#window(translations) abort
   let Lines = s:build_lines(a:translations)
   let max_height =
-    \ g:translator_popup_max_height == v:null
+    \ g:translator_window_max_height == v:null
     \ ? float2nr(0.6*&lines)
-    \ : float2nr(g:translator_popup_max_height)
+    \ : float2nr(g:translator_window_max_height)
   let max_width =
-    \ g:translator_popup_max_width == v:null
+    \ g:translator_window_max_width == v:null
     \ ? float2nr(0.6*&columns)
-    \ : float2nr(g:translator_popup_max_width)
+    \ : float2nr(g:translator_window_max_width)
   let [width, height] = s:get_floatwin_size(Lines, max_width, max_height)
   let [y_offset, x_offset, vert, hor] = s:get_floatwin_pos(width, height)
 
@@ -69,10 +69,15 @@ function! translator#display#window(translations) abort
       \ 'height': height + 2,
       \ 'style':'minimal'
       \ }
-
-    let top = "┌" . repeat("─", width) . "┐"
-    let mid = "│" . repeat(" ", width) . "│"
-    let bot = "└" . repeat("─", width) . "┘"
+    let top = g:translator_window_borderchars[4] .
+            \ repeat(g:translator_window_borderchars[0], width) .
+            \ g:translator_window_borderchars[5]
+    let mid = g:translator_window_borderchars[3] .
+            \ repeat(" ", width) .
+            \ g:translator_window_borderchars[1]
+    let bot = g:translator_window_borderchars[7] .
+            \ repeat(g:translator_window_borderchars[2], width) .
+            \ g:translator_window_borderchars[6]
     let lines = [top] + repeat([mid], height) + [bot]
     let s:border_bufnr = nvim_create_buf(v:false, v:true)
     call nvim_buf_set_lines(s:border_bufnr, 0, -1, v:true, lines)
@@ -99,6 +104,7 @@ function! translator#display#window(translations) abort
       \ 'moved': 'any',
       \ 'padding': [0, 0, 0, 0],
       \ 'border': [1, 1, 1, 1],
+      \ 'borderchars': g:translator_window_borderchars,
       \ 'maxwidth': width,
       \ 'minwidth': width,
       \ 'maxheight': height,

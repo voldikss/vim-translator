@@ -12,8 +12,9 @@ let g:loaded_translator= 1
 let g:translator_target_lang = get(g:, 'translator_target_lang', 'zh')
 let g:translator_proxy_url = get(g:, 'translator_proxy_url', v:null)
 let g:translator_history_enable = get(g:, 'translator_history_enable', v:false)
-let g:translator_popup_max_width = get(g:, 'translator_popup_max_width', v:null)
-let g:translator_popup_max_height = get(g:, 'translator_popup_max_height', v:null)
+let g:translator_window_max_width = get(g:, 'translator_window_max_width', v:null)
+let g:translator_window_max_height = get(g:, 'translator_window_max_height', v:null)
+let g:translator_window_borderchars = get(g:, 'translator_window_borderchars', ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
 
 " For old variables
 function! s:transfer(var1, var2) abort
@@ -25,8 +26,8 @@ endfunction
 call s:transfer('g:translator_target_lang', 'g:vtm_target_lang')
 call s:transfer('g:translator_proxy_url', 'g:vtm_proxy_url')
 call s:transfer('g:translator_history_enable', 'g:vtm_history_enable')
-call s:transfer('g:translator_popup_max_width', 'g:vtm_popup_max_width')
-call s:transfer('g:translator_popup_max_height', 'g:vtm_popup_max_height')
+call s:transfer('g:translator_window_max_width', 'g:vtm_popup_max_width')
+call s:transfer('g:translator_window_max_height', 'g:vtm_popup_max_height')
 call s:transfer('g:translator_default_mappings', 'g:vtm_default_mapping')
 
 if match(g:translator_target_lang, 'zh') >= 0
