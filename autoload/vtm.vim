@@ -34,7 +34,7 @@ function! vtm#translate(args, display, visualmode) abort
 
   let [args_obj, success] = s:parse_args(args)
   if success != v:true
-    call vtm#util#show_msg('Error arguments', 'error')
+    call vtm#util#show_msg('Arguments error', 'error')
     return
   endif
 
@@ -79,8 +79,7 @@ function! s:parse_args(argstr)
   endif
 
   if argmap.word == ''
-    call vtm#util#show_msg('No words selected', 'warning')
-    return
+    return [argmap, v:false]
   endif
   let argmap.word = substitute(argmap.word, '[\n\|\r]\+', '. ', 'g')
 
