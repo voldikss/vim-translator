@@ -262,28 +262,26 @@ function! s:get_floatwin_pos(width, height) abort
 endfunction
 
 function! vtm#display#echo(translations) abort
-  let has_phonetic = v:false
-  let has_paraphrase = v:false
-  let has_explain = v:false
+  let phonetic = ''
+  let paraphrase = ''
+  let explain = ''
 
-  let content = []
   for t in a:translations['results']
-    if len(t['phonetic']) && !has_phonetic
-      call add(content, '[' . t['phonetic'] . ']')
-      let has_phonetic = v:true
+    if len(t['phonetic']) && (phonetic == '')
+      let phonetic = ' [' . t['phonetic'] . '] '
     endif
-    if len(t['paraphrase']) && !has_paraphrase
-      call add(content, t['paraphrase'])
-      let has_paraphrase = v:true
+    if len(t['paraphrase']) && (paraphrase == '')
+      let paraphrase = t['paraphrase']
     endif
-    if len(t['explain']) && !has_explain
-      call add(content, join(t['explain'], ' '))
-      let has_explain = v:true
+    if len(t['explain']) && (len(explain) == 0)
+      let explain = join(t['explain'], ' ')
     endif
   endfor
 
-  let translation = a:translations['text'] . ' ==> ' . join(content, ' ')
-  call vtm#util#show_msg(translation)
+  call vtm#util#echo('Function', a:translations['text'])
+  call vtm#util#echon('Constant', ' ==>')
+  call vtm#util#echon('Type', phonetic)
+  call vtm#util#echon('Normal', explain)
 endfunction
 
 function! vtm#display#replace(translations) abort

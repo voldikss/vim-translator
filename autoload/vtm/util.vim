@@ -3,6 +3,17 @@
 " @Last Modified by: voldikss
 " @Last Modified time: 2019-08-01 07:40:53
 
+function! vtm#util#echo(group, msg) abort
+  execute 'echohl' a:group
+  echo a:msg
+  echohl NONE
+endfunction
+
+function! vtm#util#echon(group, msg) abort
+  execute 'echohl' a:group
+  echon a:msg
+  echohl NONE
+endfunction
 
 function! vtm#util#show_msg(message, ...) abort
   if a:0 == 0
@@ -17,16 +28,15 @@ function! vtm#util#show_msg(message, ...) abort
     let message = a:message
   endif
 
-  if msgType == 'info'
-    echohl String
-  elseif msgType == 'warning'
-    echohl WarningMsg
-  elseif msgType == 'error'
-    echohl ErrorMsg
-  endif
+  call vtm#util#echo('Constant', '[vim-translate-me] ')
 
-  echomsg '[vim-translate-me] ' . message
-  echohl None
+  if msgType == 'info'
+    call vtm#util#echon('Normal', message)
+  elseif msgType == 'warning'
+    call vtm#util#echon('WarningMsg', message)
+  elseif msgType == 'error'
+    call vtm#util#echon('Error', message)
+  endif
 endfunction
 
 function! vtm#util#save_history(translations) abort

@@ -81,6 +81,6 @@ function! s:start(type, data, event) abort
     endif
     call vtm#util#save_history(translations)
   elseif a:event == 'stderr'
-    call vtm#util#show_msg(message)
+    call vtm#util#show_msg(message, 'error')
   endif
 endfunction
