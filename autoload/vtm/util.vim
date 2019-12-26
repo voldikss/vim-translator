@@ -129,15 +129,3 @@ endfunction
 function! vtm#util#safe_trim(text) abort
   return substitute(a:text, "^\\s*\\(.\\{-}\\)\\(\\n\\|\\s\\)*$", '\1', '')
 endfunction
-
-function! vtm#util#healthcheck(vtm_python_host) abort
-  if !executable(a:vtm_python_host)
-    call vtm#util#show_msg('python is required but not found', 'error')
-    return v:false
-  endif
-  if !exists('*jobstart') && !exists('*job_start')
-    call vtm#util#show_msg('job-api is required but not found', 'error')
-    return v:false
-  endif
-  return v:true
-endfunction

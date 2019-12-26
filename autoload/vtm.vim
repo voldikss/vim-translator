@@ -4,14 +4,18 @@
 " @Last Modified time: 2019-07-02 07:42:40
 
 let s:py_file = expand('<sfile>:p:h') . '/../script/query.py'
-let s:vtm_healthcheck = v:false
 
-if exists('g:python3_host_prog')
-  let s:vtm_python_host = g:python3_host_prog
-elseif executable('python3')
-  let s:vtm_python_host = 'python3'
-else
-  let s:vtm_python_host = 'python'
+if !exists('s:vtm_python_host')
+  if executable('python3')
+    let s:vtm_python_host = 'python3'
+  elseif executable('python')
+    let s:vtm_python_host = 'python'
+  elseif exists('g:python3_host_prog')
+    let s:vtm_python_host = g:python3_host_prog
+  else
+    call vtm#util#show_msg('python is required but not found', 'error')
+    finish
+  endif
 endif
 
 function! vtm#translate(args, display, visualmode) abort
@@ -21,13 +25,6 @@ function! vtm#translate(args, display, visualmode) abort
       wincmd c
       return
     elseif vtm#display#try_jump_into()
-      return
-    endif
-  endif
-
-  if !s:vtm_healthcheck
-    let s:vtm_healthcheck = vtm#util#healthcheck(s:vtm_python_host)
-    if !s:vtm_healthcheck
       return
     endif
   endif
