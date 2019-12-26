@@ -15,6 +15,7 @@ let g:translator_history_enable = get(g:, 'translator_history_enable', v:false)
 let g:translator_window_max_width = get(g:, 'translator_window_max_width', v:null)
 let g:translator_window_max_height = get(g:, 'translator_window_max_height', v:null)
 let g:translator_window_borderchars = get(g:, 'translator_window_borderchars', ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
+let g:translator_window_border_highlight = get(g:, 'translator_window_border_highlight', 'NormalFloat')
 
 " For old variables
 function! s:transfer(var1, var2) abort

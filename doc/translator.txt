@@ -71,6 +71,12 @@ g:translator_window_borderchars              *g:translator_window_borderchars*
                                 Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
 
 
+g:translator_window_border_highlight    *g:translator_window_border_highlight*
+
+				Available: see `:help group-name` and `:help highlight-groups`
+
+				Default: `'NormalFloat'`
+
 ==============================================================================
 
 MAPPINGS                                       *translator-key-mappings*

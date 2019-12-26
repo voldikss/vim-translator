@@ -69,6 +69,12 @@ Plug 'voldikss/vim-translator'
 
 - Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
 
+#### **`g:translator_window_border_highlight`**
+
+- Available: see `:help group-name` and `:help highlight-groups`
+
+- Default: `'NormalFloat'`
+
 ## Key Mappings
 
 This plugin doesn't supply default mappings.
