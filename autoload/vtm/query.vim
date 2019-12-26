@@ -4,18 +4,18 @@
 " @Last Modified time: 2019-06-30 21:35:47
 
 if has('nvim')
-  function! s:on_stdout_nvim(type, jobid, data, event)
+  function! s:on_stdout_nvim(type, jobid, data, event) abort
     call s:start(a:type, a:data, a:event)
   endfunction
 
-  function! s:on_exit_nvim(jobid, code, event)
+  function! s:on_exit_nvim(jobid, code, event) abort
   endfunction
 else
-  function! s:on_stdout_vim(type, event, ch, msg)
+  function! s:on_stdout_vim(type, event, ch, msg) abort
     call s:start(a:type, a:msg, a:event)
   endfunction
 
-  function! s:on_exit_vim(ch, code)
+  function! s:on_exit_vim(ch, code) abort
   endfunction
 endif
 

@@ -147,7 +147,7 @@ endfunction
 
 ""
 " Only available for floating winndow and preview window
-function! vtm#display#try_jump_into()
+function! vtm#display#try_jump_into() abort
   if exists('s:vtm_bufnr') && bufexists(s:vtm_bufnr)
     noautocmd exe s:vtm_winnr . ' wincmd w'
     return v:true
@@ -171,7 +171,7 @@ endfunction
 
 ""
 " Style always makes me frantic
-function! s:build_lines(translations)
+function! s:build_lines(translations) abort
   let paraphrase_marker = '⏺ '
   let phonetic_marker = '🔉 '
   let explain_marker = '⏺ '

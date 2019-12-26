@@ -109,7 +109,7 @@ function! s:padding_end(text, length) abort
   return text
 endfunction
 
-function! vtm#util#padding(text, width, char)
+function! vtm#util#padding(text, width, char) abort
   let padding_size = (a:width - strdisplaywidth(a:text)) / 2
   let padding = repeat(a:char, padding_size)
   let padend = repeat(a:char, (a:width - strdisplaywidth(a:text)) % 2)
@@ -126,6 +126,6 @@ function! vtm#util#visual_select() abort
   return select_text
 endfunction
 
-function! vtm#util#safe_trim(text)
+function! vtm#util#safe_trim(text) abort
   return substitute(a:text, "^\\s*\\(.\\{-}\\)\\(\\n\\|\\s\\)*$", '\1', '')
 endfunction

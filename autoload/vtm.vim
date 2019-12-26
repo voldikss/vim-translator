@@ -47,7 +47,7 @@ function! vtm#translate(args, display, visualmode) abort
   call vtm#query#job_start(cmd, a:display)
 endfunction
 
-function! s:parse_args(argstr)
+function! s:parse_args(argstr) abort
   let argmap = {
     \ 'engines': [],
     \ 'word': '',
