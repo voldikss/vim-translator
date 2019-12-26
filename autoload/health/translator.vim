@@ -43,19 +43,19 @@ endfunction
 
 function! s:check_python() abort
   if exists('g:python3_host_prog')
-    let vtm_python_host = g:python3_host_prog
+    let translator_python_host = g:python3_host_prog
   elseif executable('python3')
-    let vtm_python_host = 'python3'
+    let translator_python_host = 'python3'
   elseif executable('python')
-    let vtm_python_host = 'python'
+    let translator_python_host = 'python'
   else
     call health#report_error('Python is required but not found')
     return
   endif
-  call health#report_ok('Using '.vtm_python_host)
+  call health#report_ok('Using '.translator_python_host)
 endfunction
 
-function! health#vtm#check() abort
+function! health#translator#check() abort
   call s:check_job()
   call s:check_floating_window()
   call s:check_python()

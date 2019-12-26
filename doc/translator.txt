@@ -1,0 +1,142 @@
+*translator.txt*      Vim/Neovim plugin for translating     Last change: 2019-12-26
+
+Author : voldikss <https://github.com/voldikss>
+License: MIT license
+==============================================================================
+CONTENTS                                               *translator-contents*
+
+    Introduction                                       |translator-introduction|
+    Install                                            |translator-install|
+    Variables                                          |translator-variables|
+    Keymappings                                        |translator-key-mappings|
+    Commands                                           |translator-commands|
+    Highlight                                          |translator-highlight|
+    Repository                                         |translator-repository|
+
+
+==============================================================================
+INTRODUCTION                                        *translator-introduction*
+
+	Asynchronou translating plugin for Vim/Neovim
+
+
+==============================================================================
+INSTALL                                                 *translator-install*
+
+	With vim-plug:
+	>
+	    Plug 'voldikss/vim-translator'
+    <
+
+==============================================================================
+VARIABLES                                            *translator-variables*
+
+g:translator_target_lang                            *g:translator_target_lang*
+
+				Refer to https://github.com/voldikss/vim-translator/wiki
+				Default: `'zh'`
+
+g:translator_default_engines                   *g:translator_default_engines*
+
+				Available: `'bing'`, `'ciba'`, `'google'`, `'youdao'`.
+				Default: `['ciba', 'youdao']` if |g:translator_target_lang|
+				is `'zh'``, otherwise `['google', 'bing']`
+
+g:translator_proxy_url                               *g:translator_proxy_url*
+
+				i.e.
+				`let g:translator_proxy_url = 'socks5://127.0.0.1:1080'`
+				Default: `v:null`
+
+g:translator_history_enable                      *g:translator_history_enable*
+
+				Default: `v:false`
+
+g:translator_enable_history                      *g:translator_enable_history*
+
+				Default: `v:false`
+
+g:translator_popup_max_width                  *g:translator_popup_max_width*
+
+				Max width value of the popup/floating window
+				Default: `0.6*&columns`
+
+g:translator_popup_max_height                *g:translator_popup_max_height*
+
+				Max width value of the popup/floating height
+				Default: `0.6*&lines`
+
+
+==============================================================================
+
+MAPPINGS                                       *translator-key-mappings*
+
+                    This plugin doesn't supply default mappings.
+                >
+                    """ Example configuration
+
+                    " Echo translation in the cmdline
+                    nmap <silent> <Leader>t <Plug>Translate
+                    vmap <silent> <Leader>t <Plug>TranslateV
+                    " Display translation in a window
+                    nmap <silent> <Leader>w <Plug>TranslateW
+                    vmap <silent> <Leader>w <Plug>TranslateWV
+                    " Replace the text with translation
+                    nmap <silent> <Leader>r <Plug>TranslateR
+                    vmap <silent> <Leader>r <Plug>TranslateRV
+
+
+==============================================================================
+COMMANDS                                    *translator-commands*
+
+:Translate [-e engines] [-w word] [-l to_lang]                 *:Translate*
+
+			Translate the `word` to target language `to_lang` with
+			`engine`, echo the result in the cmdline
+
+			If no `engine`, use |g:translator_default_engines|
+
+			If no `word`, use the word under the cursor
+
+			If no `to_lang`, use |g:translator_target_lang|
+
+:TranslateW [-e engine] [-w word] [-l to_lang]                 *:TranslateW*
+
+			Display the translation in a window
+
+:TranslateR [-e engine] [-w word] [-l to_lang]                 *:TranslateR*
+
+			Replace the current word with the translation
+
+:TranslateH                                                    *:TranslateH*
+
+			Export translation history
+
+
+    Example:
+ >
+			:TranslateW -w test -e bing youdao -l zh
+
+
+==============================================================================
+HIGHLIGHT                                                        *translator-highlight*
+
+    Here is the default highlight link. To customize, use `hi link`
+    >
+	    hi def link TranslatorQuery             Identifier
+	    hi def link TranslatorPhonetic          Type
+	    hi def link TranslatorParaphrase        Statement
+	    hi def link TranslatorExplain           Statement
+	    hi def link TranslatorDelimiter         Special
+
+
+==============================================================================
+REPOSITORY                                                 *translator-repository-page*
+
+    |vim-translator| is developed on GitHub.
+
+    https://github.com/voldikss/vim-translator
+
+
+==============================================================================
+vim:tw=78:nosta:noet:ts=8:sts=0:ft=help:noet:fen:fdm=marker:

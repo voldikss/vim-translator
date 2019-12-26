@@ -4,37 +4,37 @@
 " @Last Modified time: 2019-08-01 07:44:58
 
 
-function! vtm#display#window(translations) abort
+function! translator#display#window(translations) abort
   let Lines = s:build_lines(a:translations)
   let max_height =
-    \ g:vtm_popup_max_height == v:null
+    \ g:translator_popup_max_height == v:null
     \ ? float2nr(0.6*&lines)
-    \ : float2nr(g:vtm_popup_max_height)
+    \ : float2nr(g:translator_popup_max_height)
   let max_width =
-    \ g:vtm_popup_max_width == v:null
+    \ g:translator_popup_max_width == v:null
     \ ? float2nr(0.6*&columns)
-    \ : float2nr(g:vtm_popup_max_width)
+    \ : float2nr(g:translator_popup_max_width)
   let [width, height] = s:get_floatwin_size(Lines, max_width, max_height)
   let [y_offset, x_offset, vert, hor] = s:get_floatwin_pos(width, height)
 
   for i in range(len(Lines))
     let line = Lines[i]
     if match(line, '───') == 0 && width > strdisplaywidth(line)
-      let Lines[i] = vtm#util#padding(Lines[i], width, '─')
+      let Lines[i] = translator#util#padding(Lines[i], width, '─')
     elseif match(line, '⟦') == 0 && width > strdisplaywidth(line)
-      let Lines[i] = vtm#util#padding(Lines[i], width, ' ')
+      let Lines[i] = translator#util#padding(Lines[i], width, ' ')
     endif
   endfor
 
   if has('nvim') && exists('*nvim_win_set_config')
-    let vtm_window_type = 'floating'
+    let translator_window_type = 'floating'
   elseif has('textprop') && has('patch-8.1.1522')
-    let vtm_window_type = 'popup'
+    let translator_window_type = 'popup'
   else
-    let vtm_window_type = 'preview'
+    let translator_window_type = 'preview'
   endif
 
-  if vtm_window_type == 'floating'
+  if translator_window_type == 'floating'
     let main_winnr = winnr()
     let cursor_pos=getcurpos()
     let hpos=cursor_pos[1]-line('w0')
@@ -54,10 +54,10 @@ function! vtm#display#window(translations) abort
       \ 'height': height,
       \ 'style':'minimal'
       \ }
-    let s:vtm_bufnr = nvim_create_buf(v:false, v:true)
-    let vtm_winid = nvim_open_win(s:vtm_bufnr, v:false, opts)
-    call nvim_buf_set_lines(s:vtm_bufnr, 0, -1, v:false, Lines)
-    call nvim_buf_set_option(s:vtm_bufnr, 'filetype', 'vtm')
+    let s:translator_bufnr = nvim_create_buf(v:false, v:true)
+    let translator_winid = nvim_open_win(s:translator_bufnr, v:false, opts)
+    call nvim_buf_set_lines(s:translator_bufnr, 0, -1, v:false, Lines)
+    call nvim_buf_set_option(s:translator_bufnr, 'filetype', 'translator') " TODO
 
     let border_opts = {
       \ 'relative': 'win',
@@ -79,15 +79,15 @@ function! vtm#display#window(translations) abort
     call nvim_open_win(s:border_bufnr, v:false, border_opts)
 
     " Note: this line must be put after creating the border_win!
-    let s:vtm_winnr = win_id2win(vtm_winid)
+    let s:translator_winnr = win_id2win(translator_winid)
 
-    augroup vtm_close
+    augroup translator_close
       autocmd!
-      autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call s:close_vtm_window()
-      exe 'autocmd BufLeave,BufWipeout,BufDelete <buffer=' . s:vtm_bufnr . '> exe "bw ' . s:border_bufnr . '"'
+      autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call s:close_translator_window()
+      exe 'autocmd BufLeave,BufWipeout,BufDelete <buffer=' . s:translator_bufnr . '> exe "bw ' . s:border_bufnr . '"'
     augroup END
 
-  elseif vtm_window_type == 'popup'
+  elseif translator_window_type == 'popup'
     let vert = vert == 'N' ? 'top' : 'bot'
     let hor = hor == 'W' ? 'left' : 'right'
     let line = vert == 'top' ? 'cursor+1' : 'cursor-1'
@@ -109,7 +109,7 @@ function! vtm#display#window(translations) abort
     for l in range(1, len(Lines))
       call setbufline(bufnr, l, Lines[l-1])
     endfor
-    call setbufvar(bufnr, '&filetype', 'vtm')
+    call setbufvar(bufnr, '&filetype', 'translator')
     call setbufvar(bufnr, '&spell', 0)
     call setbufvar(bufnr, '&wrap', 1)
     call setbufvar(bufnr, '&number', 1)
@@ -122,8 +122,8 @@ function! vtm#display#window(translations) abort
     wincmd P
     execute height+1 . 'wincmd _'
     enew!
-    let s:vtm_winnr = winnr()
-    let s:vtm_bufnr = bufnr() " NOTE: this line must be put after `enew`
+    let s:translator_winnr = winnr()
+    let s:translator_bufnr = bufnr() " NOTE: this line must be put after `enew`
     call append(0, Lines)
     normal gg
 
@@ -131,25 +131,25 @@ function! vtm#display#window(translations) abort
     setlocal buftype=nofile
     setlocal bufhidden=wipe
     setlocal signcolumn=no
-    setlocal filetype=vtm
+    setlocal filetype=translator
     setlocal wrap nospell
     setlocal nonumber norelativenumber
     setlocal noautoindent nosmartindent
     setlocal nobuflisted noswapfile nocursorline
     noautocmd wincmd p
 
-    augroup vtm_close
+    augroup translator_close
       autocmd!
-      autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call s:close_vtm_window()
+      autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call s:close_translator_window()
     augroup END
   endif
 endfunction
 
 ""
 " Only available for floating winndow and preview window
-function! vtm#display#try_jump_into() abort
-  if exists('s:vtm_bufnr') && bufexists(s:vtm_bufnr)
-    noautocmd exe s:vtm_winnr . ' wincmd w'
+function! translator#display#try_jump_into() abort
+  if exists('s:translator_bufnr') && bufexists(s:translator_bufnr)
+    noautocmd exe s:translator_winnr . ' wincmd w'
     return v:true
   endif
   return v:false
@@ -157,15 +157,15 @@ endfunction
 
 ""
 " Close floating or preview window
-function! s:close_vtm_window() abort
-  if exists('s:vtm_bufnr') && bufexists(s:vtm_bufnr)
-    exe 'bw ' . s:vtm_bufnr
+function! s:close_translator_window() abort
+  if exists('s:translator_bufnr') && bufexists(s:translator_bufnr)
+    exe 'bw ' . s:translator_bufnr
   endif
   if exists('s:border_bufnr') && bufexists(s:border_bufnr)
     exe 'bw ' . s:border_bufnr
   endif
-  if exists('#vtm_close')
-    autocmd! vtm_close * <buffer>
+  if exists('#translator_close')
+    autocmd! translator_close * <buffer>
   endif
 endfunction
 
@@ -195,7 +195,7 @@ function! s:build_lines(translations) abort
 
     if len(t['explain'])
       for expl in t['explain']
-        let expl = vtm#util#safe_trim(expl)
+        let expl = translator#util#safe_trim(expl)
         if len(expl)
           let explain = explain_marker . expl
           call add(content, explain)
@@ -261,7 +261,7 @@ function! s:get_floatwin_pos(width, height) abort
   return [y_offset, x_offset, vert, hor]
 endfunction
 
-function! vtm#display#echo(translations) abort
+function! translator#display#echo(translations) abort
   let phonetic = ''
   let paraphrase = ''
   let explain = ''
@@ -278,13 +278,13 @@ function! vtm#display#echo(translations) abort
     endif
   endfor
 
-  call vtm#util#echo('Function', a:translations['text'])
-  call vtm#util#echon('Constant', ' ==>')
-  call vtm#util#echon('Type', phonetic)
-  call vtm#util#echon('Normal', explain)
+  call translator#util#echo('Function', a:translations['text'])
+  call translator#util#echon('Constant', ' ==>')
+  call translator#util#echon('Type', phonetic)
+  call translator#util#echon('Normal', explain)
 endfunction
 
-function! vtm#display#replace(translations) abort
+function! translator#display#replace(translations) abort
   for t in a:translations['results']
     if len(t['paraphrase'])
       let reg_tmp = @a
@@ -296,5 +296,5 @@ function! vtm#display#replace(translations) abort
     endif
   endfor
 
-  call vtm#util#show_msg('No paraphrases for the replacement', 'warning')
+  call translator#util#show_msg('No paraphrases for the replacement', 'warning')
 endfunction

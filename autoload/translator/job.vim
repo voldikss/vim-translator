@@ -19,7 +19,7 @@ else
   endfunction
 endif
 
-function! vtm#query#job_start(cmd, type) abort
+function! translator#job#job_start(cmd, type) abort
   if has('nvim')
     let callback = {
       \ 'on_stdout': function('s:on_stdout_nvim', [a:type]),
@@ -53,7 +53,7 @@ function! s:start(type, data, event) abort
 
   " On Nvim, this function will be executed twice, firstly it returns data, and then an empty string
   " Check the data value in order to prevent overlap
-  if vtm#util#safe_trim(message) == ''
+  if translator#util#safe_trim(message) == ''
     return
   endif
 
@@ -69,18 +69,18 @@ function! s:start(type, data, event) abort
   if a:event == 'stdout'
     let translations = eval(message)
     if type(translations) != 4 && !translations['status']
-      call vtm#util#show_msg('Translation failed', 'error')
+      call translator#util#show_msg('Translation failed', 'error')
     endif
 
     if a:type == 'echo'
-      call vtm#display#echo(translations)
+      call translator#display#echo(translations)
     elseif a:type == 'window'
-      call vtm#display#window(translations)
+      call translator#display#window(translations)
     else
-      call vtm#display#replace(translations)
+      call translator#display#replace(translations)
     endif
-    call vtm#util#save_history(translations)
+    call translator#util#save_history(translations)
   elseif a:event == 'stderr'
-    call vtm#util#show_msg(message, 'error')
+    call translator#util#show_msg(message, 'error')
   endif
 endfunction

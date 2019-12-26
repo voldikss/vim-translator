@@ -3,19 +3,21 @@
 " @Last Modified by: voldikss
 " @Last Modified time: 2019-08-01 07:40:53
 
-function! vtm#util#echo(group, msg) abort
+let s:history_file = expand('<sfile>:p:h') . '/../../translation_history.data'
+
+function! translator#util#echo(group, msg) abort
   execute 'echohl' a:group
   echo a:msg
   echohl NONE
 endfunction
 
-function! vtm#util#echon(group, msg) abort
+function! translator#util#echon(group, msg) abort
   execute 'echohl' a:group
   echon a:msg
   echohl NONE
 endfunction
 
-function! vtm#util#show_msg(message, ...) abort
+function! translator#util#show_msg(message, ...) abort
   if a:0 == 0
     let msgType = 'info'
   else
@@ -28,19 +30,19 @@ function! vtm#util#show_msg(message, ...) abort
     let message = a:message
   endif
 
-  call vtm#util#echo('Constant', '[vim-translate-me] ')
+  call translator#util#echo('Constant', '[vim-translator] ')
 
   if msgType == 'info'
-    call vtm#util#echon('Normal', message)
+    call translator#util#echon('Normal', message)
   elseif msgType == 'warning'
-    call vtm#util#echon('WarningMsg', message)
+    call translator#util#echon('WarningMsg', message)
   elseif msgType == 'error'
-    call vtm#util#echon('Error', message)
+    call translator#util#echon('Error', message)
   endif
 endfunction
 
-function! vtm#util#save_history(translations) abort
-  if !g:vtm_history_enable
+function! translator#util#save_history(translations) abort
+  if !g:translator_history_enable
     return
   endif
 
@@ -60,42 +62,43 @@ function! vtm#util#save_history(translations) abort
     endif
   endfor
 
-  if !filereadable(g:vtm_history_file)
-    call writefile([], g:vtm_history_file)
+  if !filereadable(s:history_file)
+    call writefile([], s:history_file)
   endif
 
-  let trans_data = readfile(g:vtm_history_file)
+  let trans_data = readfile(s:history_file)
 
   " already in
   if match(string(trans_data), text) >= 0
     return
   endif
 
-  if len(trans_data) == g:vtm_history_count
+  " default history count
+  if len(trans_data) == 1000
     call remove(trans_data, 0)
   endif
 
   let trans_data += [item]
-  let result = writefile(trans_data, g:vtm_history_file)
+  let result = writefile(trans_data, s:history_file)
   if result == -1
     let message = 'Failed to save the translation data.'
-    call vtm#util#show_msg(message, 'warning')
+    call translator#util#show_msg(message, 'warning')
   endif
 endfunction
 
-function! vtm#util#export_history() abort
-  if !filereadable(g:vtm_history_file)
+function! translator#util#export_history() abort
+  if !filereadable(s:history_file)
     let message = 'History file not exist yet'
-    call vtm#util#show_msg(message, 'error')
+    call translator#util#show_msg(message, 'error')
     return
   endif
 
-  execute 'tabnew ' .  g:vtm_history_file
-  setlocal filetype=vtm_history
-  syn match vtmHistoryQuery #\v^.*\v%25v#
-  syn match vtmHistoryTrans #\v%26v.*$#
-  hi def link vtmHistoryQuery Keyword
-  hi def link vtmHistoryTrans String
+  execute 'tabnew ' .  s:history_file
+  setlocal filetype=translator_history
+  syn match TranslateHistoryQuery #\v^.*\v%25v#
+  syn match TranslateHistoryTrans #\v%26v.*$#
+  hi def link TranslateHistoryQuery Keyword
+  hi def link TranslateHistoryTrans String
 endfunction
 
 function! s:padding_end(text, length) abort
@@ -109,7 +112,7 @@ function! s:padding_end(text, length) abort
   return text
 endfunction
 
-function! vtm#util#padding(text, width, char) abort
+function! translator#util#padding(text, width, char) abort
   let padding_size = (a:width - strdisplaywidth(a:text)) / 2
   let padding = repeat(a:char, padding_size)
   let padend = repeat(a:char, (a:width - strdisplaywidth(a:text)) % 2)
@@ -117,7 +120,7 @@ function! vtm#util#padding(text, width, char) abort
   return text
 endfunction
 
-function! vtm#util#visual_select() abort
+function! translator#util#visual_select() abort
   let reg_tmp = @a
   normal! gv"ay
   let select_text=@a
@@ -126,6 +129,6 @@ function! vtm#util#visual_select() abort
   return select_text
 endfunction
 
-function! vtm#util#safe_trim(text) abort
+function! translator#util#safe_trim(text) abort
   return substitute(a:text, "^\\s*\\(.\\{-}\\)\\(\\n\\|\\s\\)*$", '\1', '')
 endfunction

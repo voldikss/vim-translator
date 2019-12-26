@@ -3,34 +3,34 @@
 " @Last Modified by: voldikss
 " @Last Modified time: 2019-07-02 07:42:40
 
-let s:py_file = expand('<sfile>:p:h') . '/../script/query.py'
+let s:py_file = expand('<sfile>:p:h') . '/../script/translator.py'
 
-if !exists('s:vtm_python_host')
+if !exists('s:translator_python_host')
   if executable('python3')
-    let s:vtm_python_host = 'python3'
+    let s:translator_python_host = 'python3'
   elseif executable('python')
-    let s:vtm_python_host = 'python'
+    let s:translator_python_host = 'python'
   elseif exists('g:python3_host_prog')
-    let s:vtm_python_host = g:python3_host_prog
+    let s:translator_python_host = g:python3_host_prog
   else
-    call vtm#util#show_msg('python is required but not found', 'error')
+    call translator#util#show_msg('python is required but not found', 'error')
     finish
   endif
 endif
 
-function! vtm#translate(args, display, visualmode) abort
+function! translator#translate(args, display, visualmode) abort
   " jump to popup or close popup
   if a:display == 'window'
-    if &filetype == 'vtm'
+    if &filetype == 'translator'
       wincmd c
       return
-    elseif vtm#display#try_jump_into()
+    elseif translator#display#try_jump_into()
       return
     endif
   endif
 
   if a:args == ''
-    let select_text = a:visualmode ? vtm#util#visual_select() : expand('<cword>')
+    let select_text = a:visualmode ? translator#util#visual_select() : expand('<cword>')
     let args = '-w ' . select_text
   else
     let args = a:args
@@ -39,17 +39,17 @@ function! vtm#translate(args, display, visualmode) abort
 
   let [args_obj, success] = s:parse_args(args)
   if success != v:true
-    call vtm#util#show_msg('Arguments error', 'error')
+    call translator#util#show_msg('Arguments error', 'error')
     return
   endif
 
-  let cmd = s:vtm_python_host . ' ' . s:py_file
+  let cmd = s:translator_python_host . ' ' . s:py_file
     \ . ' --text '      . shellescape(args_obj.word)
     \ . ' --engines '    . join(args_obj.engines, ' ')
     \ . ' --toLang '    . args_obj.to_lang
-    \ . (len(g:vtm_proxy_url) > 0 ? (' --proxy ' . g:vtm_proxy_url) : '')
+    \ . (g:translator_proxy_url ? (' --proxy ' . g:translator_proxy_url) : '')
 
-  call vtm#query#job_start(cmd, a:display)
+  call translator#job#job_start(cmd, a:display)
 endfunction
 
 function! s:parse_args(argstr) abort
@@ -79,8 +79,8 @@ function! s:parse_args(argstr) abort
     endif
   endfor
 
-  if vtm#util#safe_trim(argmap.word) == ''
-    let argmap.word= vtm#util#safe_trim(expand('<cword>>'))
+  if translator#util#safe_trim(argmap.word) == ''
+    let argmap.word= translator#util#safe_trim(expand('<cword>>'))
   endif
 
   if argmap.word == ''
@@ -89,17 +89,17 @@ function! s:parse_args(argstr) abort
   let argmap.word = substitute(argmap.word, '[\n\|\r]\+', '. ', 'g')
 
   if argmap.engines == []
-    let argmap.engines = g:vtm_default_engines
+    let argmap.engines = g:translator_default_engines
   endif
 
   if argmap.lang == ''
-    let argmap.to_lang = g:vtm_target_lang
+    let argmap.to_lang = g:translator_target_lang
   endif
 
   return [argmap, v:true]
 endfunction
 
-function! vtm#complete(arg_lead, cmd_line, cursor_pos) abort
+function! translator#complete(arg_lead, cmd_line, cursor_pos) abort
   let engines = ['bing', 'ciba', 'google', 'youdao']
   let args_prompt = ['-e', '--engines', '-w', '--word', '-l', '--lang']
 

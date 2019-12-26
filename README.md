@@ -1,145 +1,129 @@
-# vim-translate-me
+# vim-translator
 
-[@English Readme@](./README_en.md)
-
-Vim/Neovim 翻译插件
+Asynchronou translating plugin for Vim/Neovim
 
 <div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/71441598-19596a00-273d-11ea-841e-dc893fc9ae7d.gif" width=800>
+	<img src="https://user-images.githubusercontent.com/20282795/71441598-19596a00-273d-11ea-841e-dc893fc9ae7d.gif" width=900>
 </div>
 <div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/71441597-18c0d380-273d-11ea-9248-ae71b2a7ea42.gif" width=800>
+	<img src="https://user-images.githubusercontent.com/20282795/71441597-18c0d380-273d-11ea-9248-ae71b2a7ea42.gif" width=900>
+</div>
+<div align="center">
+	<img src="https://user-images.githubusercontent.com/20282795/71475802-da9ae100-281c-11ea-9eba-c8c4eee04bd9.png" width=900>
 </div>
 
-## 安装
+## Installation
 
 ```vim
-Plug 'voldikss/vim-translate-me'
+Plug 'voldikss/vim-translator'
 ```
 
-## 特性
+## Features
 
-- 浮窗支持(floating & popup)
-- 不会阻塞当前编辑
-- 多个可选翻译引擎
-- 保存和导出查询记录
-- 支持代理(http, socks4, socks5)
-- 不需要 appid/appkey
+- Asynchronou translating
+- Floatwin(NeoVim) & popup(Vim8) support
+- Multiple engines/languages available
+- Allow to save and export translation history
+- Proxy available(http, socks4, socks5)
+- Doesn't need appid/appkey
 
-## 配置
+## Configuration
 
-#### **`g:vtm_default_mapping`**
+#### **`g:translator_target_lang`**
 
-> 是否使用默认快捷键
+> Target language
 
-- 默认：`1`
+- Available: Please refer to [Supported languages for every engine](https://github.com/voldikss/vim-translator/wiki)
 
-#### **`g:vtm_target_lang`**
+- Default: `'zh'`
 
-> 默认翻译的目标语言
+#### **`g:translator_default_engines`**
 
-- 可选：参考[各 engine 支持语言列表](https://github.com/voldikss/vim-translate-me/wiki)
+- Available: `'bing'`, `'ciba'`, `'google'`, `'youdao'`.
 
-- 默认：`'zh'`
+- Default: `['ciba', 'youdao']` if `g:translator_target_lang` is `'zh'`, otherwise `['google', 'bing']`
 
-#### **`g:vtm_default_engines`**
+#### **`g:translator_proxy_url`**
 
-> 默认翻译接口
+> i.e. `let g:translator_proxy_url = 'socks5://127.0.0.1:1080'`
 
-- 可选：`'bing'`, `'ciba'`, `'google'`(可直连), `youdao`。可选多个
+- Default: `v:null`
 
-- 默认：`['ciba', 'youdao']`
+#### **`g:translator_history_enable`**
 
-#### **`g:vtm_proxy_url`**
+- Default: `v:false`
 
-> 代理地址，如 `let g:vtm_proxy_url = 'socks5://127.0.0.1:1080'`
+#### **`g:translator_popup_max_width`**
 
-- 默认：`''`
+> Max width value of the popup/floating window
 
-#### **`g:vtm_history_enable`**
+- Default: `0.6*&columns`
 
-> 是否保存查询历史记录
+#### **`g:translator_popup_max_height`**
 
-- 默认：0
+> Max height value of popup/floating window
 
-#### **`g:vtm_history_count`**
+- Default: `0.6*&lines`
 
-> 保存查询记录的数目
+## Key Mappings
 
-- 默认：5000
+This plugin doesn't supply default mappings.
 
-#### **`g:vtm_history_dir`**
+```vim
+""" Example configuration
+" Echo translation in the cmdline
+nmap <silent> <Leader>t <Plug>Translate
+vmap <silent> <Leader>t <Plug>TranslateV
+" Display translation in a window
+nmap <silent> <Leader>w <Plug>TranslateW
+vmap <silent> <Leader>w <Plug>TranslateWV
+" Replace the text with translation
+nmap <silent> <Leader>r <Plug>TranslateR
+vmap <silent> <Leader>r <Plug>TranslateRV
+```
 
-> 历史记录文件的目录
+Once the translation window is opened, type `<Leader>w` again to jump into it and again to jump back
 
-- 默认：插件根目录
+## Commands
 
-#### **`g:vtm_popup_max_width`**
+#### `:Translate [-e engines] [-w word] [-l to_lang]`
 
-> 弹窗的最大宽度
+Translate the `word` to the target language `to_lang` with `engine`, echo the result in the cmdline
 
-- 默认：`0.6*&columns`
+If no `engines`, use `g:translator_default_engines`
 
-#### **`g:vtm_popup_max_height`**
+If no `word`, use the word under the cursor
 
-> 弹窗的最大高度
+If no `to_lang`, use `g:translator_target_lang`
 
-- 默认：`0.6*&lines`
+#### `:TranslateW [-e engines] [-w word] [-l to_lang]`
 
-## 快捷键
+The same as `:Translate...`, display the translation in a window
 
-- 默认快捷键
+#### `:TranslateR [-e engines] [-w word] [-l to_lang]`
 
-  ```vim
-  " <Leader>t 翻译光标下的文本，在命令行回显
-  nmap <silent> <Leader>t <Plug>Translate
-  vmap <silent> <Leader>t <Plug>TranslateV
-  " Leader>w 翻译光标下的文本，在窗口中显示
-  nmap <silent> <Leader>w <Plug>TranslateW
-  vmap <silent> <Leader>w <Plug>TranslateWV
-  " Leader>r 替换光标下的文本为翻译内容
-  nmap <silent> <Leader>r <Plug>TranslateR
-  vmap <silent> <Leader>r <Plug>TranslateRV
-  ```
-
-- 再次使用`<Leader>w`，光标跳到翻译窗口
-
-- 按 `q` 键关闭翻译窗口
-
-## 命令
-
-#### `:Translate [-e engine] [-w word] [-l to_lang]`
-
-使用 `engine` 将单词 `word` 翻译为目标语言 `to_lang`并在命令行回显
-
-如果未指定 `engine`，使用 `g:vtm_default_engines`
-
-如果未指定 `word`, 使用光标下单词
-
-如果未指定 `to_lang`, 使用 `g:vtm_target_lang`
-
-#### `:TranslateW [-e engine] [-w word] [-l to_lang]`
-
-用法同上，但在窗口中显示
-
-#### `:TranslateR [-e engine] [-w word] [-l to_lang]`
-
-用法同上，但会用翻译内容替换光标下单词
+The same as `:Translate...`, replace the current word with the translation
 
 #### `:TranslateH`
 
-导出历史记录
+Export the translation history
 
-## 颜色高亮
+**Example**:
 
-下面是默认高亮配置，使用 `hi link` 配置自己喜欢的高亮
+```
+:TranslateW -w test -e bing youdao -l zh
+```
+
+## Highlight
+
+Here are the default highlight links. To customize, use `hi link`
 
 ```vim
-hi def link vtmQuery             Identifier
-hi def link vtmParaphrase        Statement
-hi def link vtmPhonetic          Special
-hi def link vtmExplain           Comment
-hi def link vtmPopupNormal       NormalFloat
+hi def link TranslatorQuery             Identifier
+hi def link TranslatorPhonetic          Type
+hi def link TranslatorParaphrase        Statement
+hi def link TranslatorExplain           Statement
+hi def link TranslatorDelimiter         Special
 ```
 
 ## References
@@ -147,6 +131,6 @@ hi def link vtmPopupNormal       NormalFloat
 - [dict.vim](https://github.com/iamcco/dict.vim)
 - [translator](https://github.com/skywind3000/translator)
 
-## License
+### License
 
 MIT
