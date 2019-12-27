@@ -83,7 +83,7 @@ function! translator#display#window(translations) abort
     call nvim_buf_set_lines(s:border_bufnr, 0, -1, v:true, lines)
     call nvim_open_win(s:border_bufnr, v:false, border_opts)
     " For translator border highlight
-    autocmd FileType translator_border | execute 'syn match Border /.*/ | hi def link Border ' . g:translator_window_border_highlight . " | echo '' |"
+    autocmd FileType translator_border ++once execute 'syn match Border /.*/ | hi def link Border ' . g:translator_window_border_highlight
     call nvim_buf_set_option(s:border_bufnr, 'filetype', 'translator_border')
 
     " Note: this line must be put after creating the border_win!
