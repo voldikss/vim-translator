@@ -37,8 +37,8 @@ function! translator#display#window(translations) abort
   if translator_window_type == 'floating'
     let main_winnr = winnr()
     let cursor_pos=getcurpos()
-    let hpos=cursor_pos[1]-line('w0')
-    let vpos=cursor_pos[2]
+    let vpos=cursor_pos[1]-line('w0')
+    let hpos=cursor_pos[2]
 
     ""
     " TODO:
@@ -48,8 +48,8 @@ function! translator#display#window(translations) abort
       \ 'relative': 'win',
       \ 'bufpos': [0,0],
       \ 'anchor': vert . hor,
-      \ 'row': hpos + y_offset + (vert == 'N' ? 1 : -1),
-      \ 'col': vpos + x_offset + (hor == 'W' ? 1 : -1),
+      \ 'row': vpos + y_offset + (vert == 'N' ? 1 : -1),
+      \ 'col': hpos + x_offset + (hor == 'W' ? 1 : -1),
       \ 'width': width,
       \ 'height': height,
       \ 'style':'minimal'
@@ -63,8 +63,8 @@ function! translator#display#window(translations) abort
       \ 'relative': 'win',
       \ 'bufpos': [0,0],
       \ 'anchor': vert . hor,
-      \ 'row': hpos + y_offset,
-      \ 'col': vpos + x_offset,
+      \ 'row': vpos + y_offset,
+      \ 'col': hpos + x_offset,
       \ 'width': width + 2,
       \ 'height': height + 2,
       \ 'style':'minimal'
