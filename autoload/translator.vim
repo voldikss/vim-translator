@@ -68,7 +68,7 @@ function! s:parse_args(argstr) abort
       let flag = 'lang'
     else
       if flag == 'word'
-        let argmap[flag] .= arg
+        let argmap[flag] .= ' ' . arg
       elseif flag == 'lang'
         let argmap[flag] = arg
       elseif flag == 'engines'
