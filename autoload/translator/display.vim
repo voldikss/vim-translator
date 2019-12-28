@@ -56,8 +56,9 @@ function! translator#display#window(translations) abort
       \ }
     let s:translator_bufnr = nvim_create_buf(v:false, v:true)
     let translator_winid = nvim_open_win(s:translator_bufnr, v:false, opts)
+    call nvim_win_set_option(translator_winid, 'wrap', v:true)
     call nvim_buf_set_lines(s:translator_bufnr, 0, -1, v:false, Lines)
-    call nvim_buf_set_option(s:translator_bufnr, 'filetype', 'translator') " TODO
+    call nvim_buf_set_option(s:translator_bufnr, 'filetype', 'translator')
 
     let border_opts = {
       \ 'relative': 'win',
