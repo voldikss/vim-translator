@@ -1,8 +1,9 @@
-" @Author: voldikss
-" @Date: 2019-06-20 20:09:44
-" @Last Modified by: voldikss
-" @Last Modified time: 2019-08-01 07:44:58
-
+" ============================================================================
+" FileName: display.vim
+" Description:
+" Author: voldikss <dyzplus@gmail.com>
+" GitHub: https://github.com/voldikss
+" ============================================================================
 
 function! translator#display#window(translations) abort
   let Lines = s:build_lines(a:translations)

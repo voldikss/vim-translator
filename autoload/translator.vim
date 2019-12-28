@@ -1,7 +1,9 @@
-" @Author: voldikss
-" @Date: 2019-04-24 22:20:55
-" @Last Modified by: voldikss
-" @Last Modified time: 2019-07-02 07:42:40
+" ============================================================================
+" FileName: translator.vim
+" Description:
+" Author: voldikss <dyzplus@gmail.com>
+" GitHub: https://github.com/voldikss
+" ============================================================================
 
 let s:py_file = expand('<sfile>:p:h') . '/../script/translator.py'
 

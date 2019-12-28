@@ -1,7 +1,9 @@
-" @Author: voldikss
-" @Date: 2019-04-27 9:31:12
-" @Last Modified by: voldikss
-" @Last Modified time: 2019-07-23 20:35:10
+" ============================================================================
+" FileName: translator.vim
+" Description:
+" Author: voldikss <dyzplus@gmail.com>
+" GitHub: https://github.com/voldikss
+" ============================================================================
 
 if exists('b:current_syntax')
   finish

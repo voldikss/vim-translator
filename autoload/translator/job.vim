@@ -1,7 +1,9 @@
-" @Author: voldikss
-" @Date: 2019-06-20 20:10:08
-" @Last Modified by: voldikss
-" @Last Modified time: 2019-06-30 21:35:47
+" ============================================================================
+" FileName: job.vim
+" Description:
+" Author: voldikss <dyzplus@gmail.com>
+" GitHub: https://github.com/voldikss
+" ============================================================================
 
 if has('nvim')
   function! s:on_stdout_nvim(type, jobid, data, event) abort
@@ -79,7 +81,7 @@ function! s:start(type, data, event) abort
     else
       call translator#display#replace(translations)
     endif
-    call translator#util#save_history(translations)
+    call translator#history#save(translations)
   elseif a:event == 'stderr'
     call translator#util#show_msg(message, 'error')
   endif

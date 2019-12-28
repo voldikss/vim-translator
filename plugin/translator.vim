@@ -1,8 +1,9 @@
-" @Author: voldikss
-" @Date: 2019-04-27 16:44:10
-" @Last Modified by: voldikss
-" @Last Modified time: 2019-06-30 21:35:52
-
+" ============================================================================
+" FileName: translator.vim
+" Description:
+" Author: voldikss <dyzplus@gmail.com>
+" GitHub: https://github.com/voldikss
+" ============================================================================
 
 if exists('g:loaded_translator')
   finish
@@ -43,7 +44,7 @@ nmap <silent> <Plug>TranslateW  :call translator#translate('-w ' . expand('<cwor
 vmap <silent> <Plug>TranslateWV :<C-U>call translator#translate('', 'window', v:true)<CR>
 nmap <silent> <Plug>TranslateR  viw:<C-U>call translator#translate('', 'replace', v:false)<CR>
 vmap <silent> <Plug>TranslateRV :<C-U>call translator#translate('', 'replace', v:true)<CR>
-nmap <silent> <Plug>TranslateH  :call translator#util#export_history()
+nmap <silent> <Plug>TranslateH  :call translator#history#export()
 
 if !exists(':Translate')
   command! -complete=customlist,translator#cmdline#complete -nargs=* Translate call translator#translate(<q-args>, 'echo', v:false)
@@ -58,5 +59,5 @@ if !exists(':TranslateR')
 endif
 
 if !exists(':TranslateH')
-  command! -nargs=0   TranslateH call translator#util#export_history()
+  command! -nargs=0   TranslateH call translator#history#export()
 endif
