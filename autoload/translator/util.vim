@@ -134,5 +134,5 @@ function! translator#util#visual_select() abort
 endfunction
 
 function! translator#util#safe_trim(text) abort
-  return substitute(a:text, "^\\s*\\(.\\{-}\\)\\(\\n\\|\\s\\)*$", '\1', '')
+  return substitute(a:text,'\%#=1^[[:space:]]\+\|[[:space:]]\+$', '', 'g')
 endfunction
