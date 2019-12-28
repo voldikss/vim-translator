@@ -34,7 +34,7 @@ function! translator#util#show_msg(message, ...) abort
     let message = a:message
   endif
 
-  call translator#util#echo('Constant', '[vim-translator] ')
+  call translator#util#echo('Constant', '[vim-translator]')
 
   if msgType == 'info'
     call translator#util#echon('Normal', message)
