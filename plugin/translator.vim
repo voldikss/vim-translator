@@ -46,11 +46,11 @@ vmap <silent> <Plug>TranslateRV :<C-U>call translator#translate('', 'replace', v
 nmap <silent> <Plug>TranslateH  :call translator#util#export_history()
 
 if !exists(':Translate')
-  command! -complete=customlist,translator#complete -nargs=* Translate call translator#translate(<q-args>, 'echo', v:false)
+  command! -complete=customlist,translator#cmdline#complete -nargs=* Translate call translator#translate(<q-args>, 'echo', v:false)
 endif
 
 if !exists(':TranslateW')
-  command! -complete=customlist,translator#complete -nargs=* TranslateW call translator#translate(<q-args>, 'window', v:false)
+  command! -complete=customlist,translator#cmdline#complete -nargs=* TranslateW call translator#translate(<q-args>, 'window', v:false)
 endif
 
 if !exists(':TranslateR')
