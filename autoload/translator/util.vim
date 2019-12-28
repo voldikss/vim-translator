@@ -6,14 +6,18 @@
 let s:history_file = expand('<sfile>:p:h') . '/../../translation_history.data'
 
 function! translator#util#echo(group, msg) abort
+  if a:msg == '' | return | endif
   execute 'echohl' a:group
   echo a:msg
+  echon ' '
   echohl NONE
 endfunction
 
 function! translator#util#echon(group, msg) abort
+  if a:msg == '' | return | endif
   execute 'echohl' a:group
   echon a:msg
+  echon ' '
   echohl NONE
 endfunction
 

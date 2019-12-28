@@ -278,7 +278,7 @@ function! translator#display#echo(translations) abort
 
   for t in a:translations['results']
     if len(t['phonetic']) && (phonetic == '')
-      let phonetic = ' [' . t['phonetic'] . '] '
+      let phonetic = '[' . t['phonetic'] . ']'
     endif
     if len(t['paraphrase']) && (paraphrase == '')
       let paraphrase = t['paraphrase']
@@ -289,8 +289,9 @@ function! translator#display#echo(translations) abort
   endfor
 
   call translator#util#echo('Function', a:translations['text'])
-  call translator#util#echon('Constant', ' ==>')
+  call translator#util#echon('Constant', '==>')
   call translator#util#echon('Type', phonetic)
+  call translator#util#echon('Normal', paraphrase)
   call translator#util#echon('Normal', explain)
 endfunction
 
