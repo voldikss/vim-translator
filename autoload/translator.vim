@@ -47,7 +47,7 @@ function! translator#translate(args, display, visualmode) abort
 
   let cmd = s:translator_python_host . ' ' . s:py_file
     \ . ' --text '      . shellescape(args_obj.word)
-    \ . ' --engines '    . join(args_obj.engines, ' ')
+    \ . ' --engines '   . join(args_obj.engines, ' ')
     \ . ' --toLang '    . args_obj.to_lang
     \ . (g:translator_proxy_url ? (' --proxy ' . g:translator_proxy_url) : '')
 

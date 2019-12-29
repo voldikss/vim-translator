@@ -27,7 +27,7 @@ function! translator#job#job_start(cmd, type) abort
       \ 'on_stdout': function('s:on_stdout_nvim', [a:type]),
       \ 'on_stderr': function('s:on_stdout_nvim', [a:type]),
       \ 'on_exit': function('s:on_exit_nvim')
-    \ }
+      \ }
     call jobstart(a:cmd, callback)
   else
     let callback = {
@@ -40,7 +40,7 @@ function! translator#job#job_start(cmd, type) abort
       \ 'out_mode': 'nl',
       \ 'err_mode': 'nl',
       \ 'timeout': '2000'
-    \ }
+      \ }
     call job_start(a:cmd, callback)
   endif
 endfunction

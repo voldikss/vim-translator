@@ -21,7 +21,7 @@ function! translator#cmdline#parse_args(argstr) abort
       let flag = 'lang'
     else
       if flag == 'word'
-        let argmap[flag] .= ' ' . arg
+        let argmap[flag] .= arg . ' '
       elseif flag == 'lang'
         let argmap[flag] = arg
       elseif flag == 'engines'
@@ -33,13 +33,14 @@ function! translator#cmdline#parse_args(argstr) abort
   endfor
 
   if translator#util#safe_trim(argmap.word) == ''
-    let argmap.word= translator#util#safe_trim(expand('<cword>>'))
+    let argmap.word= translator#util#safe_trim(expand('<cword>'))
   endif
 
+  let argmap.word = substitute(argmap.word, '[\n\|\r]\+', '. ', 'g')
+  let argmap.word = translator#util#safe_trim(argmap.word)
   if argmap.word == ''
     return [argmap, v:false]
   endif
-  let argmap.word = substitute(argmap.word, '[\n\|\r]\+', '. ', 'g')
 
   if argmap.engines == []
     let argmap.engines = g:translator_default_engines
