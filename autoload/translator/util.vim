@@ -23,9 +23,9 @@ endfunction
 
 function! translator#util#show_msg(message, ...) abort
   if a:0 == 0
-    let msgType = 'info'
+    let msg_type = 'info'
   else
-    let msgType = a:1
+    let msg_type = a:1
   endif
 
   if type(a:message) != 1
@@ -36,11 +36,11 @@ function! translator#util#show_msg(message, ...) abort
 
   call translator#util#echo('Constant', '[vim-translator]')
 
-  if msgType == 'info'
+  if msg_type == 'info'
     call translator#util#echon('Normal', message)
-  elseif msgType == 'warning'
+  elseif msg_type == 'warning'
     call translator#util#echon('WarningMsg', message)
-  elseif msgType == 'error'
+  elseif msg_type == 'error'
     call translator#util#echon('Error', message)
   endif
 endfunction

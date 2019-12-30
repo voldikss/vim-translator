@@ -7,13 +7,13 @@
 
 let s:py_file = expand('<sfile>:p:h') . '/../script/translator.py'
 
-if !exists('s:translator_python_host')
+if !exists('s:python_executable')
   if executable('python3')
-    let s:translator_python_host = 'python3'
+    let s:python_executable = 'python3'
   elseif executable('python')
-    let s:translator_python_host = 'python'
+    let s:python_executable = 'python'
   elseif exists('g:python3_host_prog')
-    let s:translator_python_host = g:python3_host_prog
+    let s:python_executable = g:python3_host_prog
   else
     call translator#util#show_msg('python is required but not found', 'error')
     finish
@@ -45,7 +45,7 @@ function! translator#translate(args, display, visualmode) abort
     return
   endif
 
-  let cmd = s:translator_python_host . ' ' . s:py_file
+  let cmd = s:python_executable . ' ' . s:py_file
     \ . ' --text '      . shellescape(args_obj.word)
     \ . ' --engines '   . join(args_obj.engines, ' ')
     \ . ' --toLang '    . args_obj.to_lang

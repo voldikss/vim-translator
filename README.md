@@ -136,6 +136,10 @@ hi def link TranslatorExplain           Statement
 hi def link TranslatorDelimiter         Special
 ```
 
+## Known bugs
+
+Can not translate sentences(which has spaces among words) in Vim8
+
 ## References
 
 - [dict.vim](https://github.com/iamcco/dict.vim)
