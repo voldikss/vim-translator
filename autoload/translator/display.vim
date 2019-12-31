@@ -194,9 +194,9 @@ function! s:build_lines(translations) abort
     let phonetic_marker = "\ufa7d"
     let explain_marker = "\uf949 "
   else
-    let paraphrase_marker = "_*_"
-    let phonetic_marker = "_+_"
-    let explain_marker = "_*_"
+    let paraphrase_marker = '_*_'
+    let phonetic_marker = '_+_'
+    let explain_marker = '_*_'
   endif
 
   let content = []
