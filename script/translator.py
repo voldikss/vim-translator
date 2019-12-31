@@ -43,6 +43,7 @@ class Translation:
         'paraphrase': '',
         'explain': []
     }
+
     def __init__(self, engine):
         pass
 
@@ -206,7 +207,8 @@ class CibaTranslator (BasicTranslator):
             self._trans['paraphrase'] = ''
             if 'content' in resp:
                 if 'ph_en' in resp['content']:
-                    self._trans['phonetic'] = resp['content']['ph_en'] or ''  # sometimes it responses `None`
+                    # sometimes it responses `None`
+                    self._trans['phonetic'] = resp['content']['ph_en'] or ''
                 if 'out' in resp['content']:
                     self._trans['paraphrase'] = resp['content']['out'] or ''
                 if 'word_mean' in resp['content']:
@@ -371,7 +373,11 @@ def main():
         res = translator.translate('auto', to_lang, text)
         if res:
             translation['status'] = 1
-            translation['results'].append(copy.deepcopy(res))
+            if is_py3:
+                translation['results'].append(copy.deepcopy(res))
+            else:
+                translation['results'].append(copy.deepcopy(res.translation))
+
     sys.stdout.write(str(translation))
 
 
