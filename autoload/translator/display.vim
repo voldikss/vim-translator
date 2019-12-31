@@ -189,9 +189,15 @@ endfunction
 ""
 " Style always makes me frantic
 function! s:build_lines(translations) abort
-  let paraphrase_marker = '⏺ '
-  let phonetic_marker = '🔉 '
-  let explain_marker = '⏺ '
+  if g:translator_window_enable_icon == v:true
+    let paraphrase_marker = "\uf949"
+    let phonetic_marker = "\ufa7d"
+    let explain_marker = "\uf949 "
+  else
+    let paraphrase_marker = "_*_"
+    let phonetic_marker = "_+_"
+    let explain_marker = "_*_"
+  endif
 
   let content = []
   call add(content, '⟦ ' . a:translations['text'] . ' ⟧' )

@@ -77,6 +77,12 @@ Plug 'voldikss/vim-translator'
 
 - Default: `'NormalFloat'`
 
+#### **`g:translator_window_enable_icon`**
+
+> Set it to `v:false` if your terminal are not using [Nerd Font](https://github.com/ryanoasis/nerd-fonts)
+
+- Default: `v:true`
+
 ## Key Mappings
 
 This plugin doesn't supply default mappings.
@@ -133,7 +139,6 @@ Here are the default highlight links. To customize, use `hi link`
 ```vim
 hi def link TranslatorQuery             Identifier
 hi def link TranslatorPhonetic          Type
-hi def link TranslatorParaphrase        Statement
 hi def link TranslatorExplain           Statement
 hi def link TranslatorDelimiter         Special
 ```
