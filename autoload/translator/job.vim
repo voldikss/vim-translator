@@ -55,7 +55,7 @@ function! s:start(type, data, event) abort
 
   " On Nvim, this function will be executed twice, firstly it returns data, and then an empty string
   " Check the data value in order to prevent overlap
-  if translator#util#safe_trim(message) == ''
+  if translator#util#safe_trim(message) ==# ''
     return
   endif
 
@@ -68,21 +68,21 @@ function! s:start(type, data, event) abort
   " 2. convert unicode to normal chinese string
   let message = substitute(message, '\\u\(\x\{4\}\)', '\=nr2char("0x".submatch(1),1)', 'g')
 
-  if a:event == 'stdout'
+  if a:event ==# 'stdout'
     let translations = eval(message)
     if type(translations) != 4 && !translations['status']
       call translator#util#show_msg('Translation failed', 'error')
     endif
 
-    if a:type == 'echo'
+    if a:type ==# 'echo'
       call translator#display#echo(translations)
-    elseif a:type == 'window'
+    elseif a:type ==# 'window'
       call translator#display#window(translations)
     else
       call translator#display#replace(translations)
     endif
     call translator#history#save(translations)
-  elseif a:event == 'stderr'
+  elseif a:event ==# 'stderr'
     call translator#util#show_msg(message, 'error')
   endif
 endfunction

@@ -6,7 +6,7 @@
 " ============================================================================
 
 function! translator#util#echo(group, msg) abort
-  if a:msg == '' | return | endif
+  if a:msg ==# '' | return | endif
   execute 'echohl' a:group
   echo a:msg
   echon ' '
@@ -14,7 +14,7 @@ function! translator#util#echo(group, msg) abort
 endfunction
 
 function! translator#util#echon(group, msg) abort
-  if a:msg == '' | return | endif
+  if a:msg ==# '' | return | endif
   execute 'echohl' a:group
   echon a:msg
   echon ' '
@@ -36,11 +36,11 @@ function! translator#util#show_msg(message, ...) abort
 
   call translator#util#echo('Constant', '[vim-translator]')
 
-  if msg_type == 'info'
+  if msg_type ==# 'info'
     call translator#util#echon('Normal', message)
-  elseif msg_type == 'warning'
+  elseif msg_type ==# 'warning'
     call translator#util#echon('WarningMsg', message)
-  elseif msg_type == 'error'
+  elseif msg_type ==# 'error'
     call translator#util#echon('Error', message)
   endif
 endfunction

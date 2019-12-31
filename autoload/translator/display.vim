@@ -5,14 +5,16 @@
 " GitHub: https://github.com/voldikss
 " ============================================================================
 
+scriptencoding utf-8
+
 function! translator#display#window(translations) abort
   let Lines = s:build_lines(a:translations)
   let max_height =
-    \ g:translator_window_max_height == v:null
+    \ g:translator_window_max_height ==# v:null
     \ ? float2nr(0.6*&lines)
     \ : float2nr(g:translator_window_max_height)
   let max_width =
-    \ g:translator_window_max_width == v:null
+    \ g:translator_window_max_width ==# v:null
     \ ? float2nr(0.6*&columns)
     \ : float2nr(g:translator_window_max_width)
   let [width, height] = s:get_floatwin_size(Lines, max_width, max_height)
@@ -20,9 +22,9 @@ function! translator#display#window(translations) abort
 
   for i in range(len(Lines))
     let line = Lines[i]
-    if match(line, '───') == 0 && width > strdisplaywidth(line)
+    if match(line, '───') ==# 0 && width > strdisplaywidth(line)
       let Lines[i] = translator#util#padding(Lines[i], width, '─')
-    elseif match(line, '⟦') == 0 && width > strdisplaywidth(line)
+    elseif match(line, '⟦') ==# 0 && width > strdisplaywidth(line)
       let Lines[i] = translator#util#padding(Lines[i], width, ' ')
     endif
   endfor
@@ -35,7 +37,7 @@ function! translator#display#window(translations) abort
     let translator_window_type = 'preview'
   endif
 
-  if translator_window_type == 'floating'
+  if translator_window_type ==# 'floating'
     let main_winnr = winnr()
     let cursor_pos=getcurpos()
     let vpos=cursor_pos[1]-line('w0')
@@ -49,8 +51,8 @@ function! translator#display#window(translations) abort
       \ 'relative': 'win',
       \ 'bufpos': [0,0],
       \ 'anchor': vert . hor,
-      \ 'row': vpos + y_offset + (vert == 'N' ? 1 : -1),
-      \ 'col': hpos + x_offset + (hor == 'W' ? 1 : -1),
+      \ 'row': vpos + y_offset + (vert ==# 'N' ? 1 : -1),
+      \ 'col': hpos + x_offset + (hor ==# 'W' ? 1 : -1),
       \ 'width': width,
       \ 'height': height,
       \ 'style':'minimal'
@@ -75,7 +77,7 @@ function! translator#display#window(translations) abort
             \ repeat(g:translator_window_borderchars[0], width) .
             \ g:translator_window_borderchars[5]
     let mid = g:translator_window_borderchars[3] .
-            \ repeat(" ", width) .
+            \ repeat(' ', width) .
             \ g:translator_window_borderchars[1]
     let bot = g:translator_window_borderchars[7] .
             \ repeat(g:translator_window_borderchars[2], width) .
@@ -85,7 +87,10 @@ function! translator#display#window(translations) abort
     call nvim_buf_set_lines(s:border_bufnr, 0, -1, v:true, lines)
     call nvim_open_win(s:border_bufnr, v:false, border_opts)
     " For translator border highlight
-    autocmd FileType translator_border ++once execute 'syn match Border /.*/ | hi def link Border ' . g:translator_window_border_highlight
+    augroup translator_border_highlight
+      autocmd!
+      autocmd FileType translator_border ++once execute 'syn match Border /.*/ | hi def link Border ' . g:translator_window_border_highlight
+  augroup END
     call nvim_buf_set_option(s:border_bufnr, 'filetype', 'translator_border')
 
     " Note: this line must be put after creating the border_win!
@@ -97,10 +102,10 @@ function! translator#display#window(translations) abort
       exe 'autocmd BufLeave,BufWipeout,BufDelete <buffer=' . s:translator_bufnr . '> exe "bw ' . s:border_bufnr . '"'
     augroup END
 
-  elseif translator_window_type == 'popup'
-    let vert = vert == 'N' ? 'top' : 'bot'
-    let hor = hor == 'W' ? 'left' : 'right'
-    let line = vert == 'top' ? 'cursor+1' : 'cursor-1'
+  elseif translator_window_type ==# 'popup'
+    let vert = vert ==# 'N' ? 'top' : 'bot'
+    let hor = hor ==# 'W' ? 'left' : 'right'
+    let line = vert ==# 'top' ? 'cursor+1' : 'cursor-1'
 
     let options = {
       \ 'pos': vert . hor,
@@ -137,7 +142,7 @@ function! translator#display#window(translations) abort
     let s:translator_winnr = winnr()
     let s:translator_bufnr = bufnr() " NOTE: this line must be put after `enew`
     call append(0, Lines)
-    normal gg
+    call setpos('.', [0, 1, 1, 0])
 
     setlocal foldcolumn=1
     setlocal buftype=nofile
@@ -279,13 +284,13 @@ function! translator#display#echo(translations) abort
   let explain = ''
 
   for t in a:translations['results']
-    if len(t['phonetic']) && (phonetic == '')
+    if len(t['phonetic']) && (phonetic ==# '')
       let phonetic = '[' . t['phonetic'] . ']'
     endif
-    if len(t['paraphrase']) && (paraphrase == '')
+    if len(t['paraphrase']) && (paraphrase ==# '')
       let paraphrase = t['paraphrase']
     endif
-    if len(t['explain']) && (len(explain) == 0)
+    if len(t['explain']) && (len(explain) ==# 0)
       let explain = join(t['explain'], ' ')
     endif
   endfor

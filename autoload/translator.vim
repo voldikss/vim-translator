@@ -22,8 +22,8 @@ endif
 
 function! translator#translate(args, display, visualmode) abort
   " jump to popup or close popup
-  if a:display == 'window'
-    if &filetype == 'translator'
+  if a:display ==# 'window'
+    if &filetype ==# 'translator'
       wincmd c
       return
     elseif translator#display#try_jump_into()
@@ -31,7 +31,7 @@ function! translator#translate(args, display, visualmode) abort
     endif
   endif
 
-  if a:args == ''
+  if a:args ==# ''
     let select_text = a:visualmode ? translator#util#visual_select() : expand('<cword>')
     let args = '-w ' . select_text
   else

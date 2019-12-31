@@ -5,6 +5,8 @@
 " GitHub: https://github.com/voldikss
 " ============================================================================
 
+scriptencoding utf-8
+
 if exists('g:loaded_translator')
   finish
 endif

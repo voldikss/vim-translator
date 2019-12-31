@@ -1,5 +1,7 @@
 # vim-translator
 
+[![Build Status](https://travis-ci.org/voldikss/vim-translator.svg?branch=master)](https://travis-ci.org/voldikss/vim-translator)
+
 Asynchronou translating plugin for Vim/Neovim
 
 <div align="center">

@@ -20,11 +20,11 @@ function! translator#cmdline#parse_args(argstr) abort
     elseif index(['-l', '--lang'], arg) >= 0
       let flag = 'lang'
     else
-      if flag == 'word'
+      if flag ==# 'word'
         let argmap[flag] .= arg . ' '
-      elseif flag == 'lang'
+      elseif flag ==# 'lang'
         let argmap[flag] = arg
-      elseif flag == 'engines'
+      elseif flag ==# 'engines'
         call add(argmap.engines, arg)
       else
         return [argmap, v:false]
@@ -32,13 +32,13 @@ function! translator#cmdline#parse_args(argstr) abort
     endif
   endfor
 
-  if translator#util#safe_trim(argmap.word) == ''
+  if translator#util#safe_trim(argmap.word) ==# ''
     let argmap.word= translator#util#safe_trim(expand('<cword>'))
   endif
 
   let argmap.word = substitute(argmap.word, '[\n\|\r]\+', '. ', 'g')
   let argmap.word = translator#util#safe_trim(argmap.word)
-  if argmap.word == ''
+  if argmap.word ==# ''
     return [argmap, v:false]
   endif
 
@@ -46,7 +46,7 @@ function! translator#cmdline#parse_args(argstr) abort
     let argmap.engines = g:translator_default_engines
   endif
 
-  if argmap.lang == ''
+  if argmap.lang ==# ''
     let argmap.to_lang = g:translator_target_lang
   endif
 
@@ -61,16 +61,16 @@ function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
   let args = split(cmd_line_before_cursor, '\v\\@<!(\\\\)*\zs\s+', 1)
   call remove(args, 0)
 
-  if len(args) == 1
-    if args[0] == ''
+  if len(args) ==# 1
+    if args[0] ==# ''
       return sort(args_prompt)
     else
       let prefix = args[-1]
-      let candidates = filter(engines+args_prompt, 'v:val[:len(prefix) - 1] == prefix')
+      let candidates = filter(engines+args_prompt, 'v:val[:len(prefix) - 1] ==# prefix')
       return sort(candidates)
     endif
   elseif len(args) > 1
-    if args[-1] == ''
+    if args[-1] ==# ''
       if index(['-e', '--engines'], args[-2]) >= 0
         return sort(engines)
       elseif index(['-w', '--word'], args[-2]) >= 0
@@ -82,7 +82,7 @@ function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
       endif
     else
       let prefix = args[-1]
-      let candidates = filter(engines+args_prompt, 'v:val[:len(prefix) - 1] == prefix')
+      let candidates = filter(engines+args_prompt, 'v:val[:len(prefix) - 1] ==# prefix')
       return sort(candidates)
     endif
   endif
