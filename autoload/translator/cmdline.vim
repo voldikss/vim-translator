@@ -9,7 +9,7 @@ function! translator#cmdline#parse_args(argstr) abort
   let argmap = {
     \ 'engines': [],
     \ 'word': '',
-    \ 'lang': ''
+    \ 'target_lang': ''
     \ }
   let flag = ''
   for arg in split(a:argstr, ' ')
@@ -17,12 +17,12 @@ function! translator#cmdline#parse_args(argstr) abort
       let flag = 'engines'
     elseif index(['-w', '--word'], arg) >= 0
       let flag = 'word'
-    elseif index(['-l', '--lang'], arg) >= 0
-      let flag = 'lang'
+    elseif index(['-tl', '--target_lang'], arg) >= 0
+      let flag = 'target_lang'
     else
       if flag ==# 'word'
         let argmap[flag] .= arg . ' '
-      elseif flag ==# 'lang'
+      elseif flag ==# 'target_lang'
         let argmap[flag] = arg
       elseif flag ==# 'engines'
         call add(argmap.engines, arg)
@@ -46,8 +46,8 @@ function! translator#cmdline#parse_args(argstr) abort
     let argmap.engines = g:translator_default_engines
   endif
 
-  if argmap.lang ==# ''
-    let argmap.to_lang = g:translator_target_lang
+  if argmap.target_lang ==# ''
+    let argmap.target_lang = g:translator_target_lang
   endif
 
   return [argmap, v:true]
@@ -55,7 +55,7 @@ endfunction
 
 function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
   let engines = ['bing', 'ciba', 'google', 'youdao']
-  let args_prompt = ['-e', '--engines', '-w', '--word', '-l', '--lang']
+  let args_prompt = ['-e', '--engines', '-w', '--word', '-tl', '--target_lang']
 
   let cmd_line_before_cursor = a:cmd_line[:a:cursor_pos - 1]
   let args = split(cmd_line_before_cursor, '\v\\@<!(\\\\)*\zs\s+', 1)
@@ -75,7 +75,7 @@ function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
         return sort(engines)
       elseif index(['-w', '--word'], args[-2]) >= 0
         return
-      elseif index(['-l', '--lang'], args[-2]) >= 0
+      elseif index(['-tl', '--target_lang'], args[-2]) >= 0
         return
       else
         return sort(engines + args_prompt)

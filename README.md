@@ -104,21 +104,21 @@ Once the translation window is opened, type `<Leader>w` again to jump into it an
 
 ## Commands
 
-#### `:Translate [-e engines] [-w word] [-l to_lang]`
+#### `:Translate [-e engines] [-w word] [-tl target_lang]`
 
-Translate the `word` to the target language `to_lang` with `engine`, echo the result in the cmdline
+Translate the `word` to the target language `target_lang` with `engine`, echo the result in the cmdline
 
 If no `engines`, use `g:translator_default_engines`
 
 If no `word`, use the word under the cursor
 
-If no `to_lang`, use `g:translator_target_lang`
+If no `target_lang`, use `g:translator_target_lang`
 
-#### `:TranslateW [-e engines] [-w word] [-l to_lang]`
+#### `:TranslateW [-e engines] [-w word] [-tl target_lang]`
 
 The same as `:Translate...`, display the translation in a window
 
-#### `:TranslateR [-e engines] [-w word] [-l to_lang]`
+#### `:TranslateR [-e engines] [-w word] [-tl target_lang]`
 
 The same as `:Translate...`, replace the current word with the translation
 
@@ -129,7 +129,7 @@ Export the translation history
 **Example**:
 
 ```
-:TranslateW -w test -e bing youdao -l zh
+:TranslateW -w test -e bing youdao -tl zh
 ```
 
 ## Highlight
