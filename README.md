@@ -39,6 +39,14 @@ Plug 'voldikss/vim-translator'
 
 - Default: `'zh'`
 
+#### **`g:translator_source_lang`**
+
+> Source language
+
+- Available: Please refer to [Supported languages for every engine](https://github.com/voldikss/vim-translator/wiki)
+
+- Default: `'auto'`
+
 #### **`g:translator_default_engines`**
 
 - Available: `'bing'`, `'ciba'`, `'google'`, `'youdao'`.
