@@ -9,7 +9,8 @@ function! translator#cmdline#parse_args(argstr) abort
   let argmap = {
     \ 'engines': [],
     \ 'word': '',
-    \ 'target_lang': ''
+    \ 'target_lang': '',
+    \ 'source_lang': ''
     \ }
   let flag = ''
   for arg in split(a:argstr, ' ')
@@ -19,10 +20,14 @@ function! translator#cmdline#parse_args(argstr) abort
       let flag = 'word'
     elseif index(['-tl', '--target_lang'], arg) >= 0
       let flag = 'target_lang'
+    elseif index(['-sl', '--source_lang'], arg) >= 0
+      let flag = 'source_lang'
     else
       if flag ==# 'word'
         let argmap[flag] .= arg . ' '
       elseif flag ==# 'target_lang'
+        let argmap[flag] = arg
+      elseif flag ==# 'source_lang'
         let argmap[flag] = arg
       elseif flag ==# 'engines'
         call add(argmap.engines, arg)
@@ -48,6 +53,10 @@ function! translator#cmdline#parse_args(argstr) abort
 
   if argmap.target_lang ==# ''
     let argmap.target_lang = g:translator_target_lang
+  endif
+
+  if argmap.source_lang ==# ''
+    let argmap.source_lang = g:translator_source_lang
   endif
 
   return [argmap, v:true]
