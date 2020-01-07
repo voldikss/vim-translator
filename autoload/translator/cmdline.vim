@@ -64,7 +64,7 @@ endfunction
 
 function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
   let engines = ['bing', 'ciba', 'google', 'youdao']
-  let args_prompt = ['-e', '--engines', '-w', '--word', '-tl', '--target_lang']
+  let args_prompt = ['-e', '--engines', '-w', '--word', '-tl', '--target_lang', '-sl', '--source_lang']
 
   let cmd_line_before_cursor = a:cmd_line[:a:cursor_pos - 1]
   let args = split(cmd_line_before_cursor, '\v\\@<!(\\\\)*\zs\s+', 1)
@@ -85,6 +85,8 @@ function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
       elseif index(['-w', '--word'], args[-2]) >= 0
         return
       elseif index(['-tl', '--target_lang'], args[-2]) >= 0
+        return
+      elseif index(['-sl', '--source_lang'], args[-2]) >= 0
         return
       else
         return sort(engines + args_prompt)
