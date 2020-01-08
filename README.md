@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/voldikss/vim-translator.svg?branch=master)](https://travis-ci.org/voldikss/vim-translator)
 
-Asynchronou translating plugin for Vim/Neovim
+Asynchronous translating plugin for Vim/Neovim
 
 <div align="center">
 	<img src="https://user-images.githubusercontent.com/20282795/71441598-19596a00-273d-11ea-841e-dc893fc9ae7d.gif" width=900>
@@ -22,7 +22,7 @@ Plug 'voldikss/vim-translator'
 
 ## Features
 
-- Asynchronou translating
+- Asynchronous translating
 - Floatwin(NeoVim) & popup(Vim8) support
 - Multiple engines/languages available
 - Allow to save and export translation history

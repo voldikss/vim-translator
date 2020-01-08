@@ -17,7 +17,7 @@ CONTENTS                                               *translator-contents*
 ==============================================================================
 INTRODUCTION                                        *translator-introduction*
 
-	Asynchronou translating plugin for Vim/Neovim
+	Asynchronous translating plugin for Vim/Neovim
 
 
 ==============================================================================
