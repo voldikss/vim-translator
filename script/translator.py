@@ -348,8 +348,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('--text', required=True)
     parser.add_argument('--engines', nargs='+', required=True)
-    parser.add_argument('--toLang', required=True)
-    parser.add_argument('--fromLang', required=True)
+    parser.add_argument('--target_lang', required=True)
+    parser.add_argument('--source_lang', required=True)
     parser.add_argument('--proxy', required=False)
     args = parser.parse_args()
 
@@ -357,8 +357,8 @@ def main():
     text = text.strip('\"')
     text = text.strip()
     engines = args.engines
-    to_lang = args.toLang
-    from_lang = args.fromLang
+    to_lang = args.target_lang
+    from_lang = args.source_lang
 
     translation = {}
     translation['text'] = text
