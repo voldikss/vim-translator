@@ -36,6 +36,11 @@ g:translator_target_lang                            *g:translator_target_lang*
 				Refer to https://github.com/voldikss/vim-translator/wiki
 				Default: `'zh'`
 
+g:translator_source_lang                            *g:translator_source_lang*
+
+                                Refer to https://github.com/voldikss/vim-translator/wiki
+                                Default: `'auto'`
+
 g:translator_default_engines                   *g:translator_default_engines*
 
 				Available: `'bing'`, `'ciba'`, `'google'`, `'youdao'`.

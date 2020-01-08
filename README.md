@@ -35,7 +35,7 @@ Plug 'voldikss/vim-translator'
 
 > Target language
 
-- Available: Please refer to [Supported languages for every engine](https://github.com/voldikss/vim-translator/wiki)
+- Available: Please refer to [language support for translator API](https://github.com/voldikss/vim-translator/wiki)
 
 - Default: `'zh'`
 
@@ -43,7 +43,7 @@ Plug 'voldikss/vim-translator'
 
 > Source language
 
-- Available: Please refer to [Supported languages for every engine](https://github.com/voldikss/vim-translator/wiki)
+- Available: Please refer to [language support for translator API](https://github.com/voldikss/vim-translator/wiki)
 
 - Default: `'auto'`
 
