@@ -349,6 +349,7 @@ def main():
     parser.add_argument('--text', required=True)
     parser.add_argument('--engines', nargs='+', required=True)
     parser.add_argument('--toLang', required=True)
+    parser.add_argument('--fromLang', required=True)
     parser.add_argument('--proxy', required=False)
     args = parser.parse_args()
 
@@ -357,6 +358,7 @@ def main():
     text = text.strip()
     engines = args.engines
     to_lang = args.toLang
+    from_lang = args.fromLang
 
     translation = {}
     translation['text'] = text
@@ -370,7 +372,7 @@ def main():
         translator = cls()
         if args.proxy:
             translator.set_proxy(args.proxy)
-        res = translator.translate('auto', to_lang, text)
+        res = translator.translate(from_lang, to_lang, text)
         if res:
             translation['status'] = 1
             if is_py3:

@@ -49,6 +49,7 @@ function! translator#translate(args, display, visualmode) abort
     \ . ' --text '      . shellescape(args_obj.word)
     \ . ' --engines '   . join(args_obj.engines, ' ')
     \ . ' --toLang '    . args_obj.target_lang
+    \ . ' --fromLang '    . args_obj.source_lang
     \ . (g:translator_proxy_url ? (' --proxy ' . g:translator_proxy_url) : '')
 
   call translator#job#job_start(cmd, a:display)
