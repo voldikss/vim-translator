@@ -20,7 +20,7 @@ if !exists('s:python_executable')
   endif
 endif
 
-function! translator#translate(args, display, visualmode) abort
+function! translator#translate(args, display, visualmode, bang) abort
   " jump to popup or close popup
   if a:display ==# 'window'
     if &filetype ==# 'translator'
@@ -45,6 +45,16 @@ function! translator#translate(args, display, visualmode) abort
     return
   endif
 
+  " Reverse translation
+  if a:bang ==# '!'
+    if args_obj.source_lang ==# 'auto'
+      call translator#util#show_msg('reverse translate is not possible with "auto" target_lang', 'error')
+      return
+    endif
+    let temp = args_obj.target_lang
+    let args_obj.target_lang = args_obj.source_lang
+    let args_obj.source_lang = temp
+  endif
   let cmd = s:python_executable . ' ' . s:py_file
     \ . ' --text '      . shellescape(args_obj.word)
     \ . ' --engines '   . join(args_obj.engines, ' ')
