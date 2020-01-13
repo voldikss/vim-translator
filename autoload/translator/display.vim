@@ -184,7 +184,7 @@ endfunction
 " Style always makes me frantic
 function! s:build_lines(translations) abort
   if g:translator_window_enable_icon == v:true
-    let marker = "• "
+    let marker = '• '
   else
     let marker = '_*_ '
   endif

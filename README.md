@@ -106,9 +106,9 @@ Once the translation window is opened, type `<Leader>w` again to jump into it an
 
 ## Commands
 
-#### `:Translate[!] [-e engines] [-w word] [-tl target_lang]`
+#### `:Translate[!] [-e engines] [-w word] [-tl target_lang] [-sl source_lang]`
 
-Translate the `word` to the target language `target_lang` with `engine`, echo the result in the cmdline
+Translate the `word` from the source language `source_lang` to the target language `target_lang` with `engine`, echo the result in the cmdline
 
 If no `engines`, use `g:translator_default_engines`
 
@@ -118,11 +118,11 @@ If no `target_lang`, use `g:translator_target_lang`
 
 If `!` is included, the plugin will perform a reverse translating by switching `target_lang` and `source_lang`
 
-#### `:TranslateW[!] [-e engines] [-w word] [-tl target_lang]`
+#### `:TranslateW[!] [-e engines] [-w word] [-tl target_lang] [-sl source_lang]`
 
 The same as `:Translate...`, display the translation in a window
 
-#### `:TranslateR[!] [-e engines] [-w word] [-tl target_lang]`
+#### `:TranslateR[!] [-e engines] [-w word] [-tl target_lang] [-sl source_lang]`
 
 The same as `:Translate...`, replace the current word with the translation
 
@@ -133,7 +133,7 @@ Export the translation history
 **Example**:
 
 ```
-:TranslateW -w test -e bing youdao -tl zh
+:TranslateW -w test -e bing youdao -tl zh -sl en
 ```
 
 ## Highlight

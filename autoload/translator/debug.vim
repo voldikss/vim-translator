@@ -26,8 +26,8 @@ function! s:add_info(log) abort
   call add(a:log, printf('- version: %s', split(vinfo, '\n')[0]))
   call add(a:log, printf('- term: %s', $TERM))
 
-  if has("win64") || has("win32")
-    let platform = "windows"
+  if has('win64') || has('win32')
+    let platform = 'windows'
   else
     let platform = substitute(system('uname'), '\n', '', '')
   endif
