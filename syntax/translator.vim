@@ -17,11 +17,11 @@ hi def link TranslatorPhonetic          Type
 hi def link TranslatorExplain           Statement
 
 if g:translator_window_enable_icon
-  syntax match TranslatorPhonetic            /\v墳.*$/
-  syntax match TranslatorExplain             /\v雷.*/
+  syntax match TranslatorPhonetic            /\v•\s\[.*\]$/
+  syntax match TranslatorExplain             /\v•.*/ contains=TranslatorPhonetic
 else
   syntax region TranslatorExplain  concealends matchgroup=Keyword start=#_\*_# end=#$#
-  syntax region TranslatorPhonetic concealends matchgroup=Keyword start=#_+_# end=#$#
+  syntax region TranslatorPhonetic concealends matchgroup=Keyword start=#_\*_# end=#$#
   setlocal conceallevel=3
 endif
 

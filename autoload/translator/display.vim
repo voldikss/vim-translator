@@ -190,13 +190,9 @@ endfunction
 " Style always makes me frantic
 function! s:build_lines(translations) abort
   if g:translator_window_enable_icon == v:true
-    let paraphrase_marker = "\uf949"
-    let phonetic_marker = "\ufa7d"
-    let explain_marker = "\uf949 "
+    let marker = "• "
   else
-    let paraphrase_marker = '_*_'
-    let phonetic_marker = '_+_'
-    let explain_marker = '_*_'
+    let marker = '_*_ '
   endif
 
   let content = []
@@ -207,12 +203,12 @@ function! s:build_lines(translations) abort
     call add(content, '─── ' . t['engine'] . ' ───')
 
     if len(t['paraphrase'])
-      let paraphrase = paraphrase_marker . t['paraphrase']
+      let paraphrase = marker . t['paraphrase']
       call add(content, paraphrase)
     endif
 
     if len(t['phonetic'])
-      let phonetic = phonetic_marker . '[' . t['phonetic'] . ']'
+      let phonetic = marker . '[' . t['phonetic'] . ']'
       call add(content, phonetic)
     endif
 
@@ -220,7 +216,7 @@ function! s:build_lines(translations) abort
       for expl in t['explain']
         let expl = translator#util#safe_trim(expl)
         if len(expl)
-          let explain = explain_marker . expl
+          let explain = marker . expl
           call add(content, explain)
         endif
       endfor

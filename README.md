@@ -87,7 +87,7 @@ Plug 'voldikss/vim-translator'
 
 #### **`g:translator_window_enable_icon`**
 
-> Set it to `v:false` if your terminal are not using [Nerd Font](https://github.com/ryanoasis/nerd-fonts)
+> Set it to `v:false` if your terminal doesn't support Unicode symbols
 
 - Default: `v:true`
 
