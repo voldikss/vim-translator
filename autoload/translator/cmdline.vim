@@ -6,6 +6,9 @@
 " ============================================================================
 
 function! translator#cmdline#parse_args(argstr) abort
+  if g:translator_debug_mode
+    call add(g:translator_log, printf('- cmdline args: %s', a:argstr))
+  endif
   let argmap = {
     \ 'engines': [],
     \ 'word': '',

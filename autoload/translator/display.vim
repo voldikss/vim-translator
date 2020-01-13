@@ -222,7 +222,9 @@ function! s:build_lines(translations) abort
       endfor
     endif
   endfor
-
+  if g:translator_debug_mode
+    call add(g:translator_log, printf('build_lines result: %s', string(content)))
+  endif
   return content
 endfunction
 

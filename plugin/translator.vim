@@ -21,6 +21,7 @@ let g:translator_window_max_height = get(g:, 'translator_window_max_height', v:n
 let g:translator_window_borderchars = get(g:, 'translator_window_borderchars', ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
 let g:translator_window_border_highlight = get(g:, 'translator_window_border_highlight', 'NormalFloat')
 let g:translator_window_enable_icon = get(g:, 'translator_window_enable_icon', v:true)
+let g:translator_debug_mode = get(g:, 'translator_debug_mode', v:false)
 
 " For old variables
 function! s:transfer(var1, var2) abort
@@ -64,4 +65,8 @@ endif
 
 if !exists(':TranslateH')
   command! -nargs=0   TranslateH call translator#history#export()
+endif
+
+if !exists(':TranslateL')
+  command! -nargs=0   TranslateL call translator#debug#open_log()
 endif

@@ -59,6 +59,11 @@ function! s:start(type, data, event) abort
     return
   endif
 
+  if g:translator_debug_mode
+    call add(g:translator_log, '- raw output from translator.py:')
+    call add(g:translator_log, message)
+  endif
+
   " python2 will return unicode object which is hard to solve in python
   " so solve it in vim
   " 1. remove `u` before strings
@@ -67,6 +72,11 @@ function! s:start(type, data, event) abort
   let message = substitute(message, "\\([: \\|: \[]\\)\\(u\\)\\('\\)", '\=submatch(1).submatch(3)', 'g')
   " 2. convert unicode to normal chinese string
   let message = substitute(message, '\\u\(\x\{4\}\)', '\=nr2char("0x".submatch(1),1)', 'g')
+
+  if g:translator_debug_mode
+    call add(g:translator_log, '- processed message from the raw output:')
+    call add(g:translator_log, message)
+  endif
 
   if a:event ==# 'stdout'
     let translations = eval(message)

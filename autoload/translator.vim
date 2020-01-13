@@ -6,6 +6,7 @@
 " ============================================================================
 
 let s:py_file = expand('<sfile>:p:h') . '/../script/translator.py'
+let g:translator_log = []
 
 if !exists('s:python_executable')
   if executable('python3')
@@ -20,7 +21,7 @@ if !exists('s:python_executable')
   endif
 endif
 
-function! translator#translate(args, display, visualmode, bang) abort
+function! translator#translate(args, display, visualmode, ...) abort
   " jump to popup or close popup
   if a:display ==# 'window'
     if &filetype ==# 'translator'
@@ -46,7 +47,7 @@ function! translator#translate(args, display, visualmode, bang) abort
   endif
 
   " Reverse translation
-  if a:bang ==# '!'
+  if a:0 == 1 && a:1 ==# '!'
     if args_obj.source_lang ==# 'auto'
       call translator#util#show_msg('reverse translate is not possible with "auto" target_lang', 'error')
       return
@@ -62,5 +63,8 @@ function! translator#translate(args, display, visualmode, bang) abort
     \ . ' --source_lang '    . args_obj.source_lang
     \ . (g:translator_proxy_url ? (' --proxy ' . g:translator_proxy_url) : '')
 
+  if g:translator_debug_mode
+    call add(g:translator_log, printf('- cmd: "%s"', cmd))
+  endif
   call translator#job#job_start(cmd, a:display)
 endfunction
