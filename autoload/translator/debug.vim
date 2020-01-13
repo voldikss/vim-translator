@@ -46,7 +46,6 @@ function! s:add_options(log) abort
   call add(a:log, printf('- g:translator_window_max_width: %s', g:translator_window_max_width))
   call add(a:log, printf('- g:translator_window_max_height: %s', g:translator_window_max_height))
   call add(a:log, printf('- g:translator_window_borderchars: %s', g:translator_window_borderchars))
-  call add(a:log, printf('- g:translator_window_border_highlight: %s', g:translator_window_border_highlight))
   call add(a:log, printf('- g:translator_window_enable_icon: %s', g:translator_window_enable_icon))
   call add(a:log, '')
   return a:log

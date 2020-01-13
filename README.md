@@ -79,12 +79,6 @@ Plug 'voldikss/vim-translator'
 
 - Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
 
-#### **`g:translator_window_border_highlight`**
-
-- Available: see `:help group-name` and `:help highlight-groups`
-
-- Default: `'NormalFloat'`
-
 #### **`g:translator_window_enable_icon`**
 
 > Set it to `v:false` if your terminal doesn't support Unicode symbols
