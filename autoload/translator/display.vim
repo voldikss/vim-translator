@@ -41,15 +41,17 @@ function! translator#display#window(translations) abort
     let main_winnr = winnr()
     let cursor_pos=getcurpos()
     let vpos=cursor_pos[1]-line('w0')
-    let hpos=cursor_pos[2]
+    let signcolumn_width = translator#util#get_signcolumn_width()
+    let signcolumnwidth = (signcolumn_width==0) ? 0 : (1+signcolumn_width+1)
+    let numberwidth = (&number || &relativenumber) ? &numberwidth : 0
+    let hpos= signcolumnwidth + numberwidth + cursor_pos[2]
 
     ""
     " TODO:
     " use 'relative': 'cursor' for the border window
     " use 'relative':'win'(which behaviors not as expected...) for content window
     let opts = {
-      \ 'relative': 'win',
-      \ 'bufpos': [0,0],
+      \ 'relative': 'editor',
       \ 'anchor': vert . hor,
       \ 'row': vpos + y_offset + (vert ==# 'N' ? 1 : -1),
       \ 'col': hpos + x_offset + (hor ==# 'W' ? 1 : -1),
@@ -64,8 +66,7 @@ function! translator#display#window(translations) abort
     call nvim_buf_set_option(s:translator_bufnr, 'filetype', 'translator')
 
     let border_opts = {
-      \ 'relative': 'win',
-      \ 'bufpos': [0,0],
+      \ 'relative': 'editor',
       \ 'anchor': vert . hor,
       \ 'row': vpos + y_offset,
       \ 'col': hpos + x_offset,
@@ -94,7 +95,7 @@ function! translator#display#window(translations) abort
     augroup translator_close
       autocmd!
       autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call s:close_translator_window()
-      exe 'autocmd BufLeave,BufWipeout,BufDelete <buffer=' . s:translator_bufnr . '> exe "bw ' . s:border_bufnr . '"'
+      exe 'autocmd BufLeave,BufWipeout,BufDelete <buffer=' . s:translator_bufnr . '> call s:close_translator_window()'
     augroup END
 
   elseif translator_window_type ==# 'popup'

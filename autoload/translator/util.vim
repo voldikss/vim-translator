@@ -65,3 +65,9 @@ endfunction
 function! translator#util#safe_trim(text) abort
   return substitute(a:text,'\%#=1^[[:space:]]\+\|[[:space:]]\+$', '', 'g')
 endfunction
+
+function! translator#util#get_signcolumn_width() abort
+  let option = &signcolumn
+  let width = matchstr(option, '\v\d+')
+  return width ==# '' ? 0 : str2nr(width)
+endfunction
