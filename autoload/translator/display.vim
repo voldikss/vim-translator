@@ -55,7 +55,7 @@ function! translator#display#window(translations) abort
       \ 'height': height,
       \ 'style':'minimal'
       \ }
-    if g:translator_window_borderchars == v:null
+    if g:translator_window_borderchars is v:null
       let opts.row -= (vert ==# 'N' ? 1 : -1)
       let opts.col -= (hor ==# 'W' ? 1 : -1)
       let opts.width += 2
@@ -66,12 +66,12 @@ function! translator#display#window(translations) abort
     call nvim_buf_set_lines(s:translator_bufnr, 0, -1, v:false, Lines)
     call nvim_buf_set_option(s:translator_bufnr, 'filetype', 'translator')
 
-    if g:translator_window_borderchars == v:null
+    if g:translator_window_borderchars is v:null
       call nvim_win_set_option(translator_winid, 'foldcolumn', 1)
       call nvim_win_set_option(translator_winid, 'winhl', 'FoldColumn:NormalFloat')
     endif
 
-    if g:translator_window_borderchars != v:null
+    if g:translator_window_borderchars isnot v:null
       let border_opts = {
         \ 'relative': 'editor',
         \ 'anchor': vert . hor,
@@ -123,7 +123,7 @@ function! translator#display#window(translations) abort
       \ 'maxheight': height,
       \ 'minheight': height
       \ }
-    if g:translator_window_borderchars != v:null
+    if g:translator_window_borderchars isnot  v:null
       let options.borderchars = g:translator_window_borderchars
     endif
     let winid = popup_create('', options)
