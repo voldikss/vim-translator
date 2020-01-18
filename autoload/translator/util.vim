@@ -69,5 +69,7 @@ endfunction
 function! translator#util#get_signcolumn_width() abort
   let option = &signcolumn
   let width = matchstr(option, '\v\d+')
-  return width ==# '' ? 0 : str2nr(width)
+  let width = width ==# '' ? matchstr(option, '\vyes') : width
+  let width = width ==# '' ? 0 : (width ==# 'yes' ? 1 : str2nr(width))
+  return width*2
 endfunction

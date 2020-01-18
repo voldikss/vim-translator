@@ -41,8 +41,7 @@ function! translator#display#window(translations) abort
     let main_winnr = winnr()
     let cursor_pos=getcurpos()
     let vpos=cursor_pos[1]-line('w0')
-    let signcolumn_width = translator#util#get_signcolumn_width()
-    let signcolumnwidth = (signcolumn_width==0) ? 0 : (1+signcolumn_width+1)
+    let signcolumnwidth = translator#util#get_signcolumn_width()
     let numberwidth = (&number || &relativenumber) ? &numberwidth : 0
     let hpos= signcolumnwidth + numberwidth + cursor_pos[2]
 
