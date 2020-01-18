@@ -4,8 +4,26 @@ matrix:
       python: '3.7'
       dist: xenial
       os: linux
-      env: RUN_LINT=true
 
-install: pip3 install vim-vint
+install:
+  - mkdir nvim-nightly
+  - |
+    curl -LO https://github.com/neovim/neovim/releases/download/nightly/nvim-linux64.tar.gz
+    tar xzf nvim-linux64.tar.gz -C ./nvim-nightly
+  - |
+    python3 -V
+    pip3 install vim-vint
 
-script: vint --color --style ./autoload ./plugin ./syntax
+before_script:
+  - uname -a
+  - nvim-nightly/nvim-linux64/bin/nvim --version
+  - git clone https://github.com/junegunn/vader.vim.git --depth 1
+  - git clone https://github.com/voldikss/vim-translator.git --depth 1
+
+script:
+  - |
+    nvim-nightly/nvim-linux64/bin/nvim -Nu <(cat << VIMRC
+    set rtp+=vader.vim
+    set rtp+=vim-translator
+    VIMRC) -c 'Vader! test/translator.vader' > /dev/null
+  - vint --color --style ./autoload ./plugin ./syntax

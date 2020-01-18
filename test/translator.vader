@@ -1,0 +1,110 @@
+Execute (test translator#util#padding1):
+  let text = 'abc'
+  let char = '*'
+  let width = 5
+  let padding_text = translator#util#padding(text, width, char)
+  AssertEqual padding_text,'*abc*'
+
+Execute (test translator#util#padding2):
+  let text = 'abc'
+  let char = '*'
+  let width = 6
+  let padding_text = translator#util#padding(text, width, char)
+  AssertEqual padding_text,'*abc**'
+
+Execute (test translator#util#safe_trim):
+  let text = " abc \n "
+  let trim_text = translator#util#safe_trim(text)
+  AssertEqual trim_text,'abc'
+
+Execute (test translator#util#visual_select):
+  " FIXME
+
+Execute (test signcolumn1):
+  set signcolumn=no
+  AssertEqual 0,translator#util#get_signcolumn_width()
+
+Execute (test signcolumn2):
+  set signcolumn=auto
+  AssertEqual 0,translator#util#get_signcolumn_width()
+
+Execute (test signcolumn3):
+  set signcolumn=yes " FIXME
+  AssertEqual 2,translator#util#get_signcolumn_width()
+
+Execute (test signcolumn4):
+  set signcolumn=yes:2
+  AssertEqual 4,translator#util#get_signcolumn_width()
+
+Execute (test signcolumn5):
+  set signcolumn=yes:3
+  AssertEqual 6,translator#util#get_signcolumn_width()
+
+Execute (test translator#cmdline#parse_args1):
+  let cmd = '-w test -e baidu youdao -tl ja -sl en'
+  let [argobj,code] = translator#cmdline#parse_args(cmd)
+  AssertEqual 'test',argobj.word
+  AssertEqual ['baidu', 'youdao'],argobj.engines
+  AssertEqual 'ja',argobj.target_lang
+  AssertEqual 'en',argobj.source_lang
+
+Execute (test translator#cmdline#parse_args2):
+  let cmd = '--word test --engines baidu youdao --target_lang ja --source_lang en'
+  let [argobj,code] = translator#cmdline#parse_args(cmd)
+  AssertEqual 'test',argobj.word
+  AssertEqual ['baidu', 'youdao'],argobj.engines
+  AssertEqual 'ja',argobj.target_lang
+  AssertEqual 'en',argobj.source_lang
+
+Execute (test translator#cmdline#parse_args3):
+  let cmd = '-w test -tl ja'
+  let [argobj,code] = translator#cmdline#parse_args(cmd)
+  AssertEqual 'test',argobj.word
+  AssertEqual ['ciba', 'youdao'],argobj.engines
+  AssertEqual 'ja',argobj.target_lang
+  AssertEqual 'auto',argobj.source_lang
+
+Execute (test translator#cmdline#parse_args4):
+  let cmd = '-w test -e google youdao'
+  let [argobj,code] = translator#cmdline#parse_args(cmd)
+  AssertEqual 'test',argobj.word
+  AssertEqual ['google', 'youdao'],argobj.engines
+  AssertEqual 'zh',argobj.target_lang
+  AssertEqual 'auto',argobj.source_lang
+
+Execute (test translator#cmdline#parse_args5):
+  let cmd = '-w test'
+  let [argobj,code] = translator#cmdline#parse_args(cmd)
+  AssertEqual 'test',argobj.word
+  AssertEqual ['ciba', 'youdao'],argobj.engines
+  AssertEqual 'zh',argobj.target_lang
+  AssertEqual 'auto',argobj.source_lang
+
+Execute (test translator#cmdline#complete):
+  " FIXME
+
+Execute (test translator#display#*):
+  let translations = {
+    \ 'status': 1,
+    \ 'results': [
+    \   {
+    \     'engine': 'ciba',
+    \     'paraphrase': '',
+    \     'phonetic': 'ˈɪmpɔ:t',
+    \     'explain': ['n. 进口，进口商品;输入;重要性;意义;', 'vt. 输入，进口;对…有重大关系;意味着;', 'vi. 具重要性;']
+    \     },
+    \   {
+    \     'engine': 'youdao',
+    \     'phonetic': '',
+    \     'paraphrase': '进口',
+    \     'explain': ['n. 进口，进口货；输入；意思，含义；重要性', 'vt. 输入，进口；含…的意思', 'vi. 输入，进口']
+    \   }],
+    \ 'text': 'import'
+    \ }
+  call translator#display#window(translations)
+  call translator#display#try_jump_into()
+  AssertEqual 'translator',&filetype
+  wincmd w
+  Assert !exists('s:translator_bufnr')
+  Assert !exists('s:border_bufnr')
+  " Assert !exists('#translator_close') " FIXME
