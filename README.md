@@ -77,6 +77,8 @@ Plug 'voldikss/vim-translator'
 
 #### **`g:translator_window_borderchars`**
 
+> Border will be disabled if `g:translator_window_borderchars` is `v:null`
+
 - Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
 
 #### **`g:translator_window_enable_icon`**

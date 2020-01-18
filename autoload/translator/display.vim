@@ -46,10 +46,6 @@ function! translator#display#window(translations) abort
     let numberwidth = (&number || &relativenumber) ? &numberwidth : 0
     let hpos= signcolumnwidth + numberwidth + cursor_pos[2]
 
-    ""
-    " TODO:
-    " use 'relative': 'cursor' for the border window
-    " use 'relative':'win'(which behaviors not as expected...) for content window
     let opts = {
       \ 'relative': 'editor',
       \ 'anchor': vert . hor,
@@ -59,35 +55,47 @@ function! translator#display#window(translations) abort
       \ 'height': height,
       \ 'style':'minimal'
       \ }
+    if g:translator_window_borderchars == v:null
+      let opts.row -= (vert ==# 'N' ? 1 : -1)
+      let opts.col -= (hor ==# 'W' ? 1 : -1)
+      let opts.width += 2
+    endif
     let s:translator_bufnr = nvim_create_buf(v:false, v:true)
     let translator_winid = nvim_open_win(s:translator_bufnr, v:false, opts)
     call nvim_win_set_option(translator_winid, 'wrap', v:true)
     call nvim_buf_set_lines(s:translator_bufnr, 0, -1, v:false, Lines)
     call nvim_buf_set_option(s:translator_bufnr, 'filetype', 'translator')
 
-    let border_opts = {
-      \ 'relative': 'editor',
-      \ 'anchor': vert . hor,
-      \ 'row': vpos + y_offset,
-      \ 'col': hpos + x_offset,
-      \ 'width': width + 2,
-      \ 'height': height + 2,
-      \ 'style':'minimal'
-      \ }
-    let top = g:translator_window_borderchars[4] .
-            \ repeat(g:translator_window_borderchars[0], width) .
-            \ g:translator_window_borderchars[5]
-    let mid = g:translator_window_borderchars[3] .
-            \ repeat(' ', width) .
-            \ g:translator_window_borderchars[1]
-    let bot = g:translator_window_borderchars[7] .
-            \ repeat(g:translator_window_borderchars[2], width) .
-            \ g:translator_window_borderchars[6]
-    let lines = [top] + repeat([mid], height) + [bot]
-    let s:border_bufnr = nvim_create_buf(v:false, v:true)
-    call nvim_buf_set_lines(s:border_bufnr, 0, -1, v:true, lines)
-    call nvim_open_win(s:border_bufnr, v:false, border_opts)
-    call nvim_buf_set_option(s:border_bufnr, 'filetype', 'translator_border')
+    if g:translator_window_borderchars == v:null
+      call nvim_win_set_option(translator_winid, 'foldcolumn', 1)
+      call nvim_win_set_option(translator_winid, 'winhl', 'FoldColumn:NormalFloat')
+    endif
+
+    if g:translator_window_borderchars != v:null
+      let border_opts = {
+        \ 'relative': 'editor',
+        \ 'anchor': vert . hor,
+        \ 'row': vpos + y_offset,
+        \ 'col': hpos + x_offset,
+        \ 'width': width + 2,
+        \ 'height': height + 2,
+        \ 'style':'minimal'
+        \ }
+      let top = g:translator_window_borderchars[4] .
+              \ repeat(g:translator_window_borderchars[0], width) .
+              \ g:translator_window_borderchars[5]
+      let mid = g:translator_window_borderchars[3] .
+              \ repeat(' ', width) .
+              \ g:translator_window_borderchars[1]
+      let bot = g:translator_window_borderchars[7] .
+              \ repeat(g:translator_window_borderchars[2], width) .
+              \ g:translator_window_borderchars[6]
+      let lines = [top] + repeat([mid], height) + [bot]
+      let s:border_bufnr = nvim_create_buf(v:false, v:true)
+      call nvim_buf_set_lines(s:border_bufnr, 0, -1, v:true, lines)
+      call nvim_open_win(s:border_bufnr, v:false, border_opts)
+      call nvim_buf_set_option(s:border_bufnr, 'filetype', 'translator_border')
+    endif
 
     " Note: this line must be put after creating the border_win!
     let s:translator_winnr = win_id2win(translator_winid)
@@ -110,12 +118,14 @@ function! translator#display#window(translations) abort
       \ 'moved': 'any',
       \ 'padding': [0, 0, 0, 0],
       \ 'border': [1, 1, 1, 1],
-      \ 'borderchars': g:translator_window_borderchars,
       \ 'maxwidth': width,
       \ 'minwidth': width,
       \ 'maxheight': height,
       \ 'minheight': height
       \ }
+    if g:translator_window_borderchars != v:null
+      let options.borderchars = g:translator_window_borderchars
+    endif
     let winid = popup_create('', options)
     let bufnr = winbufnr(winid)
     for l in range(1, len(Lines))
