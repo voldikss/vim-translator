@@ -9,12 +9,12 @@ let s:py_file = expand('<sfile>:p:h') . '/../script/translator.py'
 let g:translator_log = []
 
 if !exists('s:python_executable')
-  if executable('python3')
+  if exists('g:python3_host_prog')
+    let s:python_executable = g:python3_host_prog
+  elseif executable('python3')
     let s:python_executable = 'python3'
   elseif executable('python')
     let s:python_executable = 'python'
-  elseif exists('g:python3_host_prog')
-    let s:python_executable = g:python3_host_prog
   else
     call translator#util#show_msg('python is required but not found', 'error')
     finish
