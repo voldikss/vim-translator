@@ -40,8 +40,8 @@ function! translator#display#window(translations) abort
   if translator_window_type ==# 'floating'
     let main_winnr = winnr()
     let vpos=getcurpos()[1]-line('w0')
-    let signcolumnwidth = translator#util#get_signcolumn_width()
-    let numberwidth = (&number || &relativenumber) ? &numberwidth : 0
+    let signcolumnwidth = translator#util#get_signcolumnwidth()
+    let numberwidth = translator#util#get_numberwidth()
     let hpos= signcolumnwidth + numberwidth + virtcol('.')
 
     let opts = {

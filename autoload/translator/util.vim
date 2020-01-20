@@ -66,10 +66,29 @@ function! translator#util#safe_trim(text) abort
   return substitute(a:text,'\%#=1^[[:space:]]\+\|[[:space:]]\+$', '', 'g')
 endfunction
 
-function! translator#util#get_signcolumn_width() abort
+function! translator#util#get_signcolumnwidth() abort
   let option = &signcolumn
   let width = matchstr(option, '\v\d+')
   let width = width ==# '' ? matchstr(option, '\vyes') : width
   let width = width ==# '' ? 0 : (width ==# 'yes' ? 1 : str2nr(width))
   return width*2
+endfunction
+
+function! translator#util#get_numberwidth() abort
+  " nonumber
+  if !&number
+    if !&relativenumber
+      return 0
+    else
+      return &numberwidth
+    endif
+  " number
+  else
+    let lineswidth = len(string(line('$')))
+    if lineswidth + 1 > &numberwidth
+      return lineswidth + 1
+    else
+      return &numberwidth
+    endif
+  endif
 endfunction
