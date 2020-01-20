@@ -39,11 +39,10 @@ function! translator#display#window(translations) abort
 
   if translator_window_type ==# 'floating'
     let main_winnr = winnr()
-    let cursor_pos=getcurpos()
-    let vpos=cursor_pos[1]-line('w0')
+    let vpos=getcurpos()[1]-line('w0')
     let signcolumnwidth = translator#util#get_signcolumn_width()
     let numberwidth = (&number || &relativenumber) ? &numberwidth : 0
-    let hpos= signcolumnwidth + numberwidth + cursor_pos[2]
+    let hpos= signcolumnwidth + numberwidth + virtcol('.')
 
     let opts = {
       \ 'relative': 'editor',
