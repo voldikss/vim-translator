@@ -20,26 +20,6 @@ Execute (test translator#util#safe_trim):
 Execute (test translator#util#visual_select):
   " FIXME
 
-Execute (test signcolumn1):
-  set signcolumn=no
-  AssertEqual 0,translator#util#get_signcolumnwidth()
-
-Execute (test signcolumn2):
-  set signcolumn=auto
-  AssertEqual 0,translator#util#get_signcolumnwidth()
-
-Execute (test signcolumn3):
-  set signcolumn=yes " FIXME
-  AssertEqual 2,translator#util#get_signcolumnwidth()
-
-Execute (test signcolumn4):
-  set signcolumn=yes:2
-  AssertEqual 4,translator#util#get_signcolumnwidth()
-
-Execute (test signcolumn5):
-  set signcolumn=yes:3
-  AssertEqual 6,translator#util#get_signcolumnwidth()
-
 Execute (test translator#cmdline#parse_args1):
   let cmd = '-w test -e baidu youdao -tl ja -sl en'
   let [argobj,code] = translator#cmdline#parse_args(cmd)
