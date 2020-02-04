@@ -8,7 +8,7 @@
 scriptencoding utf-8
 
 function! translator#display#window(translations) abort
-  let Lines = s:build_lines(a:translations)
+  let linelist = s:build_lines(a:translations)
   let max_height =
     \ g:translator_window_max_height ==# v:null
     \ ? float2nr(0.6*&lines)
@@ -17,27 +17,13 @@ function! translator#display#window(translations) abort
     \ g:translator_window_max_width ==# v:null
     \ ? float2nr(0.6*&columns)
     \ : float2nr(g:translator_window_max_width)
-  let [width, height] = s:get_floatwin_size(Lines, max_width, max_height)
+  let [width, height] = s:get_floatwin_size(linelist, max_width, max_height)
   let [y_offset, x_offset, vert, hor] = s:get_floatwin_pos(width, height)
 
-  for i in range(len(Lines))
-    let line = Lines[i]
-    if match(line, '───') ==# 0 && width > strdisplaywidth(line)
-      let Lines[i] = translator#util#padding(Lines[i], width, '─')
-    elseif match(line, '⟦') ==# 0 && width > strdisplaywidth(line)
-      let Lines[i] = translator#util#padding(Lines[i], width, ' ')
-    endif
-  endfor
+  let linelist = s:fit_lines(linelist, width)
+  let wintype = translator#util#get_wintype()
 
-  if has('nvim') && exists('*nvim_win_set_config')
-    let translator_window_type = 'floating'
-  elseif has('textprop') && has('patch-8.1.1522')
-    let translator_window_type = 'popup'
-  else
-    let translator_window_type = 'preview'
-  endif
-
-  if translator_window_type ==# 'floating'
+  if wintype ==# 'floating'
     let pos = win_screenpos('.')
     let y_pos = pos[0] + winline() - 1
     let x_pos = pos[1] + wincol() -1
@@ -61,7 +47,7 @@ function! translator#display#window(translations) abort
     let s:translator_bufnr = nvim_create_buf(v:false, v:true)
     let translator_winid = nvim_open_win(s:translator_bufnr, v:false, opts)
     call nvim_win_set_option(translator_winid, 'wrap', v:true)
-    call nvim_buf_set_lines(s:translator_bufnr, 0, -1, v:false, Lines)
+    call nvim_buf_set_lines(s:translator_bufnr, 0, -1, v:false, linelist)
     call nvim_buf_set_option(s:translator_bufnr, 'filetype', 'translator')
 
     if g:translator_window_borderchars is v:null
@@ -104,7 +90,7 @@ function! translator#display#window(translations) abort
       exe 'autocmd BufLeave,BufWipeout,BufDelete <buffer=' . s:translator_bufnr . '> call s:close_translator_window()'
     augroup END
 
-  elseif translator_window_type ==# 'popup'
+  elseif wintype ==# 'popup'
     let vert = vert ==# 'N' ? 'top' : 'bot'
     let hor = hor ==# 'W' ? 'left' : 'right'
     let line = vert ==# 'top' ? 'cursor+1' : 'cursor-1'
@@ -126,8 +112,8 @@ function! translator#display#window(translations) abort
     endif
     let winid = popup_create('', options)
     let bufnr = winbufnr(winid)
-    for l in range(1, len(Lines))
-      call setbufline(bufnr, l, Lines[l-1])
+    for l in range(1, len(linelist))
+      call setbufline(bufnr, l, linelist[l-1])
     endfor
     call setbufvar(bufnr, '&filetype', 'translator')
     call setbufvar(bufnr, '&spell', 0)
@@ -144,7 +130,7 @@ function! translator#display#window(translations) abort
     enew!
     let s:translator_winnr = winnr()
     let s:translator_bufnr = bufnr() " NOTE: this line must be put after `enew`
-    call append(0, Lines)
+    call append(0, linelist)
     call setpos('.', [0, 1, 1, 0])
 
     setlocal foldcolumn=1
@@ -231,6 +217,18 @@ function! s:build_lines(translations) abort
   return content
 endfunction
 
+function! s:fit_lines(linelist, width) abort
+  for i in range(len(a:linelist))
+    let line = a:linelist[i]
+    if match(line, '───') ==# 0 && a:width > strdisplaywidth(line)
+      let a:linelist[i] = translator#util#padding(a:linelist[i], a:width, '─')
+    elseif match(line, '⟦') ==# 0 && a:width > strdisplaywidth(line)
+      let a:linelist[i] = translator#util#padding(a:linelist[i], a:width, ' ')
+    endif
+  endfor
+  return a:linelist
+endfunction
+
 function! s:get_floatwin_size(translation, max_width, max_height) abort
   let width = 0
   let height = 0
@@ -313,6 +311,5 @@ function! translator#display#replace(translations) abort
       return
     endif
   endfor
-
   call translator#util#show_msg('No paraphrases for the replacement', 'warning')
 endfunction
