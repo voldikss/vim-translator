@@ -38,24 +38,24 @@ function! translator#display#window(translations) abort
   endif
 
   if translator_window_type ==# 'floating'
-    let main_winnr = winnr()
-    let vpos=getcurpos()[1]-line('w0')
-    let signcolumnwidth = translator#util#get_signcolumnwidth()
-    let numberwidth = translator#util#get_numberwidth()
-    let hpos= signcolumnwidth + numberwidth + virtcol('.')
+    let pos = win_screenpos('.')
+    let y_pos = pos[0] + winline() - 1
+    let x_pos = pos[1] + wincol() -1
 
+    let yy_offset = vert ==# 'N' ? 1 : -1
+    let xx_offset = hor ==# 'W' ? 1 : -1
     let opts = {
       \ 'relative': 'editor',
       \ 'anchor': vert . hor,
-      \ 'row': vpos + y_offset + (vert ==# 'N' ? 1 : -1),
-      \ 'col': hpos + x_offset + (hor ==# 'W' ? 1 : -1),
+      \ 'row': y_pos + y_offset + yy_offset,
+      \ 'col': x_pos + x_offset + xx_offset,
       \ 'width': width,
       \ 'height': height,
       \ 'style':'minimal'
       \ }
     if g:translator_window_borderchars is v:null
-      let opts.row -= (vert ==# 'N' ? 1 : -1)
-      let opts.col -= (hor ==# 'W' ? 1 : -1)
+      let opts.row -= yy_offset
+      let opts.col -= xx_offset
       let opts.width += 2
     endif
     let s:translator_bufnr = nvim_create_buf(v:false, v:true)
@@ -73,8 +73,8 @@ function! translator#display#window(translations) abort
       let border_opts = {
         \ 'relative': 'editor',
         \ 'anchor': vert . hor,
-        \ 'row': vpos + y_offset,
-        \ 'col': hpos + x_offset,
+        \ 'row': y_pos + y_offset,
+        \ 'col': x_pos + x_offset,
         \ 'width': width + 2,
         \ 'height': height + 2,
         \ 'style':'minimal'
@@ -252,29 +252,22 @@ function! s:get_floatwin_size(translation, max_width, max_height) abort
   return [width, height]
 endfunction
 
-""
-" x_offset and y_offset values are presetted according to the border's position
-" see border_opts
 function! s:get_floatwin_pos(width, height) abort
-  let bottom_line = line('w0') + winheight(0) - 1
-  let curr_pos = getpos('.')
-  let rownr = curr_pos[1]
-  let colnr = curr_pos[2]
-  " a long wrap line
-  if colnr > &columns
-    let colnr = colnr % &columns
-    let rownr += colnr / &columns
-  endif
+  let pos = win_screenpos('.')
+  let y_pos = pos[0] + winline() - 1
+  let x_pos = pos[1] + wincol() -1
 
-  if rownr + a:height <= bottom_line
+  let border = (g:translator_window_borderchars is v:null) ? 2 : 0
+
+  if y_pos + a:height + border <= &lines
     let vert = 'N'
-    let y_offset = 2
+    let y_offset = 0
   else
     let vert = 'S'
-    let y_offset = 1
+    let y_offset = -1
   endif
 
-  if colnr + a:width <= &columns
+  if x_pos + a:width + border <= &columns
     let hor = 'W'
     let x_offset = -1
   else
