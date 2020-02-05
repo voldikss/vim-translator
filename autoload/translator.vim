@@ -20,6 +20,9 @@ if !exists('s:python_executable')
     finish
   endif
 endif
+if has('win32') || has('win64')
+  let s:python_executable = shellescape(s:python_executable)
+endif
 
 function! translator#translate(args, method, visualmode, ...) abort
   " jump to popup or close popup
