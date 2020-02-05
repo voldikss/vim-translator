@@ -85,11 +85,11 @@ function! s:start(type, data, event) abort
     endif
 
     if a:type ==# 'echo'
-      call translator#display#echo(translations)
+      call translator#ui#echo(translations)
     elseif a:type ==# 'window'
-      call translator#display#window(translations)
+      call translator#ui#window(translations)
     else
-      call translator#display#replace(translations)
+      call translator#ui#replace(translations)
     endif
     call translator#history#save(translations)
   elseif a:event ==# 'stderr'

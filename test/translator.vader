@@ -63,7 +63,7 @@ Execute (test translator#cmdline#parse_args5):
 Execute (test translator#cmdline#complete):
   " FIXME
 
-Execute (test translator#display#*):
+Execute (test translator#ui*):
   let translations = {
     \ 'status': 1,
     \ 'results': [
@@ -81,8 +81,8 @@ Execute (test translator#display#*):
     \   }],
     \ 'text': 'import'
     \ }
-  call translator#display#window(translations)
-  call translator#display#try_jump_into()
+  call translator#ui#window(translations)
+  call translator#ui#try_jump_into()
   AssertEqual 'translator',&filetype
   wincmd w
   Assert !exists('s:translator_bufnr')

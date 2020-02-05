@@ -21,13 +21,13 @@ if !exists('s:python_executable')
   endif
 endif
 
-function! translator#translate(args, display, visualmode, ...) abort
+function! translator#translate(args, method, visualmode, ...) abort
   " jump to popup or close popup
-  if a:display ==# 'window'
+  if a:method ==# 'window'
     if &filetype ==# 'translator'
       wincmd c
       return
-    elseif translator#display#try_jump_into()
+    elseif translator#ui#try_jump_into()
       return
     endif
   endif
@@ -66,5 +66,5 @@ function! translator#translate(args, display, visualmode, ...) abort
   if g:translator_debug_mode
     call add(g:translator_log, printf('- cmd: "%s"', cmd))
   endif
-  call translator#job#job_start(cmd, a:display)
+  call translator#job#job_start(cmd, a:method)
 endfunction

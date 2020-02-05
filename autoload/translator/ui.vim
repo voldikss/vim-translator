@@ -1,5 +1,5 @@
 " ============================================================================
-" FileName: display.vim
+" FileName: ui.vim
 " Description:
 " Author: voldikss <dyzplus@gmail.com>
 " GitHub: https://github.com/voldikss
@@ -7,7 +7,7 @@
 
 scriptencoding utf-8
 
-function! translator#display#window(translations) abort
+function! translator#ui#window(translations) abort
   let linelist = s:build_lines(a:translations)
   let max_height =
     \ g:translator_window_max_height ==# v:null
@@ -44,11 +44,9 @@ function! translator#display#window(translations) abort
       let opts.col -= xx_offset
       let opts.width += 2
     endif
-    let s:translator_bufnr = nvim_create_buf(v:false, v:true)
+    let s:translator_bufnr = s:nvim_create_buf(linelist, 'translator')
     let translator_winid = nvim_open_win(s:translator_bufnr, v:false, opts)
     call nvim_win_set_option(translator_winid, 'wrap', v:true)
-    call nvim_buf_set_lines(s:translator_bufnr, 0, -1, v:false, linelist)
-    call nvim_buf_set_option(s:translator_bufnr, 'filetype', 'translator')
 
     if g:translator_window_borderchars is v:null
       call nvim_win_set_option(translator_winid, 'foldcolumn', 1)
@@ -74,11 +72,9 @@ function! translator#display#window(translations) abort
       let bot = g:translator_window_borderchars[7] .
               \ repeat(g:translator_window_borderchars[2], width) .
               \ g:translator_window_borderchars[6]
-      let lines = [top] + repeat([mid], height) + [bot]
-      let s:border_bufnr = nvim_create_buf(v:false, v:true)
-      call nvim_buf_set_lines(s:border_bufnr, 0, -1, v:true, lines)
+      let borderlines = [top] + repeat([mid], height) + [bot]
+      let s:border_bufnr = s:nvim_create_buf(borderlines, 'translator_border')
       call nvim_open_win(s:border_bufnr, v:false, border_opts)
-      call nvim_buf_set_option(s:border_bufnr, 'filetype', 'translator_border')
     endif
 
     " Note: this line must be put after creating the border_win!
@@ -153,12 +149,19 @@ endfunction
 
 ""
 " Only available for floating winndow and preview window
-function! translator#display#try_jump_into() abort
+function! translator#ui#try_jump_into() abort
   if exists('s:translator_bufnr') && bufexists(s:translator_bufnr)
     noautocmd exe s:translator_winnr . ' wincmd w'
     return v:true
   endif
   return v:false
+endfunction
+
+function! s:nvim_create_buf(linelist, filetype) abort
+  let bufnr = nvim_create_buf(v:false, v:true)
+  call nvim_buf_set_lines(bufnr, 0, -1, v:false, a:linelist)
+  call nvim_buf_set_option(bufnr, 'filetype', a:filetype)
+  return bufnr
 endfunction
 
 ""
@@ -294,7 +297,7 @@ function! s:get_floatwin_pos(width, height) abort
   return [y_offset, x_offset, vert, hor, width, height]
 endfunction
 
-function! translator#display#echo(translations) abort
+function! translator#ui#echo(translations) abort
   let phonetic = ''
   let paraphrase = ''
   let explain = ''
@@ -318,7 +321,7 @@ function! translator#display#echo(translations) abort
   call translator#util#echon('Normal', explain)
 endfunction
 
-function! translator#display#replace(translations) abort
+function! translator#ui#replace(translations) abort
   for t in a:translations['results']
     if len(t['paraphrase'])
       let reg_tmp = @a
