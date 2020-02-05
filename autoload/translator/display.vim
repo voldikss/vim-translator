@@ -18,7 +18,7 @@ function! translator#display#window(translations) abort
     \ ? float2nr(0.6*&columns)
     \ : float2nr(g:translator_window_max_width)
   let [width, height] = s:get_floatwin_size(linelist, max_width, max_height)
-  let [y_offset, x_offset, vert, hor] = s:get_floatwin_pos(width, height)
+  let [y_offset, x_offset, vert, hor, width, height] = s:get_floatwin_pos(width, height)
 
   let linelist = s:fit_lines(linelist, width)
   let wintype = translator#util#get_wintype()
@@ -255,25 +255,43 @@ function! s:get_floatwin_pos(width, height) abort
   let y_pos = pos[0] + winline() - 1
   let x_pos = pos[1] + wincol() -1
 
-  let border = (g:translator_window_borderchars is v:null) ? 2 : 0
+  let border = (g:translator_window_borderchars is v:null) ? 0 : 2
+  let y_margin = 2
+  let [width, height] = [a:width, a:height]
 
-  if y_pos + a:height + border <= &lines
+  if y_pos + height + border + y_margin <= &lines
     let vert = 'N'
     let y_offset = 0
+  elseif y_pos - height -border - y_margin >= 0
+    let vert = 'S'
+    let y_offset = -1
+  elseif &lines - y_pos >= y_pos
+    let vert = 'N'
+    let y_offset = 0
+    let height = &lines - y_pos - border - y_margin
   else
     let vert = 'S'
     let y_offset = -1
+    let height = y_pos - border - y_margin
   endif
 
   if x_pos + a:width + border <= &columns
     let hor = 'W'
     let x_offset = -1
+  elseif x_pos - width - border >= 0
+    let hor = 'E'
+    let x_offset = 0
+  elseif &columns - x_pos >= x_pos
+    let hor = 'W'
+    let x_offset = -1
+    let width = &columns - x_pos - border
   else
     let hor = 'E'
     let x_offset = 0
+    let width = x_pos - border
   endif
 
-  return [y_offset, x_offset, vert, hor]
+  return [y_offset, x_offset, vert, hor, width, height]
 endfunction
 
 function! translator#display#echo(translations) abort
