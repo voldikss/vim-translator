@@ -188,7 +188,12 @@ function! s:build_lines(translations) abort
   endif
 
   let content = []
-  call add(content, '⟦ ' . a:translations['text'] . ' ⟧' )
+  if len(a:translations['text']) > 30
+    let text = a:translations['text'][:30] . '...'
+  else
+    let text = a:translations['text']
+  endif
+  call add(content, '⟦ ' . text . ' ⟧' )
 
   for t in a:translations['results']
     if len(t.paraphrase) == 0 && len(t.explain) == 0
