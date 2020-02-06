@@ -193,27 +193,27 @@ function! s:build_lines(translations) abort
   else
     let text = a:translations['text']
   endif
-  call add(content, '⟦ ' . text . ' ⟧' )
+  call add(content, printf('⟦ %s ⟧', text))
 
   for t in a:translations['results']
     if len(t.paraphrase) == 0 && len(t.explain) == 0
       continue
     endif
     call add(content, '')
-    call add(content, '─── ' . t['engine'] . ' ───')
+    call add(content, printf('─── %s ───', t.engine))
 
-    if len(t['paraphrase'])
-      let paraphrase = marker . t['paraphrase']
+    if len(t.paraphrase) > 0
+      let paraphrase = marker . t.paraphrase
       call add(content, paraphrase)
     endif
 
-    if len(t['phonetic'])
-      let phonetic = marker . '[' . t['phonetic'] . ']'
+    if len(t.phonetic) > 0
+      let phonetic = marker . printf('[%s]', t.phonetic)
       call add(content, phonetic)
     endif
 
-    if len(t['explain'])
-      for expl in t['explain']
+    if len(t.explain) > 0
+      for expl in t.explain
         let expl = translator#util#safe_trim(expl)
         if len(expl)
           let explain = marker . expl
@@ -311,18 +311,23 @@ function! translator#ui#echo(translations) abort
   let explain = ''
 
   for t in a:translations['results']
-    if len(t['phonetic']) && (phonetic ==# '')
-      let phonetic = '[' . t['phonetic'] . ']'
+    if len(t.phonetic) && (phonetic ==# '')
+      let phonetic = printf('[%s]', t.phonetic)
     endif
-    if len(t['paraphrase']) && (paraphrase ==# '')
-      let paraphrase = t['paraphrase']
+    if len(t.paraphrase) && (paraphrase ==# '')
+      let paraphrase = t.paraphrase
     endif
-    if len(t['explain']) && (len(explain) ==# 0)
-      let explain = join(t['explain'], ' ')
+    if len(t.explain) && (len(explain) ==# 0)
+      let explain = join(t.explain, ' ')
     endif
   endfor
 
-  call translator#util#echo('Function', a:translations['text'])
+  if len(a:translations['text']) > 30
+    let text = a:translations['text'][:30] . '...'
+  else
+    let text = a:translations['text']
+  endif
+  call translator#util#echo('Function', text)
   call translator#util#echon('Constant', '==>')
   call translator#util#echon('Type', phonetic)
   call translator#util#echon('Normal', paraphrase)
@@ -331,9 +336,9 @@ endfunction
 
 function! translator#ui#replace(translations) abort
   for t in a:translations['results']
-    if len(t['paraphrase'])
+    if len(t.paraphrase)
       let reg_tmp = @a
-      let @a = t['paraphrase']
+      let @a = t.paraphrase
       normal! gv"ap
       let @a = reg_tmp
       unlet reg_tmp
