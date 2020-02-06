@@ -191,6 +191,9 @@ function! s:build_lines(translations) abort
   call add(content, '⟦ ' . a:translations['text'] . ' ⟧' )
 
   for t in a:translations['results']
+    if len(t.paraphrase) == 0 && len(t.explain) == 0
+      continue
+    endif
     call add(content, '')
     call add(content, '─── ' . t['engine'] . ' ───')
 
