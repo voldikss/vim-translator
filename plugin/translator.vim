@@ -51,15 +51,21 @@ vmap <silent> <Plug>TranslateRV :<C-U>call translator#translate('', 'replace', v
 nmap <silent> <Plug>TranslateH  :call translator#history#export()
 
 if !exists(':Translate')
-  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang Translate call translator#translate(<q-args>, 'echo', v:false, '<bang>')
+  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang
+    \ Translate
+    \ call translator#translate(<q-args>, 'echo', v:false, '<bang>')
 endif
 
 if !exists(':TranslateW')
-  command! -complete=customlist,translator#cmdline#complete -nargs=* TranslateW call translator#translate(<q-args>, 'window', v:false, '<bang>')
+  command! -complete=customlist,translator#cmdline#complete -nargs=*
+    \ TranslateW
+    \ call translator#translate(<q-args>, 'window', v:false, '<bang>')
 endif
 
 if !exists(':TranslateR')
-  command! -complete=customlist,translator#complete -nargs=* TranslateR exec 'normal viw<Esc>' | call translator#translate(<q-args>, 'replace', v:false, '<bang>')
+  command! -complete=customlist,translator#complete -nargs=*
+    \ TranslateR
+    \ exec 'normal viw<Esc>' | call translator#translate(<q-args>, 'replace', v:false, '<bang>')
 endif
 
 if !exists(':TranslateH')

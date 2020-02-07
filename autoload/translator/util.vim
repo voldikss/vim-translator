@@ -65,13 +65,3 @@ endfunction
 function! translator#util#safe_trim(text) abort
   return substitute(a:text,'\%#=1^[[:space:]]\+\|[[:space:]]\+$', '', 'g')
 endfunction
-
-function! translator#util#get_wintype() abort
-  if has('nvim') && exists('*nvim_win_set_config')
-    return 'floating'
-  elseif has('textprop') && has('patch-8.1.1522')
-    return 'popup'
-  else
-    return 'preview'
-  endif
-endfunction

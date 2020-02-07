@@ -7,6 +7,14 @@
 
 scriptencoding utf-8
 
+if has('nvim') && exists('*nvim_win_set_config')
+  let s:wintype = 'floating'
+elseif has('textprop') && has('patch-8.1.1522')
+  let s:wintype = 'popup'
+else
+  let s:wintype = 'preview'
+endif
+
 function! translator#ui#window(translations) abort
   let linelist = s:build_lines(a:translations)
   let max_height =
@@ -21,9 +29,8 @@ function! translator#ui#window(translations) abort
   let [y_offset, x_offset, vert, hor, width, height] = s:get_floatwin_pos(width, height)
 
   let linelist = s:fit_lines(linelist, width)
-  let wintype = translator#util#get_wintype()
 
-  if wintype ==# 'floating'
+  if s:wintype ==# 'floating'
     let pos = win_screenpos('.')
     let y_pos = pos[0] + winline() - 1
     let x_pos = pos[1] + wincol() -1
@@ -86,7 +93,7 @@ function! translator#ui#window(translations) abort
       exe 'autocmd BufLeave,BufWipeout,BufDelete <buffer=' . s:translator_bufnr . '> call s:close_translator_window()'
     augroup END
 
-  elseif wintype ==# 'popup'
+  elseif s:wintype ==# 'popup'
     let vert = vert ==# 'N' ? 'top' : 'bot'
     let hor = hor ==# 'W' ? 'left' : 'right'
     let line = vert ==# 'top' ? 'cursor+1' : 'cursor-1'
