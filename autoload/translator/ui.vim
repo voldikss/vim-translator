@@ -203,26 +203,26 @@ function! s:build_lines(translations) abort
   call add(content, printf('⟦ %s ⟧', text))
 
   for t in a:translations['results']
-    if len(t.paraphrase) == 0 && len(t.explain) == 0
+    if empty(t.paraphrase) && empty(t.explain)
       continue
     endif
     call add(content, '')
     call add(content, printf('─── %s ───', t.engine))
 
-    if len(t.paraphrase) > 0
+    if !empty(t.paraphrase)
       let paraphrase = marker . t.paraphrase
       call add(content, paraphrase)
     endif
 
-    if len(t.phonetic) > 0
+    if !empty(t.phonetic)
       let phonetic = marker . printf('[%s]', t.phonetic)
       call add(content, phonetic)
     endif
 
-    if len(t.explain) > 0
+    if !empty(t.explain)
       for expl in t.explain
         let expl = translator#util#safe_trim(expl)
-        if len(expl)
+        if !empty(expl)
           let explain = marker . expl
           call add(content, explain)
         endif
@@ -318,13 +318,13 @@ function! translator#ui#echo(translations) abort
   let explain = ''
 
   for t in a:translations['results']
-    if len(t.phonetic) && (phonetic ==# '')
+    if !empty(t.phonetic) && empty(phonetic)
       let phonetic = printf('[%s]', t.phonetic)
     endif
-    if len(t.paraphrase) && (paraphrase ==# '')
+    if !empty(t.paraphrase) && empty(paraphrase)
       let paraphrase = t.paraphrase
     endif
-    if len(t.explain) && (len(explain) ==# 0)
+    if !empty(t.explain) && empty(explain)
       let explain = join(t.explain, ' ')
     endif
   endfor
@@ -343,7 +343,7 @@ endfunction
 
 function! translator#ui#replace(translations) abort
   for t in a:translations['results']
-    if len(t.paraphrase)
+    if !empty(t.paraphrase)
       let reg_tmp = @a
       let @a = t.paraphrase
       normal! gv"ap
