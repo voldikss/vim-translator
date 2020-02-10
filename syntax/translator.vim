@@ -11,11 +11,6 @@ if exists('b:current_syntax')
   finish
 endif
 
-hi def link TranslatorQuery             Identifier
-hi def link TranslatorDelimiter         Special
-hi def link TranslatorPhonetic          Type
-hi def link TranslatorExplain           Statement
-
 if g:translator_window_enable_icon
   syntax match TranslatorPhonetic            /\v•\s\[.*\]$/
   syntax match TranslatorExplain             /\v•.*/ contains=TranslatorPhonetic
@@ -27,5 +22,13 @@ endif
 
 syntax match TranslatorQuery               /\v⟦.*⟧/
 syntax match TranslatorDelimiter           /\v\─.*\─/
+
+hi def link TranslatorQuery             Identifier
+hi def link TranslatorDelimiter         Special
+hi def link TranslatorPhonetic          Type
+hi def link TranslatorExplain           Statement
+
+hi def link TranslatorNF                NormalFloat
+hi def link TranslatorBorderNF          NormalFloat
 
 let b:current_syntax = 'translator'

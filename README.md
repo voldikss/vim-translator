@@ -143,10 +143,15 @@ Export the translation history
 Here are the default highlight links. To customize, use `hi link`
 
 ```vim
+" Text highlight of translator window
 hi def link TranslatorQuery             Identifier
 hi def link TranslatorPhonetic          Type
 hi def link TranslatorExplain           Statement
 hi def link TranslatorDelimiter         Special
+
+" Background of translator window border
+hi def link TranslatorNF                NormalFloat
+hi def link TranslatorBorderNF          NormalFloat
 ```
 
 ## Known bugs

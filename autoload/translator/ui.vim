@@ -33,7 +33,7 @@ function! translator#ui#window(translations) abort
   if s:wintype ==# 'floating'
     let pos = win_screenpos('.')
     let y_pos = pos[0] + winline() - 1
-    let x_pos = pos[1] + wincol() -1
+    let x_pos = pos[1] + wincol() - 1
 
     let yy_offset = vert ==# 'N' ? 1 : -1
     let xx_offset = hor ==# 'W' ? 1 : -1
@@ -54,10 +54,11 @@ function! translator#ui#window(translations) abort
     let s:translator_bufnr = s:nvim_create_buf(linelist, 'translator')
     let translator_winid = nvim_open_win(s:translator_bufnr, v:false, opts)
     call nvim_win_set_option(translator_winid, 'wrap', v:true)
+    call nvim_win_set_option(translator_winid, 'winhl', 'NormalFloat:TranslatorNF')
 
     if g:translator_window_borderchars is v:null
       call nvim_win_set_option(translator_winid, 'foldcolumn', 1)
-      call nvim_win_set_option(translator_winid, 'winhl', 'FoldColumn:NormalFloat')
+      call nvim_win_set_option(translator_winid, 'winhl', 'FoldColumn:TranslatorNF')
     endif
 
     if g:translator_window_borderchars isnot v:null
@@ -81,7 +82,8 @@ function! translator#ui#window(translations) abort
               \ g:translator_window_borderchars[6]
       let borderlines = [top] + repeat([mid], height) + [bot]
       let s:border_bufnr = s:nvim_create_buf(borderlines, 'translator_border')
-      call nvim_open_win(s:border_bufnr, v:false, border_opts)
+      let border_winid = nvim_open_win(s:border_bufnr, v:false, border_opts)
+      call nvim_win_set_option(border_winid, 'winhl', 'NormalFloat:TranslatorBorderNF')
     endif
 
     " Note: this line must be put after creating the border_win!
@@ -105,6 +107,12 @@ function! translator#ui#window(translations) abort
       \ 'moved': 'any',
       \ 'padding': [0, 0, 0, 0],
       \ 'border': [1, 1, 1, 1],
+      \ 'borderhighlight': [
+        \ 'TranslatorBorderNF',
+        \ 'TranslatorBorderNF',
+        \ 'TranslatorBorderNF',
+        \ 'TranslatorBorderNF'
+      \ ],
       \ 'maxwidth': width,
       \ 'minwidth': width,
       \ 'maxheight': height,
@@ -124,6 +132,7 @@ function! translator#ui#window(translations) abort
     call setbufvar(bufnr, '&number', 1)
     call setbufvar(bufnr, '&relativenumber', 0)
     call setbufvar(bufnr, '&foldcolumn', 0)
+    call setwinvar(winid, '&wincolor', 'TranslatorNF')
   else
     let curr_pos = getpos('.')
     execute 'noswapfile bo pedit!'

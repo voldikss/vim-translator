@@ -1,4 +1,4 @@
-*translator.txt*      Vim/Neovim plugin for translating     Last change: 2019-12-26
+*translator.txt*    Vim/Neovim plugin for translating   Last change: 2019-02-10
 
 Author : voldikss <https://github.com/voldikss>
 License: MIT license
@@ -23,10 +23,10 @@ INTRODUCTION                                        *translator-introduction*
 ==============================================================================
 INSTALL                                                 *translator-install*
 
-	With vim-plug:
-	>
+	Using vim-plug:
+ >
 	    Plug 'voldikss/vim-translator'
-    <
+<
 
 ==============================================================================
 VARIABLES                                            *translator-variables*
@@ -142,13 +142,18 @@ COMMANDS                                    *translator-commands*
 ==============================================================================
 HIGHLIGHT                                                        *translator-highlight*
 
-    Here is the default highlight link. To customize, use `hi link`
+    Here are the default highlight links.
+    To customize, use `highlight` command.
     >
-	    hi def link TranslatorQuery             Identifier
-	    hi def link TranslatorPhonetic          Type
-	    hi def link TranslatorParaphrase        Statement
-	    hi def link TranslatorExplain           Statement
-	    hi def link TranslatorDelimiter         Special
+		" Text highlight of translator window
+		hi def link TranslatorQuery             Identifier
+		hi def link TranslatorPhonetic          Type
+		hi def link TranslatorExplain           Statement
+		hi def link TranslatorDelimiter         Special
+
+		" Background of translator window border
+		hi def link TranslatorNF                NormalFloat
+		hi def link TranslatorBorderNF          NormalFloat
 
 
 ==============================================================================
