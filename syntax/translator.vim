@@ -17,7 +17,6 @@ if g:translator_window_enable_icon
 else
   syntax region TranslatorExplain  concealends matchgroup=Keyword start=#_\*_# end=#$#
   syntax region TranslatorPhonetic concealends matchgroup=Keyword start=#_\*_# end=#$#
-  setlocal conceallevel=3
 endif
 
 syntax match TranslatorQuery               /\v⟦.*⟧/

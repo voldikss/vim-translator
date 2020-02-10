@@ -55,6 +55,7 @@ function! translator#ui#window(translations) abort
     let translator_winid = nvim_open_win(s:translator_bufnr, v:false, opts)
     call nvim_win_set_option(translator_winid, 'wrap', v:true)
     call nvim_win_set_option(translator_winid, 'winhl', 'NormalFloat:TranslatorNF')
+    call nvim_win_set_option(translator_winid, 'conceallevel', 3)
 
     if g:translator_window_borderchars is v:null
       call nvim_win_set_option(translator_winid, 'foldcolumn', 1)
@@ -132,6 +133,7 @@ function! translator#ui#window(translations) abort
     call setbufvar(bufnr, '&number', 1)
     call setbufvar(bufnr, '&relativenumber', 0)
     call setbufvar(bufnr, '&foldcolumn', 0)
+    call setwinvar(winid, '&conceallevel', 3)
     call setwinvar(winid, '&wincolor', 'TranslatorNF')
   else
     let curr_pos = getpos('.')
