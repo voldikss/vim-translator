@@ -24,7 +24,7 @@ if has('win32') || has('win64')
   let s:python_executable = shellescape(s:python_executable)
 endif
 
-function! translator#translate(args, method, visualmode, ...) abort
+function! translator#translate(bang, args, method, visualmode) abort
   " jump to popup or close popup
   if a:method ==# 'window'
     if &filetype ==# 'translator'
@@ -50,7 +50,8 @@ function! translator#translate(args, method, visualmode, ...) abort
   endif
 
   " Reverse translation
-  if a:0 == 1 && a:1 ==# '!'
+  if a:bang ==# '!'
+    echom 'reverse'
     if args_obj.source_lang ==# 'auto'
       call translator#util#show_msg('reverse translate is not possible with "auto" target_lang', 'error')
       return
