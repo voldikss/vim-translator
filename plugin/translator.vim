@@ -63,9 +63,10 @@ if !exists(':TranslateW')
 endif
 
 if !exists(':TranslateR')
-  command! -complete=customlist,translator#complete -nargs=* -bang
+  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang
     \ TranslateR
-    \ exec 'normal viw<Esc>' | call translator#translate('<bang>', <q-args>, 'replace', v:false)
+    \ exec 'normal viw<Esc>' |
+    \ call translator#translate('<bang>', <q-args>, 'replace', v:false)
 endif
 
 if !exists(':TranslateH')

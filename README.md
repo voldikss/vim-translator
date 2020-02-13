@@ -25,7 +25,7 @@ Plug 'voldikss/vim-translator'
 - Asynchronous translating
 - Floatwin(NeoVim) & popup(Vim8) support
 - Multiple engines/languages available
-- Allow to save and export translation history
+- Save and export translation history
 - Proxy available(http, socks4, socks5)
 - Doesn't need appid/appkey
 
@@ -35,7 +35,7 @@ Plug 'voldikss/vim-translator'
 
 > Target language
 
-- Available: Please refer to [language support for translator API](https://github.com/voldikss/vim-translator/wiki)
+- Available: Please refer to [language support list](https://github.com/voldikss/vim-translator/wiki)
 
 - Default: `'zh'`
 
@@ -43,7 +43,7 @@ Plug 'voldikss/vim-translator'
 
 > Source language
 
-- Available: Please refer to [language support for translator API](https://github.com/voldikss/vim-translator/wiki)
+- Available: Please refer to [language support list](https://github.com/voldikss/vim-translator/wiki)
 
 - Default: `'auto'`
 
@@ -55,7 +55,7 @@ Plug 'voldikss/vim-translator'
 
 #### **`g:translator_proxy_url`**
 
-> i.e. `let g:translator_proxy_url = 'socks5://127.0.0.1:1080'`
+> e.g. `let g:translator_proxy_url = 'socks5://127.0.0.1:1080'`
 
 - Default: `v:null`
 
@@ -77,7 +77,7 @@ Plug 'voldikss/vim-translator'
 
 #### **`g:translator_window_borderchars`**
 
-> Border will be disabled if `g:translator_window_borderchars` is `v:null`
+> Floating window border will be disabled if `g:translator_window_borderchars` is `v:null`
 
 - Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
 
@@ -89,10 +89,10 @@ Plug 'voldikss/vim-translator'
 
 ## Key Mappings
 
-This plugin doesn't supply default mappings.
+This plugin doesn't supply any default mappings.
 
 ```vim
-""" Example configuration
+""" Configuration example
 " Echo translation in the cmdline
 nmap <silent> <Leader>t <Plug>Translate
 vmap <silent> <Leader>t <Plug>TranslateV
@@ -122,11 +122,11 @@ If `!` is included, the plugin will perform a reverse translating by switching `
 
 #### `:TranslateW[!] [-e engines] [-w word] [-tl target_lang] [-sl source_lang]`
 
-The same as `:Translate...`, display the translation in a window
+Like `:Translate...`, but display the translation in a window
 
 #### `:TranslateR[!] [-e engines] [-w word] [-tl target_lang] [-sl source_lang]`
 
-The same as `:Translate...`, replace the current word with the translation
+Like `:Translate...`, but replace the current word with the translation
 
 #### `:TranslateH`
 
@@ -140,7 +140,7 @@ Export the translation history
 
 ## Highlight
 
-Here are the default highlight links. To customize, use `hi link`
+Here are the default highlight links. To customize, use `hi` or `hi link`
 
 ```vim
 " Text highlight of translator window
@@ -156,7 +156,7 @@ hi def link TranslatorBorderNF          NormalFloat
 
 ## Known bugs
 
-Can not translate sentences(which has spaces among words) in Vim8
+- Can not translate sentences(because there are some spaces among words) in Vim8(see [#24](https://github.com/voldikss/vim-translator/issues/24))
 
 ## References
 
