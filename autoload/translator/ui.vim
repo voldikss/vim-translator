@@ -70,7 +70,8 @@ function! translator#ui#window(translations) abort
         \ 'col': x_pos + x_offset,
         \ 'width': width + 2,
         \ 'height': height + 2,
-        \ 'style':'minimal'
+        \ 'style':'minimal',
+        \ 'focusable': v:false
         \ }
       let top = g:translator_window_borderchars[4] .
               \ repeat(g:translator_window_borderchars[0], width) .
@@ -93,7 +94,7 @@ function! translator#ui#window(translations) abort
     augroup translator_close
       autocmd!
       autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call s:close_translator_window()
-      exe 'autocmd BufLeave,BufWipeout,BufDelete <buffer=' . s:translator_bufnr . '> call s:close_translator_window()'
+      exe 'autocmd BufWipeout,BufDelete <buffer=' . s:translator_bufnr . '> call s:close_translator_window()'
     augroup END
 
   elseif s:wintype ==# 'popup'
