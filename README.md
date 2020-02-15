@@ -1,6 +1,6 @@
 # vim-translator
 
-[![Build Status](https://travis-ci.org/voldikss/vim-translator.svg?branch=master)](https://travis-ci.org/voldikss/vim-translator)
+![CI](https://github.com/voldikss/vim-translator/workflows/CI/badge.svg)
 
 Asynchronous translating plugin for Vim/Neovim
 
