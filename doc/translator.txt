@@ -1,4 +1,4 @@
-*translator.txt*    Vim/Neovim plugin for translating   Last change: 2019-02-10
+*translator.txt*    Vim/Neovim plugin for translating   Last change: 2019-02-16
 
 Author : voldikss <https://github.com/voldikss>
 License: MIT license
@@ -33,75 +33,74 @@ VARIABLES                                            *translator-variables*
 
 g:translator_target_lang                            *g:translator_target_lang*
 
-				Refer to https://github.com/voldikss/vim-translator/wiki
-				Default: `'zh'`
+		Refer to https://github.com/voldikss/vim-translator/wiki
+		Default: "zh"
 
 g:translator_source_lang                            *g:translator_source_lang*
 
-                                Refer to https://github.com/voldikss/vim-translator/wiki
-                                Default: `'auto'`
+		Refer to https://github.com/voldikss/vim-translator/wiki
+		Default: "auto"
 
 g:translator_default_engines                   *g:translator_default_engines*
 
-				Available: `'bing'`, `'ciba'`, `'google'`, `'youdao'`.
-				Default: `['ciba', 'youdao']` if |g:translator_target_lang|
-				is `'zh'``, otherwise `['google', 'bing']`
+		Available: "bing", "ciba", "google", "youdao", "trans".
+		Default: ["ciba", "youdao"] if |g:translator_target_lang|
+		is "zh"`, otherwise ["google", "bing"]
 
 g:translator_proxy_url                               *g:translator_proxy_url*
 
-				e.g.
-				`let g:translator_proxy_url = 'socks5://127.0.0.1:1080'`
-				Default: `v:null`
+		E.g.
+		`let g:translator_proxy_url = 'socks5://127.0.0.1:1080'`
+		Default: |v:null|
 
 g:translator_history_enable                      *g:translator_history_enable*
 
-				Default: `v:false`
+		Default: |v:false|
 
 g:translator_enable_history                      *g:translator_enable_history*
 
-				Default: `v:false`
+		Default: |v:false|
 
 g:translator_window_max_width                  *g:translator_window_max_width*
 
-				Max width value of the popup/floating window
-				Default: `0.6*&columns`
+		Max width value of the popup/floating window
+		Default: 0.6*&columns
 
 g:translator_window_max_height                *g:translator_window_max_height*
 
-				Max width value of the popup/floating height
-				Default: `0.6*&lines`
+		Max width value of the popup/floating height
+		Default: 0.6*&lines
 
 g:translator_window_borderchars              *g:translator_window_borderchars*
 
-				Border will be disabled if
-				`g:translator_window_borderchars` is set to `v:null`
-                                Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
+		Border will be disabled if |g:translator_window_borderchars|
+		is set to |v:null|
+		Default: ['─', '│', '─', '│', '┌', '┐', '┘', '└']
 
 
 g:translator_window_enable_icon             *g:translator_window_enable_icon*
 
-                                Set it to `v:false` if your terminal doesn't
-				support Unicode symbols
-
-				Default: `v:true`
+		Set it to |v:false| if your terminal doesn't
+		support Unicode symbols
+		Default: |v:true|
 
 ==============================================================================
 
 MAPPINGS                                       *translator-key-mappings*
 
-                    This plugin doesn't supply default mappings.
-                >
-                    """ Example configuration
+		This plugin doesn't supply any default mappings.
+	    >
+		""" Configuration example
 
-                    " Echo translation in the cmdline
-                    nmap <silent> <Leader>t <Plug>Translate
-                    vmap <silent> <Leader>t <Plug>TranslateV
-                    " Display translation in a window
-                    nmap <silent> <Leader>w <Plug>TranslateW
-                    vmap <silent> <Leader>w <Plug>TranslateWV
-                    " Replace the text with translation
-                    nmap <silent> <Leader>r <Plug>TranslateR
-                    vmap <silent> <Leader>r <Plug>TranslateRV
+		" Echo translation in the cmdline
+		nmap <silent> <Leader>t <Plug>Translate
+		vmap <silent> <Leader>t <Plug>TranslateV
+		" Display translation in a window
+		nmap <silent> <Leader>w <Plug>TranslateW
+		vmap <silent> <Leader>w <Plug>TranslateWV
+		" Replace the text with translation
+		nmap <silent> <Leader>r <Plug>TranslateR
+		vmap <silent> <Leader>r <Plug>TranslateRV
 
 
 ==============================================================================
@@ -143,7 +142,7 @@ COMMANDS                                    *translator-commands*
 HIGHLIGHT                                                        *translator-highlight*
 
     Here are the default highlight links.
-    To customize, use `highlight` command.
+    To customize, use |highlight| command.
     >
 		" Text highlight of translator window
 		hi def link TranslatorQuery             Identifier
