@@ -66,7 +66,7 @@ function! translator#cmdline#parse_args(argstr) abort
 endfunction
 
 function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
-  let engines = ['bing', 'ciba', 'google', 'youdao']
+  let engines = ['bing', 'ciba', 'google', 'youdao', 'trans']
   let args_prompt = ['-e', '--engines', '-w', '--word', '-tl', '--target_lang', '-sl', '--source_lang']
 
   let cmd_line_before_cursor = a:cmd_line[:a:cursor_pos - 1]

@@ -65,6 +65,7 @@ class BasicTranslator(object):
         self._name = name
         self._agent = None
         self._trans = Translation(name)
+        self._proxy_url = None
 
     def request(self, url, data=None, post=False, header=None):
         if header:
@@ -113,6 +114,8 @@ class BasicTranslator(object):
             sys.stderr.write("pySocks module should be installed")
             return None
 
+        self._proxy_url = proxy_url
+
         proxy_types = {
             'http': socks.PROXY_TYPE_HTTP,
             'socks': socks.PROXY_TYPE_SOCKS4,
@@ -137,7 +140,7 @@ class BasicTranslator(object):
         print("test url: %s" % test_url)
         print(self.request(test_url))
 
-    def translate(self, sl, tl, text):
+    def translate(self, sl, tl, text, options=None):
         self._trans['paraphrase'] = None    # 简单翻译
         self._trans['phonetic'] = None      # 读音
         self._trans['explain'] = None       # 详细翻译
@@ -152,7 +155,7 @@ class BingTranslator (BasicTranslator):
         self._agent += ' Firefox/50.0'
         self._url = 'http://bing.com/dict/SerpHoverTrans'
 
-    def translate(self, sl, tl, text):
+    def translate(self, sl, tl, text, options=None):
         if 'zh' in tl:
             self._url = 'http://cn.bing.com/dict/SerpHoverTrans'
 
@@ -191,7 +194,7 @@ class CibaTranslator (BasicTranslator):
     def __init__(self, name='ciba'):
         super(CibaTranslator, self).__init__(name)
 
-    def translate(self, sl, tl, text):
+    def translate(self, sl, tl, text, options=None):
         url = 'https://fy.iciba.com/ajax.php'
         req = {}
         req['a'] = 'fy'
@@ -233,7 +236,7 @@ class GoogleTranslator (BasicTranslator):
                   http_host, sl, tl, qry)
         return url
 
-    def translate(self, sl, tl, text):
+    def translate(self, sl, tl, text, options=None):
         self.text = text
         url = self.get_url(sl, tl, text)
         r = self.http_get(url)
@@ -279,7 +282,7 @@ class YoudaoTranslator (BasicTranslator):
         s = "fanyideskweb" + text + salt + self.D
         return self.get_md5(s)
 
-    def translate(self, sl, tl, text):
+    def translate(self, sl, tl, text, options=None):
         self.text = text
         salt = str(int(time.time() * 1000) + random.randint(0, 10))
         sign = self.sign(text, salt)
@@ -336,11 +339,37 @@ class YoudaoTranslator (BasicTranslator):
         return explain
 
 
+class TranslateShell (BasicTranslator):
+
+    def __init__(self, name='trans'):
+        super(TranslateShell, self).__init__(name)
+
+    def translate(self, sl, tl, text, options=None):
+        if not options:
+            options = []
+
+        if self._proxy_url:
+            options.append('-proxy {}'.format(self._proxy_url))
+
+        source_lang = '' if sl == 'auto' else sl
+        cmd = "trans {} {}:{} '{}'".format(' '.join(options), source_lang, tl, text)
+        run = os.popen(cmd)
+        lines = []
+        for line in run.readlines():
+            line = re.sub(r'[\t\n]', '', line)
+            line = re.sub(r'\v.*', '', line)
+            lines.append(line)
+        self.text = text
+        self._trans['explain'] = lines
+        return self._trans
+
+
 ENGINES = {
     'google': GoogleTranslator,
     'youdao': YoudaoTranslator,
     'bing': BingTranslator,
     'ciba': CibaTranslator,
+    'trans': TranslateShell,
 }
 
 
@@ -351,6 +380,7 @@ def main():
     parser.add_argument('--target_lang', required=True)
     parser.add_argument('--source_lang', required=True)
     parser.add_argument('--proxy', required=False)
+    parser.add_argument('--options', type=str, default=None, required=False)
     args = parser.parse_args()
 
     text = args.text.strip('\'')
@@ -359,6 +389,7 @@ def main():
     engines = args.engines
     to_lang = args.target_lang
     from_lang = args.source_lang
+    options = args.options.split(',')
 
     translation = {}
     translation['text'] = text
@@ -372,7 +403,7 @@ def main():
         translator = cls()
         if args.proxy:
             translator.set_proxy(args.proxy)
-        res = translator.translate(from_lang, to_lang, text)
+        res = translator.translate(from_lang, to_lang, text, options)
         if res:
             translation['status'] = 1
             if is_py3:
