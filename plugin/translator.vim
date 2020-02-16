@@ -21,7 +21,7 @@ let g:translator_window_max_height = get(g:, 'translator_window_max_height', v:n
 let g:translator_window_borderchars = get(g:, 'translator_window_borderchars', ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
 let g:translator_window_enable_icon = get(g:, 'translator_window_enable_icon', v:true)
 let g:translator_debug_mode = get(g:, 'translator_debug_mode', v:false)
-let g:translator_translate_shell_options = get(g:, 'translator_translate_shell_options', ['-no-ansi', '-no-theme'])
+let g:translator_translate_shell_options = get(g:, 'translator_translate_shell_options', [])
 
 " For old variables
 function! s:transfer(var1, var2) abort

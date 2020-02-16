@@ -55,7 +55,7 @@ endfunction
 
 function! translator#util#visual_select() abort
   let reg_tmp = @a
-  normal! gv"ay
+  silent normal! gv"ay
   let select_text=@a
   let @a = reg_tmp
   unlet reg_tmp

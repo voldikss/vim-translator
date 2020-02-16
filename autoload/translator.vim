@@ -66,7 +66,7 @@ function! translator#translate(bang, args, method, visualmode) abort
     \ . ' --target_lang '    . args_obj.target_lang
     \ . ' --source_lang '    . args_obj.source_lang
     \ . (g:translator_proxy_url !=# v:null ? (' --proxy ' . g:translator_proxy_url) : '')
-    \ . (len(g:translator_translate_shell_options) > 0 ? (" --options='" . join(g:translator_translate_shell_options, ',')) . "'" : '')
+    \ . (index(args_obj.engines, 'trans') >=0 ? (" --options='" . join(g:translator_translate_shell_options, ',')) . "'" : '')
 
   if g:translator_debug_mode
     call add(g:translator_log, printf('- cmd: "%s"', cmd))

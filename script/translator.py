@@ -351,8 +351,16 @@ class TranslateShell (BasicTranslator):
         if self._proxy_url:
             options.append('-proxy {}'.format(self._proxy_url))
 
+        default_opts = ['-no-ansi',
+                        '-no-theme',
+                        '-show-languages n'
+                        '-show-prompt-message n',
+                        '-show-translation-phonetics n',
+                        ]
+        options = default_opts + options
         source_lang = '' if sl == 'auto' else sl
-        cmd = "trans {} {}:{} '{}'".format(' '.join(options), source_lang, tl, text)
+        cmd = "trans {} {}:{} '{}'".format(
+            ' '.join(options), source_lang, tl, text)
         run = os.popen(cmd)
         lines = []
         for line in run.readlines():
@@ -389,7 +397,10 @@ def main():
     engines = args.engines
     to_lang = args.target_lang
     from_lang = args.source_lang
-    options = args.options.split(',')
+    if args.options:
+        options = args.options.split(',')
+    else:
+        options = []
 
     translation = {}
     translation['text'] = text
@@ -415,6 +426,11 @@ def main():
 
 
 if __name__ == '__main__':
+    def test0():
+        t = BasicTranslator('test_proxy')
+        t.set_proxy('socks://localhost:1081')
+        t.test_request('https://www.reddit.com')
+
     def test1():
         t = BingTranslator()
         r = t.translate('', '', 'good')
@@ -436,9 +452,9 @@ if __name__ == '__main__':
         print(r)
 
     def test5():
-        t = BasicTranslator('test_proxy')
-        t.set_proxy('socks://localhost:1081')
-        t.test_request('https://www.reddit.com')
+        t = TranslateShell()
+        r = t.translate('auto', 'zh', 'kiss')
+        print(r)
 
     # test5()
     main()
