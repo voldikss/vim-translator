@@ -1,0 +1,44 @@
+Execute (test translator#cmdline#parse_args1):
+  let cmd = '-w test -e baidu youdao -tl ja -sl en'
+  let [argobj,code] = translator#cmdline#parse_args(cmd)
+  AssertEqual 'test',argobj.word
+  AssertEqual ['baidu', 'youdao'],argobj.engines
+  AssertEqual 'ja',argobj.target_lang
+  AssertEqual 'en',argobj.source_lang
+
+
+Execute (test translator#cmdline#parse_args2):
+  let cmd = '--word test --engines baidu youdao --target_lang ja --source_lang en'
+  let [argobj,code] = translator#cmdline#parse_args(cmd)
+  AssertEqual 'test',argobj.word
+  AssertEqual ['baidu', 'youdao'],argobj.engines
+  AssertEqual 'ja',argobj.target_lang
+  AssertEqual 'en',argobj.source_lang
+
+
+Execute (test translator#cmdline#parse_args3):
+  let cmd = '-w test -tl ja'
+  let [argobj,code] = translator#cmdline#parse_args(cmd)
+  AssertEqual 'test',argobj.word
+  AssertEqual ['ciba', 'youdao'],argobj.engines
+  AssertEqual 'ja',argobj.target_lang
+  AssertEqual 'auto',argobj.source_lang
+
+
+Execute (test translator#cmdline#parse_args4):
+  let cmd = '-w test -e google youdao'
+  let [argobj,code] = translator#cmdline#parse_args(cmd)
+  AssertEqual 'test',argobj.word
+  AssertEqual ['google', 'youdao'],argobj.engines
+  AssertEqual 'zh',argobj.target_lang
+  AssertEqual 'auto',argobj.source_lang
+
+
+Execute (test translator#cmdline#parse_args5):
+  let cmd = '-w test'
+  let [argobj,code] = translator#cmdline#parse_args(cmd)
+  AssertEqual 'test',argobj.word
+  AssertEqual ['ciba', 'youdao'],argobj.engines
+  AssertEqual 'zh',argobj.target_lang
+  AssertEqual 'auto',argobj.source_lang
+

@@ -1,0 +1,23 @@
+Execute (test translator#util#padding1):
+  let text = 'abc'
+  let char = '*'
+  let width = 5
+  let padding_text = translator#util#padding(text, width, char)
+  AssertEqual padding_text,'*abc*'
+
+
+Execute (test translator#util#padding2):
+  let text = 'abc'
+  let char = '*'
+  let width = 6
+  let padding_text = translator#util#padding(text, width, char)
+  AssertEqual padding_text,'*abc**'
+
+
+Execute (test translator#util#safe_trim):
+  let text = " abc \n "
+  let trim_text = translator#util#safe_trim(text)
+  AssertEqual trim_text,'abc'
+
+
+
