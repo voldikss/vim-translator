@@ -40,7 +40,10 @@ function! translator#translate(bang, args, method, visualmode) abort
   else
     let args = a:args
   endif
-  let args = substitute(args, '^\s*\(.\{-}\)\s*$', '\1', '')
+  let args = substitute(args, "\n", ' ', 'g')
+  let args = substitute(args, "\n\r", ' ', 'g')
+  let args = substitute(args, '\v^\s+', '', '')
+  let args = substitute(args, '\v\s+$', '', '')
 
   let [args_obj, success] = translator#cmdline#parse_args(args)
   if success != v:true
