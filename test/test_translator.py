@@ -21,21 +21,21 @@ class TestTranslator(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super(TestTranslator, self).__init__(*args, **kwargs)
 
-    def test_bing(self):
-        translation = Translation("bing")
-        translation["phonetic"] = "'f&#230;m(ə)li"
-        translation["explain"] = ["n. 家族；亲属；子女；家庭（包括父母子女）", "adj. 家庭的；一家所有的；适合全家人的"]
-        t = BingTranslator()
-        r = t.translate("", "", "family")
-        self.assertEqual(translation, r)
+    # def test_bing(self):
+    #     translation = Translation("bing")
+    #     translation["phonetic"] = "'f&#230;m(ə)li"
+    #     translation["explain"] = ["n. 家族；亲属；子女；家庭（包括父母子女）", "adj. 家庭的；一家所有的；适合全家人的"]
+    #     t = BingTranslator()
+    #     r = t.translate("", "", "family")
+    #     self.assertEqual(translation, r)
 
-    def test_ciba(self):
-        translation = Translation("ciba")
-        translation["phonetic"] = "ˈfæməli"
-        translation["explain"] = ["n. 家庭;家族;孩子;祖先;", "adj. 家庭的;一家所有的;属于家庭的;适合全家人的;"]
-        t = CibaTranslator()
-        r = t.translate("", "", "family")
-        self.assertEqual(translation, r)
+    # def test_ciba(self):
+    #     translation = Translation("ciba")
+    #     translation["phonetic"] = "ˈfæməli"
+    #     translation["explain"] = ["n. 家庭;家族;孩子;祖先;", "adj. 家庭的;一家所有的;属于家庭的;适合全家人的;"]
+    #     t = CibaTranslator()
+    #     r = t.translate("", "", "family")
+    #     self.assertEqual(translation, r)
 
     def test_google(self):
         translation = Translation("google")

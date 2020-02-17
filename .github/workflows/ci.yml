@@ -39,13 +39,21 @@ jobs:
 
   translator-script:
     name: Test translator.py
-    strategy:
-      matrix:
-        os: [ubuntu-latest, macos-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-python@v1
-      - run: |
+      - name: Install python
+        uses: actions/setup-python@v1
+      - name: Install translate-shell
+        run: |
+          sudo add-apt-repository ppa:schot/gawk -y
+          sudo apt-get update -q
+          sudo apt-get install gawk
+          wget git.io/trans
+          chmod +x ./trans
+          export PATH=$PWD:$PATH
+          echo $PATH
+      - name: Run translator tests
+        run: |
         python --version
         python ./test/test_translator.py
