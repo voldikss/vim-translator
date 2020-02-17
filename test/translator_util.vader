@@ -1,23 +1,88 @@
-Execute (test translator#util#padding1):
-  let text = 'abc'
-  let char = '*'
-  let width = 5
-  let padding_text = translator#util#padding(text, width, char)
-  AssertEqual padding_text,'*abc*'
+Include: default_config.vader
 
 
-Execute (test translator#util#padding2):
-  let text = 'abc'
-  let char = '*'
-  let width = 6
-  let padding_text = translator#util#padding(text, width, char)
-  AssertEqual padding_text,'*abc**'
+Execute (Call-only functions):
+  call translator#util#show_msg('test msg')
+  call translator#util#show_msg('test msg', 'info')
+  call translator#util#show_msg('test msg', 'warning')
+  call translator#util#show_msg('test msg', 'error')
 
 
-Execute (test translator#util#safe_trim):
-  let text = " abc \n "
-  let trim_text = translator#util#safe_trim(text)
-  AssertEqual trim_text,'abc'
+Execute (Test translator#util#padding):
+  AssertEqual '*abc*', translator#util#padding('abc', 5, '*')
+  AssertEqual '*abc**', translator#util#padding('abc', 6, '*')
 
 
+Execute (Test translator#util#fit_lines):
+  let linelist = [
+    \ '⟦ call ⟧',
+    \ '',
+    \ '─── ciba ───',
+    \ '• [kɔ:l]',
+    \ '• v. 呼唤，喊叫;召唤，叫来，召集;下令，命令;打电话给;',
+    \ '• n. 喊叫，大声喊;电话联络;必要，理由;要求;',
+    \ '',
+    \ '─── youdao ───',
+    \ '• 调用',
+    \ '• n. 电话；呼叫；要求；访问',
+    \ '• vi. 呼叫；拜访；叫牌',
+    \ '• vt. 呼叫；称呼；召集'
+    \ ]
+  let fit_linelist = [
+    \ '                      ⟦ call ⟧                       ',
+    \ '',
+    \ '─────────────────────── ciba ────────────────────────',
+    \ '• [kɔ:l]',
+    \ '• v. 呼唤，喊叫;召唤，叫来，召集;下令，命令;打电话给;',
+    \ '• n. 喊叫，大声喊;电话联络;必要，理由;要求;',
+    \ '',
+    \ '────────────────────── youdao ───────────────────────',
+    \ '• 调用',
+    \ '• n. 电话；呼叫；要求；访问',
+    \ '• vi. 呼叫；拜访；叫牌',
+    \ '• vt. 呼叫；称呼；召集'
+    \ ]
+  AssertEqual fit_linelist, translator#util#fit_lines(linelist, 53)
 
+
+Execute (Test translator#util#build_lines):
+  let translations = {
+    \ 'status': 1,
+    \ 'results': [
+    \     {'paraphrase': '', 'explain': ['n. 著作家;作者;创造者;发起人;', 'vt. 创作出版;'], 'phonetic': 'ˈɔ:θə(r)', 'engine': 'ciba'},
+    \     {'paraphrase': '作者', 'explain': ['n. 作者；作家；创始人', 'vt. 创作出版'], 'phonetic': '', 'engine': 'youdao'}
+    \ ],
+    \ 'text': 'Author'
+    \ }
+  let content = [
+    \ '⟦ Author ⟧',
+    \ '',
+    \ '─── ciba ───',
+    \ '• [ˈɔ:θə(r)]',
+    \ '• n. 著作家;作者;创造者;发起人;',
+    \ '• vt. 创作出版;',
+    \ '',
+    \ '─── youdao ───',
+    \ '• 作者',
+    \ '• n. 作者；作家；创始人',
+    \ '• vt. 创作出版'
+    \ ]
+  AssertEqual content, translator#util#build_lines(translations)
+
+
+Execute (Test translator#util#safe_trim):
+  AssertEqual 'abc', translator#util#safe_trim(" abc \n ")
+
+
+Given:
+  'How are you'
+Do:
+  /are\<CR>
+  viw
+  \<Esc>
+Then (Test translator#util#visual_select):
+  AssertEqual 'are', translator#util#visual_select()
+
+
+Execute (Exit):
+  sleep 100m

@@ -1,0 +1,40 @@
+Include: default_config.vader
+
+
+Before:
+  let translations = {
+    \ 'status': 1,
+    \ 'results': [
+    \   {
+    \     'engine': 'ciba',
+    \     'paraphrase': '',
+    \     'phonetic': 'ˈɪmpɔ:t',
+    \     'explain': ['n. 进口，进口商品;输入;重要性;意义;', 'vt. 输入，进口;对…有重大关系;意味着;', 'vi. 具重要性;']
+    \     },
+    \   {
+    \     'engine': 'youdao',
+    \     'phonetic': '',
+    \     'paraphrase': '进口',
+    \     'explain': ['n. 进口，进口货；输入；意思，含义；重要性', 'vt. 输入，进口；含…的意思', 'vi. 输入，进口']
+    \   }],
+    \ 'text': 'import'
+    \ }
+
+
+Execute (Save history):
+  let g:translator_history_enable = v:true
+  call translator#history#save(translations)
+
+
+Execute (Export history):
+  call translator#history#export()
+  AssertEqual 'translator_history', &filetype
+  AssertEqual 'import                   n. 进口，进口商品;输入;重要性;意义;', getline('.')
+  normal! ^
+  AssertEqual 'TranslateHistoryQuery', SyntaxAt()
+  normal! $
+  AssertEqual 'TranslateHistoryTrans', SyntaxAt()
+
+
+Execute (Exit):
+  sleep 100m

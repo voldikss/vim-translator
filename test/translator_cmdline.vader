@@ -1,44 +1,45 @@
-Execute (test translator#cmdline#parse_args1):
-  let cmd = '-w test -e baidu youdao -tl ja -sl en'
+Include: default_config.vader
+
+
+Execute (Parsing '-w word'):
+  let cmd = '-w word'
+  let [argobj, code] =translator#cmdline#parse_args(cmd)
+  AssertEqual v:true, code
+  AssertEqual 'word', argobj.word
+  AssertEqual g:translator_default_engines, argobj.engines
+  AssertEqual g:translator_source_lang, argobj.source_lang
+  AssertEqual g:translator_target_lang, argobj.target_lang
+
+
+Execute (Parsing '-w word -sl sl'):
+  let cmd = '-w word -sl sl'
   let [argobj,code] = translator#cmdline#parse_args(cmd)
-  AssertEqual 'test',argobj.word
-  AssertEqual ['baidu', 'youdao'],argobj.engines
-  AssertEqual 'ja',argobj.target_lang
-  AssertEqual 'en',argobj.source_lang
+  AssertEqual v:true, code
+  AssertEqual 'word', argobj.word
+  AssertEqual 'sl', argobj.source_lang
+  AssertEqual g:translator_default_engines, argobj.engines
+  AssertEqual g:translator_target_lang, argobj.target_lang
 
 
-Execute (test translator#cmdline#parse_args2):
-  let cmd = '--word test --engines baidu youdao --target_lang ja --source_lang en'
+Execute (Parsing '-w word -sl sl -tl tl'):
+  let cmd = '-w word -sl sl -tl tl'
   let [argobj,code] = translator#cmdline#parse_args(cmd)
-  AssertEqual 'test',argobj.word
-  AssertEqual ['baidu', 'youdao'],argobj.engines
-  AssertEqual 'ja',argobj.target_lang
-  AssertEqual 'en',argobj.source_lang
+  AssertEqual v:true, code
+  AssertEqual 'word', argobj.word
+  AssertEqual 'sl', argobj.source_lang
+  AssertEqual 'tl', argobj.target_lang
+  AssertEqual g:translator_default_engines, argobj.engines
 
 
-Execute (test translator#cmdline#parse_args3):
-  let cmd = '-w test -tl ja'
+Execute (Parsing '-w word -sl sl -tl tl -e engine1 engine2'):
+  let cmd = '-w word -sl sl -tl tl -e engine1 engine2'
   let [argobj,code] = translator#cmdline#parse_args(cmd)
-  AssertEqual 'test',argobj.word
-  AssertEqual ['ciba', 'youdao'],argobj.engines
-  AssertEqual 'ja',argobj.target_lang
-  AssertEqual 'auto',argobj.source_lang
+  AssertEqual v:true, code
+  AssertEqual 'word', argobj.word
+  AssertEqual 'sl', argobj.source_lang
+  AssertEqual 'tl', argobj.target_lang
+  AssertEqual ['engine1', 'engine2'], argobj.engines
 
 
-Execute (test translator#cmdline#parse_args4):
-  let cmd = '-w test -e google youdao'
-  let [argobj,code] = translator#cmdline#parse_args(cmd)
-  AssertEqual 'test',argobj.word
-  AssertEqual ['google', 'youdao'],argobj.engines
-  AssertEqual 'zh',argobj.target_lang
-  AssertEqual 'auto',argobj.source_lang
-
-
-Execute (test translator#cmdline#parse_args5):
-  let cmd = '-w test'
-  let [argobj,code] = translator#cmdline#parse_args(cmd)
-  AssertEqual 'test',argobj.word
-  AssertEqual ['ciba', 'youdao'],argobj.engines
-  AssertEqual 'zh',argobj.target_lang
-  AssertEqual 'auto',argobj.source_lang
-
+Execute (Exit):
+  sleep 100m

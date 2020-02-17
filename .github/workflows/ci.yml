@@ -36,3 +36,16 @@ jobs:
       - uses: actions/setup-python@v1
       - run: pip install vim-vint
       - run: vint --warning --verbose --enable-neovim --color --style ./autoload ./plugin ./syntax
+
+  translator-script:
+    name: Test translator.py
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v1
+      - run: |
+        python --version
+        python ./test/test_translator.py
