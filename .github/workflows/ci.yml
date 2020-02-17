@@ -55,5 +55,5 @@ jobs:
           echo $PATH
       - name: Run translator tests
         run: |
-        python --version
-        python ./test/test_translator.py
+          python --version
+          python ./test/test_translator.py
