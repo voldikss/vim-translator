@@ -5,13 +5,13 @@
 Asynchronous translating plugin for Vim/Neovim
 
 <div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/71441598-19596a00-273d-11ea-841e-dc893fc9ae7d.gif" width=900>
+	<img src="https://user-images.githubusercontent.com/20282795/71441598-19596a00-273d-11ea-841e-dc893fc9ae7d.gif" width=750>
 </div>
 <div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/71441597-18c0d380-273d-11ea-9248-ae71b2a7ea42.gif" width=900>
+	<img src="https://user-images.githubusercontent.com/20282795/71441597-18c0d380-273d-11ea-9248-ae71b2a7ea42.gif" width=750>
 </div>
 <div align="center">
-	<img src="https://user-images.githubusercontent.com/20282795/71475802-da9ae100-281c-11ea-9eba-c8c4eee04bd9.png" width=900>
+	<img src="https://user-images.githubusercontent.com/20282795/71475802-da9ae100-281c-11ea-9eba-c8c4eee04bd9.png" width=750>
 </div>
 
 ## Installation
@@ -163,6 +163,6 @@ hi def link TranslatorBorderNF          NormalFloat
 - [dict.vim](https://github.com/iamcco/dict.vim)
 - [translator](https://github.com/skywind3000/translator)
 
-### License
+## License
 
 MIT
