@@ -1,6 +1,5 @@
 " ============================================================================
 " FileName: cmdline.vim
-" Description:
 " Author: voldikss <dyzplus@gmail.com>
 " GitHub: https://github.com/voldikss
 " ============================================================================
@@ -17,13 +16,13 @@ function! translator#cmdline#parse_args(argstr) abort
     \ }
   let flag = ''
   for arg in split(a:argstr, ' ')
-    if index(['-e', '--engines'], arg) >= 0
+    if '-e' ==# arg
       let flag = 'engines'
-    elseif index(['-w', '--word'], arg) >= 0
+    elseif '-w' ==# arg
       let flag = 'word'
-    elseif index(['-tl', '--target_lang'], arg) >= 0
+    elseif '-tl' ==# arg
       let flag = 'target_lang'
-    elseif index(['-sl', '--source_lang'], arg) >= 0
+    elseif '-sl' ==# arg
       let flag = 'source_lang'
     else
       if flag ==# 'word'
@@ -67,7 +66,7 @@ endfunction
 
 function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
   let engines = ['bing', 'ciba', 'google', 'youdao', 'trans']
-  let args_prompt = ['-e', '--engines', '-w', '--word', '-tl', '--target_lang', '-sl', '--source_lang']
+  let args_prompt = ['-e', '-w', '-tl', '-sl']
 
   let cmd_line_before_cursor = a:cmd_line[:a:cursor_pos - 1]
   let args = split(cmd_line_before_cursor, '\v\\@<!(\\\\)*\zs\s+', 1)
@@ -83,13 +82,13 @@ function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
     endif
   elseif len(args) > 1
     if args[-1] ==# ''
-      if index(['-e', '--engines'], args[-2]) >= 0
+      if '-e' ==# args[-2]
         return sort(engines)
-      elseif index(['-w', '--word'], args[-2]) >= 0
+      elseif '-w' ==# args[-2]
         return
-      elseif index(['-tl', '--target_lang'], args[-2]) >= 0
+      elseif '-tl' ==# args[-2]
         return
-      elseif index(['-sl', '--source_lang'], args[-2]) >= 0
+      elseif '-sl' ==# args[-2]
         return
       else
         return sort(engines + args_prompt)
