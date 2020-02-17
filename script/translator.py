@@ -353,7 +353,7 @@ class TranslateShell (BasicTranslator):
 
         default_opts = ['-no-ansi',
                         '-no-theme',
-                        '-show-languages n'
+                        '-show-languages n',
                         '-show-prompt-message n',
                         '-show-translation-phonetics n',
                         ]
@@ -366,6 +366,7 @@ class TranslateShell (BasicTranslator):
         for line in run.readlines():
             line = re.sub(r'[\t\n]', '', line)
             line = re.sub(r'\v.*', '', line)
+            line = re.sub(r'^\s*', '', line)
             lines.append(line)
         self.text = text
         self._trans['explain'] = lines
@@ -422,7 +423,7 @@ def main():
             else:
                 translation['results'].append(copy.deepcopy(res.translation))
 
-    sys.stdout.write(str(translation))
+    sys.stdout.write(json.dumps(translation))
 
 
 if __name__ == '__main__':
