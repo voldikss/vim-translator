@@ -1,6 +1,5 @@
 " ============================================================================
 " FileName: translator.vim
-" Description:
 " Author: voldikss <dyzplus@gmail.com>
 " GitHub: https://github.com/voldikss
 " ============================================================================
@@ -51,7 +50,6 @@ function! translator#translate(bang, args, method, visualmode) abort
 
   " Reverse translation
   if a:bang ==# '!'
-    echom 'reverse'
     if args_obj.source_lang ==# 'auto'
       call translator#util#show_msg('reverse translate is not possible with "auto" target_lang', 'error')
       return

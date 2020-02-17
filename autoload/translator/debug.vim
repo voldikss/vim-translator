@@ -2,7 +2,6 @@
 " FileName: debug.vim
 " Author: voldikss <dyzplus@gmail.com>
 " GitHub: https://github.com/voldikss
-" Description:
 " ============================================================================
 
 function! translator#debug#open_log() abort

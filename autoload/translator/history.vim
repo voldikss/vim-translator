@@ -1,6 +1,5 @@
 " ============================================================================
 " FileName: history.vim
-" Description:
 " Author: voldikss <dyzplus@gmail.com>
 " GitHub: https://github.com/voldikss
 " ============================================================================
