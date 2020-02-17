@@ -46,13 +46,12 @@ jobs:
         uses: actions/setup-python@v1
       - name: Install translate-shell
         run: |
-          sudo add-apt-repository ppa:schot/gawk -y
-          sudo apt-get update -q
-          sudo apt-get install gawk
-          wget git.io/trans
-          chmod +x ./trans
-          export PATH=$PWD:$PATH
-          echo $PATH
+          sudo apt-get install gawk -y
+          git clone https://github.com/soimort/translate-shell
+          cd translate-shell/
+          make
+          sudo make install
+          cd -
       - name: Run translator tests
         run: |
           python --version

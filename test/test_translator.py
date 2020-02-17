@@ -56,17 +56,37 @@ class TestTranslator(unittest.TestCase):
     def test_translate_shell(self):
         translation = Translation("trans")
         translation["explain"] = [
-            "n",
+            "family",
+            "/ˈfam(ə)lē/",
             "",
-            "ñ",
+            "家庭",
             "",
-            "n 的翻译",
+            "名词",
+            "家庭",
+            "family, household",
+            "家族",
+            "family, clan, household",
+            "家人",
+            "family, household",
+            "家",
+            "home, family, household, school, specialist, school of thought",
+            "科",
+            "family, branch, division, subject, field",
+            "户",
+            "household, family, door",
+            "系",
+            "system, line, series, department, family, faculty",
+            "家眷",
+            "family, wife, wife and children",
+            "僚属",
+            "family",
             "",
-            "n",
-            "    ñ, ň, ņ, ń, ŋ",
+            "family",
+            "家庭, 家族, 家人",
         ]
         t = TranslateShell()
         r = t.translate("auto", "zh", "family")
+        self.maxDiff = None
         self.assertEqual(translation, r)
 
 

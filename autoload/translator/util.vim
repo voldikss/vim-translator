@@ -4,6 +4,8 @@
 " GitHub: https://github.com/voldikss
 " ============================================================================
 
+scriptencoding utf-8
+
 function! translator#util#echo(group, msg) abort
   if a:msg ==# '' | return | endif
   execute 'echohl' a:group

@@ -109,7 +109,7 @@ class BasicTranslator(object):
         try:
             import socks
         except ImportError:
-            sys.stderr.write("pySocks module should be installed")
+            sys.stderr.write("pySocks module should be installed\n")
             return None
 
         self._proxy_url = proxy_url
@@ -353,8 +353,10 @@ class TranslateShell(BasicTranslator):
         default_opts = [
             "-no-ansi",
             "-no-theme",
-            "-show-languages n" "-show-prompt-message n",
+            "-show-languages n",
+            "-show-prompt-message n",
             "-show-translation-phonetics n",
+            "-hl {}".format(tl),
         ]
         options = default_opts + options
         source_lang = "" if sl == "auto" else sl
@@ -364,6 +366,7 @@ class TranslateShell(BasicTranslator):
         for line in run.readlines():
             line = re.sub(r"[\t\n]", "", line)
             line = re.sub(r"\v.*", "", line)
+            line = re.sub(r"^\s*", "", line)
             lines.append(line)
         self.text = text
         self._trans["explain"] = lines
@@ -408,7 +411,7 @@ def main():
     for e in engines:
         cls = ENGINES.get(e)
         if not cls:
-            sys.stderr.write("Invalid engine name %s" % e)
+            sys.stderr.write("Invalid engine name %s\n" % e)
             continue
         translator = cls()
         if args.proxy:
