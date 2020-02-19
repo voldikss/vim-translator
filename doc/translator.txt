@@ -106,40 +106,43 @@ MAPPINGS                                       *translator-key-mappings*
 ==============================================================================
 COMMANDS                                    *translator-commands*
 
-:Translate[!] [-e engine] [-w word] [-tl target_lang] [-sl source_lang] *:Translate*
+:Translate[!] [-e engine] [-t text] [-tl target_lang] [-sl source_lang] *:Translate*
 
-			Translate the `word` to target language `target_lang` with
-			`engine`, echo the result in the cmdline
+	Translate the `text` to target language `target_lang` with `engine`, echo
+	the result in the cmdline
 
-			If no `engine`, use |g:translator_default_engines|
+	If no `engine`, use |g:translator_default_engines|
 
-			If no `word`, use the word under the cursor
+	If no `text`, use the text under the cursor
 
-			If no `target_lang`, use |g:translator_target_lang|
+	If no `target_lang`, use |g:translator_target_lang|
 
-			If `!` is included, the plugin will perform a reverse
-			translating by switching `target_lang` and `source_lang`
+	If `!` is included, the plugin will perform a reverse translating by
+	switching `target_lang` and `source_lang`
 
-:TranslateW[!] [-e engine] [-w word] [-tl target_lang] [-sl source_lang] *:TranslateW*
+	The command can also be passed to a range, i.e., `:'<,'>Translate ...`,
+	which translates text in visual selection
 
-			Display the translation in a window
+:TranslateW[!] [-e engine] [-t text] [-tl target_lang] [-sl source_lang] *:TranslateW*
 
-:TranslateR[!] [-e engine] [-w word] [-tl target_lang] [-sl source_lang] *:TranslateR*
+	Display the translation in a window
 
-			Replace the current word with the translation
+:TranslateR[!] [-e engine] [-t text] [-tl target_lang] [-sl source_lang] *:TranslateR*
+
+	Replace the current text with the translation
 
 :TranslateH                                                    *:TranslateH*
 
-			Export translation history
+	Export translation history
 
 
     Example:
  >
-			:TranslateW -w test -e bing youdao -tl zh
+	:TranslateW -t text -e bing youdao -tl zh
 
 
 ==============================================================================
-HIGHLIGHT                                                        *translator-highlight*
+HIGHLIGHT                                                *translator-highlight*
 
     Here are the default highlight links.
     To customize, use |highlight| command.
@@ -156,7 +159,7 @@ HIGHLIGHT                                                        *translator-hig
 
 
 ==============================================================================
-REPOSITORY                                                 *translator-repository-page*
+REPOSITORY                                          *translator-repository-page*
 
     |vim-translator| is developed on GitHub.
 

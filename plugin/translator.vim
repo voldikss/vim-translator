@@ -42,31 +42,31 @@ else
   let g:translator_default_engines = get(g:, 'translator_default_engines', ['google', 'bing'])
 endif
 
-nmap <silent> <Plug>Translate   :call translator#translate('', '-w ' . expand('<cword>'), 'echo', v:false)<CR>
-vmap <silent> <Plug>TranslateV  :<C-U>call translator#translate('', '', 'echo', v:true)<CR>
-nmap <silent> <Plug>TranslateW  :call translator#translate('', '-w ' . expand('<cword>'), 'window', v:false)<CR>
-vmap <silent> <Plug>TranslateWV :<C-U>call translator#translate('', '', 'window', v:true)<CR>
-nmap <silent> <Plug>TranslateR  viw:<C-U>call translator#translate('', '', 'replace', v:false)<CR>
-vmap <silent> <Plug>TranslateRV :<C-U>call translator#translate('', '', 'replace', v:true)<CR>
+nmap <silent> <Plug>Translate   :call translator#translate('echo', v:false, '-t ' . expand('<cword>'), '')<CR>
+vmap <silent> <Plug>TranslateV  :<C-U>call translator#translate('echo', v:true, '', '')<CR>
+nmap <silent> <Plug>TranslateW  :call translator#translate('window', v:false, '-t ' . expand('<cword>'), '')<CR>
+vmap <silent> <Plug>TranslateWV :<C-U>call translator#translate('window', v:true, '', '')<CR>
+nmap <silent> <Plug>TranslateR  viw:<C-U>call translator#translate('replace', v:false, '', '')<CR>
+vmap <silent> <Plug>TranslateRV :<C-U>call translator#translate('replace', v:true, '', '')<CR>
 nmap <silent> <Plug>TranslateH  :call translator#history#export()
 
 if !exists(':Translate')
-  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang
+  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
     \ Translate
-    \ call translator#translate('<bang>', <q-args>, 'echo', v:false)
+    \ call translator#translate('echo', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
 endif
 
 if !exists(':TranslateW')
-  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang
+  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
     \ TranslateW
-    \ call translator#translate('<bang>', <q-args>, 'window', v:false)
+    \ call translator#translate('window', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
 endif
 
 if !exists(':TranslateR')
-  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang
+  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
     \ TranslateR
     \ exec 'normal viw<Esc>' |
-    \ call translator#translate('<bang>', <q-args>, 'replace', v:false)
+    \ call translator#translate('replace', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
 endif
 
 if !exists(':TranslateH')

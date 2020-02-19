@@ -4,69 +4,103 @@
 " GitHub: https://github.com/voldikss
 " ============================================================================
 
-function! translator#cmdline#parse_args(argstr) abort
+function! s:parse_args(argstr) abort
   if g:translator_debug_mode
     call add(g:translator_log, printf('- cmdline args: %s', a:argstr))
   endif
-  let argmap = {
-    \ 'engines': [],
-    \ 'word': '',
+  let argsmap = {
+    \ 'engines': '',
+    \ 'text': '',
     \ 'target_lang': '',
     \ 'source_lang': ''
     \ }
   let flag = ''
-  for arg in split(a:argstr, ' ')
+  for arg in split(a:argstr, '\v\s+')
     if '-e' ==# arg
       let flag = 'engines'
-    elseif '-w' ==# arg
-      let flag = 'word'
+    elseif '-t' ==# arg
+      let flag = 'text'
     elseif '-tl' ==# arg
       let flag = 'target_lang'
     elseif '-sl' ==# arg
       let flag = 'source_lang'
     else
-      if flag ==# 'word'
-        let argmap[flag] .= arg . ' '
+      if flag ==# 'text'
+        let argsmap.text .= arg . ' '
       elseif flag ==# 'target_lang'
-        let argmap[flag] = arg
+        let argsmap.target_lang = arg
       elseif flag ==# 'source_lang'
-        let argmap[flag] = arg
+        let argsmap.source_lang = arg
       elseif flag ==# 'engines'
-        call add(argmap.engines, arg)
+        let argsmap.engines .= arg
       else
-        return [argmap, v:false]
+        return [argsmap, v:false]
       endif
     endif
   endfor
 
-  if translator#util#safe_trim(argmap.word) ==# ''
-    let argmap.word= translator#util#safe_trim(expand('<cword>'))
+  if empty(argsmap.engines)
+    let argsmap.engines = join(g:translator_default_engines, ' ')
+  endif
+  if empty(argsmap.target_lang)
+    let argsmap.target_lang = g:translator_target_lang
+  endif
+  if empty(argsmap.source_lang)
+    let argsmap.source_lang = g:translator_source_lang
+  endif
+  return [argsmap, v:true]
+endfunction
+
+function! translator#cmdline#parse(visualmode, args, bang, line1, line2, count) abort
+  let [argsmap, success] = s:parse_args(a:args)
+  if success != v:true
+    return [v:null, v:false]
   endif
 
-  let argmap.word = substitute(argmap.word, '[\n\|\r]\+', '. ', 'g')
-  let argmap.word = translator#util#safe_trim(argmap.word)
-  if argmap.word ==# ''
-    return [argmap, v:false]
+  if argsmap.text == ''
+    if a:visualmode
+      let argsmap.text = translator#util#visual_select()
+    elseif a:count != -1
+      for lnum in range(a:line1, a:line2)
+        let argsmap.text .= getline(lnum)
+      endfor
+    else
+      let argsmap.text = expand('<cfile>')
+    endif
   endif
 
-  if argmap.engines == []
-    let argmap.engines = g:translator_default_engines
+  " Trim the text
+  let argsmap.text = substitute(argsmap.text, "\n", ' ', 'g')
+  let argsmap.text = substitute(argsmap.text, "\n\r", ' ', 'g')
+  let argsmap.text = substitute(argsmap.text, '\v^\s+', '', '')
+  let argsmap.text = substitute(argsmap.text, '\v\s+$', '', '')
+  if argsmap.text == ''
+    return [v:null, v:false]
+  else
+    let argsmap.text = shellescape(argsmap.text)
   endif
 
-  if argmap.target_lang ==# ''
-    let argmap.target_lang = g:translator_target_lang
+  " Reverse translation
+  if a:bang ==# '!'
+    if argsmap.source_lang ==# 'auto'
+      let msg = 'reverse translate is not possible with "auto" target_lang'
+      call translator#util#show_msg(msg, 'error')
+      return [v:null, v:false]
+    endif
+    let tmp = argsmap.source_lang
+    let argsmap.source_lang = argsmap.target_lang
+    let argsmap.target_lang = tmp
   endif
 
-  if argmap.source_lang ==# ''
-    let argmap.source_lang = g:translator_source_lang
+  if g:translator_debug_mode
+    call add(g:translator_log, printf('- argsmap: %s', argsmap))
   endif
-
-  return [argmap, v:true]
+  return [argsmap, v:true]
 endfunction
 
 function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
   let engines = ['bing', 'ciba', 'google', 'youdao', 'trans']
-  let args_prompt = ['-e', '-w', '-tl', '-sl']
+  let args_prompt = ['-e', '-t', '-tl', '-sl']
 
   let cmd_line_before_cursor = a:cmd_line[:a:cursor_pos - 1]
   let args = split(cmd_line_before_cursor, '\v\\@<!(\\\\)*\zs\s+', 1)
@@ -84,7 +118,7 @@ function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
     if args[-1] ==# ''
       if '-e' ==# args[-2]
         return sort(engines)
-      elseif '-w' ==# args[-2]
+      elseif '-t' ==# args[-2]
         return
       elseif '-tl' ==# args[-2]
         return

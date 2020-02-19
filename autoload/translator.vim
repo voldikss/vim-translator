@@ -23,51 +23,34 @@ if has('win32') || has('win64')
   let s:python_executable = shellescape(s:python_executable)
 endif
 
-function! translator#translate(bang, args, method, visualmode) abort
+function! translator#translate(method, visualmode, args, bang, ...) abort
   " jump to popup or close popup
   if a:method ==# 'window'
     if &filetype ==# 'translator'
-      wincmd c
+      hide
       return
     elseif translator#ui#try_jump_into()
       return
     endif
   endif
 
-  if a:args ==# ''
-    let select_text = a:visualmode ? translator#util#visual_select() : expand('<cword>')
-    let args = '-w ' . select_text
+  if a:0 > 0
+    let [argsmap, success] = translator#cmdline#parse(a:visualmode, a:args, a:bang, a:1, a:2, a:3)
   else
-    let args = a:args
+    let [argsmap, success] = translator#cmdline#parse(a:visualmode, a:args, a:bang, -1, -1, -1)
   endif
-  let args = substitute(args, "\n", ' ', 'g')
-  let args = substitute(args, "\n\r", ' ', 'g')
-  let args = substitute(args, '\v^\s+', '', '')
-  let args = substitute(args, '\v\s+$', '', '')
-
-  let [args_obj, success] = translator#cmdline#parse_args(args)
   if success != v:true
     call translator#util#show_msg('Arguments error', 'error')
     return
   endif
 
-  " Reverse translation
-  if a:bang ==# '!'
-    if args_obj.source_lang ==# 'auto'
-      call translator#util#show_msg('reverse translate is not possible with "auto" target_lang', 'error')
-      return
-    endif
-    let temp = args_obj.target_lang
-    let args_obj.target_lang = args_obj.source_lang
-    let args_obj.source_lang = temp
-  endif
   let cmd = s:python_executable . ' ' . s:py_file
-    \ . ' --text '      . shellescape(args_obj.word)
-    \ . ' --engines '   . join(args_obj.engines, ' ')
-    \ . ' --target_lang '    . args_obj.target_lang
-    \ . ' --source_lang '    . args_obj.source_lang
+    \ . ' --text '        . argsmap.text
+    \ . ' --engines '     . argsmap.engines
+    \ . ' --target_lang ' . argsmap.target_lang
+    \ . ' --source_lang ' . argsmap.source_lang
     \ . (g:translator_proxy_url !=# v:null ? (' --proxy ' . g:translator_proxy_url) : '')
-    \ . (index(args_obj.engines, 'trans') >=0 ? (" --options='" . join(g:translator_translate_shell_options, ',')) . "'" : '')
+    \ . (match(argsmap.engines, 'trans') >=0 ? (" --options='" . join(g:translator_translate_shell_options, ',')) . "'" : '')
 
   if g:translator_debug_mode
     call add(g:translator_log, printf('- cmd: "%s"', cmd))
