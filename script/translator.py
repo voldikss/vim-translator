@@ -424,7 +424,7 @@ def main():
             else:
                 translation["results"].append(copy.deepcopy(res.translation))
 
-    sys.stdout.write(str(translation))
+    sys.stdout.write(json.dumps(translation))
 
 
 if __name__ == "__main__":
