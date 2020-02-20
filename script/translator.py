@@ -8,7 +8,6 @@ import random
 import copy
 import json
 import argparse
-import socket
 import codecs
 
 if sys.version_info[0] < 3:
@@ -111,6 +110,12 @@ class BasicTranslator(object):
         except ImportError:
             sys.stderr.write("pySocks module should be installed\n")
             return None
+
+        try:
+            import ssl
+            ssl._create_default_https_context = ssl._create_unverified_context
+        except Exception:
+            pass
 
         self._proxy_url = proxy_url
 
@@ -431,8 +436,8 @@ if __name__ == "__main__":
 
     def test0():
         t = BasicTranslator("test_proxy")
-        t.set_proxy("socks://localhost:1081")
-        t.test_request("https://www.reddit.com")
+        t.set_proxy("http://localhost:8087")
+        t.test_request("https://www.google.com")
 
     def test1():
         t = BingTranslator()
@@ -459,4 +464,5 @@ if __name__ == "__main__":
         r = t.translate("auto", "zh", "family")
         print(r)
 
+    # test0()
     main()
