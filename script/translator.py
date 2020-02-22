@@ -113,6 +113,7 @@ class BasicTranslator(object):
 
         try:
             import ssl
+
             ssl._create_default_https_context = ssl._create_unverified_context
         except Exception:
             pass
@@ -177,7 +178,7 @@ class BingTranslator(BasicTranslator):
         if not html:
             return ""
         m = re.findall(r'<span class="ht_attr" lang=".*?">\[(.*?)\] </span>', html)
-        return m[0].strip()
+        return m[0].strip() if len(m) > 0 else ""
 
     def get_explain(self, html):
         if not html:
