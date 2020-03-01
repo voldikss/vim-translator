@@ -19,8 +19,12 @@ if !exists('s:python_executable')
     finish
   endif
 endif
-if has('win32') || has('win64')
+
+if stridx(s:python_executable, ' ') >= 0
   let s:python_executable = shellescape(s:python_executable)
+endif
+if stridx(s:py_file, ' ') >= 0
+  let s:py_file = shellescape(s:py_file)
 endif
 
 function! translator#translate(method, visualmode, args, bang, ...) abort
@@ -44,13 +48,17 @@ function! translator#translate(method, visualmode, args, bang, ...) abort
     return
   endif
 
-  let cmd = s:python_executable . ' ' . s:py_file
-    \ . ' --text '        . argsmap.text
-    \ . ' --engines '     . argsmap.engines
-    \ . ' --target_lang ' . argsmap.target_lang
-    \ . ' --source_lang ' . argsmap.source_lang
-    \ . (g:translator_proxy_url !=# v:null ? (' --proxy ' . g:translator_proxy_url) : '')
-    \ . (match(argsmap.engines, 'trans') >=0 ? (" --options='" . join(g:translator_translate_shell_options, ',')) . "'" : '')
+  let cmd = printf('%s %s', s:python_executable, s:py_file)
+  let cmd .= printf(' --text %s', argsmap.text)
+  let cmd .= printf(' --engines %s', argsmap.engines)
+  let cmd .= printf(' --target_lang %s', argsmap.target_lang)
+  let cmd .= printf(' --source_lang %s', argsmap.source_lang)
+  if g:translator_proxy_url != v:null
+    let cmd .= printf(' --proxy %s', g:translator_proxy_url)
+  endif
+  if match(argsmap.engines, 'trans') >= 0
+    let cmd .= printf(" --options='%s'", join(g:translator_translate_shell_options), ',')
+  endif
 
   if g:translator_debug_mode
     call add(g:translator_log, printf('- cmd: "%s"', cmd))
