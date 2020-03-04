@@ -61,6 +61,13 @@ g:translator_enable_history                      *g:translator_enable_history*
 
 		Default: |v:false|
 
+g:translator_window_type                            *g:translator_window_type*
+
+		Available: "popup"(use floatwin in nvim or popup in vim),
+			   "preview"
+
+		Default: "popup"
+
 g:translator_window_max_width                  *g:translator_window_max_width*
 
 		Max width value of the popup/floating window

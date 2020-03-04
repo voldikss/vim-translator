@@ -6,13 +6,12 @@
 
 scriptencoding utf-8
 
-
-if has('nvim') && exists('*nvim_win_set_config')
+if g:translator_window_type == 'preview'
+  let s:wintype = 'preview'
+elseif has('nvim') && exists('*nvim_win_set_config')
   let s:wintype = 'floating'
 elseif has('textprop') && has('patch-8.1.1522')
   let s:wintype = 'popup'
-else
-  let s:wintype = 'preview'
 endif
 
 

@@ -63,6 +63,12 @@ Plug 'voldikss/vim-translator'
 
 - Default: `v:false`
 
+#### **`g:translator_window_type`**
+
+- Available: `'popup'`(use floatwin in nvim or popup in vim), `'preview'`
+
+- Default: `'popup'`
+
 #### **`g:translator_window_max_width`**
 
 > Max width value of the popup/floating window
@@ -159,6 +165,16 @@ hi def link TranslatorBorderNF          NormalFloat
 ## Known bugs
 
 - Can not translate sentences(because there are some spaces among words) in Vim8(see [#24](https://github.com/voldikss/vim-translator/issues/24))
+
+## FAQ
+
+- ### Can not find python executable?
+
+  Set `g:python3_host_prog` variable in your vimrc. e.g.
+
+  ```vim
+  let g:python3_host_prog = /path/to/python_executable
+  ```
 
 ## References
 
