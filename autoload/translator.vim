@@ -57,7 +57,7 @@ function! translator#translate(method, visualmode, args, bang, ...) abort
     let cmd .= printf(' --proxy %s', g:translator_proxy_url)
   endif
   if match(argsmap.engines, 'trans') >= 0
-    let cmd .= printf(" --options='%s'", join(g:translator_translate_shell_options), ',')
+    let cmd .= printf(" --options='%s'", join(g:translator_translate_shell_options, ','))
   endif
 
   if g:translator_debug_mode
