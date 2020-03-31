@@ -272,10 +272,9 @@ class GoogleTranslator(BasicTranslator):
 class YoudaoTranslator(BasicTranslator):
     def __init__(self, name="youdao"):
         super(YoudaoTranslator, self).__init__(name)
-        self.url = (
-            "https://fanyi.youdao.com/translate_o?smartresult=dict&smartresult=rule"
-        )
+        self.url = "https://fanyi.youdao.com/translate_o"
         self.D = "97_3(jkMYg@T[KZQmqjTK"
+        # 备用 self.D = "n%A-rKaT5fb[Gy?;N5@Tj"
 
     def get_md5(self, value):
         import hashlib
