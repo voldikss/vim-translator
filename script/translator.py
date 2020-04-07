@@ -379,12 +379,68 @@ class TranslateShell(BasicTranslator):
         return self._trans
 
 
+class SdcvShell(BasicTranslator):
+    def __init__(self, name="sdcv"):
+        super(SdcvShell, self).__init__(name)
+
+    def get_dictionary(self, sl, tl):
+        """get dictionary of sdcv
+
+        :sl: source_lang
+        :tl: target_lang
+        :returns: dictionary
+
+        """
+        dictionary = ''
+        if (sl == 'en') & (tl == 'zh'):
+            dictionary = '朗道英汉字典5.0'
+        elif (sl == 'zh') & (tl == 'en'):
+            dictionary = '朗道汉英字典5.0'
+        elif (sl == 'en') & (tl == 'ja'):
+            dictionary = 'jmdict-en-ja'
+        elif (sl == 'ja') & (tl == 'en'):
+            dictionary = 'jmdict-ja-en'
+        return dictionary
+
+    def translate(self, sl, tl, text, options=None):
+        if not options:
+            options = []
+
+        if self._proxy_url:
+            options.append("-proxy {}".format(self._proxy_url))
+
+        source_lang = "" if sl == "auto" else sl
+        dictionary = self.get_dictionary(sl, tl)
+        if dictionary == '':
+            default_opts = [
+            ]
+        else:
+            default_opts = [
+                ' '.join(['-u', dictionary]),
+            ]
+        options = default_opts + options
+        cmd = "sdcv {} '{}'".format(" ".join(options), text)
+        run = os.popen(cmd)
+        lines = []
+        for line in run.readlines():
+            line = re.sub(r"^Found.*", "", line)
+            line = re.sub(r"^-->.*", "", line)
+            line = re.sub(r"^\s*", "", line)
+            line = re.sub(r"^\*", "", line)
+            lines.append(line)
+        self.text = text
+        self._trans["explain"] = lines
+        run.close()
+        return self._trans
+
+
 ENGINES = {
     "google": GoogleTranslator,
     "youdao": YoudaoTranslator,
     "bing": BingTranslator,
     "ciba": CibaTranslator,
     "trans": TranslateShell,
+    "sdcv": SdcvShell,
 }
 
 
