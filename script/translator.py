@@ -635,5 +635,5 @@ if __name__ == "__main__":
         r = t.translate("", "zh", "family")
         print(r)
 
-    test8()
-    # main()
+    # test8()
+    main()

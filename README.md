@@ -24,7 +24,7 @@ Plug 'voldikss/vim-translator'
 
 - Asynchronous & mutithreading translating
 - Floatwin(NeoVim) & popup(Vim8) support
-- Multiple engines: see [g:translator_default_engines](#g%3Atranslator_default_engines)
+- Multiple engines: see [g:translator_default_engines](#gtranslator_default_engines)
 - Save and export translation history
 - Proxy support(http, socks4, socks5)
 - No need for appid/appkey
