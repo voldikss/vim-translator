@@ -571,5 +571,5 @@ if __name__ == "__main__":
         r = t.translate("auto", "zh", "family")
         print(r)
 
-    test4()
-    # main()
+    # test4()
+    main()
