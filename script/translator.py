@@ -470,12 +470,13 @@ class SdcvShell(BasicTranslator):
 
 
 ENGINES = {
-    "google": GoogleTranslator,
-    "youdao": YoudaoTranslator,
     "bing": BingTranslator,
     "ciba": CibaTranslator,
-    "trans": TranslateShell,
+    "google": GoogleTranslator,
+    "iciba": ICibaTranslator,
     "sdcv": SdcvShell,
+    "trans": TranslateShell,
+    "youdao": YoudaoTranslator,
 }
 
 
