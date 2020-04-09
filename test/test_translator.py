@@ -13,8 +13,9 @@ from translator import Translation
 from translator import BaicizhanTranslator
 from translator import BingTranslator
 from translator import CibaTranslator
-from translator import ICibaTranslator
 from translator import GoogleTranslator
+from translator import HaiciTranslator
+from translator import ICibaTranslator
 from translator import YoudaoTranslator
 from translator import TranslateShell
 
@@ -56,6 +57,17 @@ class TestTranslator(unittest.TestCase):
         translation["explain"] = ["[名] 家庭;家族;家人;家;科;户;系;家眷;僚属;"]
         t = GoogleTranslator()
         r = t.translate("auto", "zh", "family")
+        self.assertEqual(translation, r)
+
+    def test_haici(self):
+        translation = {
+            "engine": "haici",
+            "phonetic": "'fæməli",
+            "paraphrase": "",
+            "explain": ["n.家庭；亲属；家族；子女；[生]科；语族；[化]族", "adj.家庭的；家族的；适合于全家的"],
+        }
+        t = HaiciTranslator()
+        r = t.translate("", "zh", "family")
         self.assertEqual(translation, r)
 
     def test_iciba(self):

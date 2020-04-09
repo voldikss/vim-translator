@@ -58,9 +58,11 @@ class Translation:
 class BasicTranslator(object):
     def __init__(self, name):
         self._name = name
-        self._agent = None
         self._trans = Translation(name)
         self._proxy_url = None
+        self._agent = (
+            "Mozilla/5.0 (X11; Linux x86_64; rv:50.0) Gecko/20100101 Firefox/50.0"
+        )
 
     def request(self, url, data=None, post=False, header=None):
         if header:
@@ -180,15 +182,13 @@ class BaicizhanTranslator(BasicTranslator):
 class BingTranslator(BasicTranslator):
     def __init__(self, name="bing"):
         super(BingTranslator, self).__init__(name)
-        self._agent = "Mozilla/5.0 (X11; Linux x86_64; rv:50.0) Gecko/20100101"
-        self._agent += " Firefox/50.0"
-        self._url = "http://bing.com/dict/SerpHoverTrans"
 
     def translate(self, sl, tl, text, options=None):
         if "zh" in tl:
-            self._url = "http://cn.bing.com/dict/SerpHoverTrans"
-
-        url = self._url + "?q=" + url_quote(text)
+            url = "http://cn.bing.com/dict/SerpHoverTrans"
+        else:
+            url = "http://bing.com/dict/SerpHoverTrans"
+        url = url + "?q=" + url_quote(text)
         headers = {
             "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
             "Accept-Language": "en-US,en;q=0.5",
@@ -250,8 +250,6 @@ class CibaTranslator(BasicTranslator):
 class GoogleTranslator(BasicTranslator):
     def __init__(self, name="google"):
         super(GoogleTranslator, self).__init__(name)
-        self._agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:59.0)"
-        self._agent += " Gecko/20100101 Firefox/59.0"
 
     def get_url(self, sl, tl, qry):
         http_host = "translate.googleapis.com"
@@ -293,6 +291,35 @@ class GoogleTranslator(BasicTranslator):
                     expl += i[0] + ";"
                 explain.append(expl)
         return explain
+
+
+class HaiciTranslator(BasicTranslator):
+    def __init__(self, name="haici"):
+        super(HaiciTranslator, self).__init__(name)
+
+    def translate(self, sl, tl, text, options=None):
+        url = "http://dict.cn/mini.php"
+        req = {}
+        req["q"] = url_quote(text)
+        resp = self.http_get(url, req)
+        if not resp:
+            return
+
+        self._trans["phonetic"] = self.get_phonetic(resp)
+        self._trans["explain"] = self.get_explain(resp)
+        return self._trans
+
+    def get_phonetic(self, html):
+        m = re.findall(r"<span class='p'> \[(.*?)\]</span>", html)
+        return m[0] if len(m) > 0 else ""
+
+    def get_explain(self, html):
+        m = re.findall(r'<div id="e">(.*?)</div>', html)
+        explains = []
+        for item in m:
+            for e in item.split("<br>"):
+                explains.append(e)
+        return explains
 
 
 class ICibaTranslator(BasicTranslator):
@@ -497,6 +524,7 @@ ENGINES = {
     "baicizhan": BaicizhanTranslator,
     "bing": BingTranslator,
     "ciba": CibaTranslator,
+    "haici": HaiciTranslator,
     "google": GoogleTranslator,
     "iciba": ICibaTranslator,
     "sdcv": SdcvShell,
@@ -602,5 +630,10 @@ if __name__ == "__main__":
         r = t.translate("", "zh", "family")
         print(r)
 
-    test7()
+    def test8():
+        t = HaiciTranslator()
+        r = t.translate("", "zh", "family")
+        print(r)
+
+    test8()
     # main()
