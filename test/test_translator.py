@@ -6,12 +6,13 @@ import unittest
 
 curr_filename = os.path.abspath(__file__)
 curr_dir = os.path.dirname(curr_filename)
-script_path = "%s/../script" % curr_dir
+script_path = os.path.join(curr_dir, "../script")
 sys.path.append(script_path)
 
 from translator import Translation
 from translator import BingTranslator
 from translator import CibaTranslator
+from translator import ICibaTranslator
 from translator import GoogleTranslator
 from translator import YoudaoTranslator
 from translator import TranslateShell
@@ -43,6 +44,21 @@ class TestTranslator(unittest.TestCase):
         translation["explain"] = ["[名] 家庭;家族;家人;家;科;户;系;家眷;僚属;"]
         t = GoogleTranslator()
         r = t.translate("auto", "zh", "family")
+        self.assertEqual(translation, r)
+
+    def test_iciba(self):
+        translation = {
+            "engine": "iciba",
+            "phonetic": "ˈmɑ:stə(r)",
+            "paraphrase": "硕士",
+            "explain": [
+                "n.硕士, 主人（尤指男性）, 大师, 男教师",
+                "vt.精通，熟练, 作为主人，做…的主人, 征服, 使干燥（染过的物品）",
+                "adj.主要的, 主人的, 精通的，优秀的, 原版的",
+            ],
+        }
+        t = ICibaTranslator()
+        r = t.translate("", "", "master")
         self.assertEqual(translation, r)
 
     def test_youdao(self):

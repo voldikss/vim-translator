@@ -270,6 +270,41 @@ class GoogleTranslator(BasicTranslator):
         return explain
 
 
+class ICibaTranslator(BasicTranslator):
+    def __init__(self, name="iciba"):
+        super(ICibaTranslator, self).__init__(name)
+
+    def translate(self, sl, tl, text, options=None):
+        url = "http://www.iciba.com/index.php"
+        req = {}
+        req["a"] = "getWordMean"
+        req["c"] = "search"
+        req["word"] = text
+        r = self.http_get(url, req, None)
+        if r:
+            resp = json.loads(r)
+            if not resp:
+                return
+
+            self._trans["paraphrase"] = self.get_paraphrase(resp)
+            self._trans["phonetic"] = self.get_phonetic(resp)
+            self._trans["explain"] = self.get_explain(resp)
+        return self._trans
+
+    def get_paraphrase(self, obj):
+        return obj["baesInfo"]["symbols"][0]["parts"][0]["means"][0]
+
+    def get_phonetic(self, obj):
+        return obj["baesInfo"]["symbols"][0]["ph_en"]
+
+    def get_explain(self, obj):
+        parts = obj["baesInfo"]["symbols"][0]["parts"]
+        explains = []
+        for part in parts:
+            explains.append(part["part"] + ", ".join(part["means"]))
+        return explains
+
+
 class YoudaoTranslator(BasicTranslator):
     def __init__(self, name="youdao"):
         super(YoudaoTranslator, self).__init__(name)
@@ -522,14 +557,19 @@ if __name__ == "__main__":
         print(r)
 
     def test4():
+        t = ICibaTranslator()
+        r = t.translate("", "", "master")
+        print(r)
+
+    def test5():
         t = YoudaoTranslator()
         r = t.translate("auto", "zh", "family")
         print(r)
 
-    def test5():
+    def test6():
         t = TranslateShell()
         r = t.translate("auto", "zh", "family")
         print(r)
 
-    # test0()
-    main()
+    test4()
+    # main()

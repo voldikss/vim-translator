@@ -22,12 +22,12 @@ Plug 'voldikss/vim-translator'
 
 ## Features
 
-- Asynchronous translating
+- Asynchronous & mutithreading translating
 - Floatwin(NeoVim) & popup(Vim8) support
-- Multi engines: [bing](https://bing.com/translator), [ciba](https://fy.iciba.com/), [google](https://translate.google.com/), [youdao](http://fanyi.youdao.com/), [translate-shell](https://github.com/soimort/translate-shell)
+- Multiple engines: see [g:translator_default_engines](#g%3Atranslator_default_engines)
 - Save and export translation history
 - Proxy support(http, socks4, socks5)
-- No requirement for appid/appkey
+- No need for appid/appkey
 
 ## Configuration
 
@@ -49,7 +49,7 @@ Plug 'voldikss/vim-translator'
 
 #### **`g:translator_default_engines`**
 
-- Available: `'bing'`, `'ciba'`, `'google'`, `'youdao'`, `'trans'`
+- Available: `'bing'`, `'ciba'`, `'google'`, `'iciba'`, `'sdcv'`, `'trans'`, `'youdao'`,
 
 - Default: `['ciba', 'youdao']` if `g:translator_target_lang` is `'zh'`, otherwise `['google', 'bing']`
 
