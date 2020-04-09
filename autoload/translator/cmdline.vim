@@ -99,7 +99,7 @@ function! translator#cmdline#parse(visualmode, args, bang, line1, line2, count) 
 endfunction
 
 function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
-  let engines = ['bing', 'ciba', 'google', 'iciba''sdcv', 'trans', 'youdao']
+  let engines = ['baicizhan', 'bing', 'ciba', 'google', 'iciba''sdcv', 'trans', 'youdao']
   let args_prompt = ['-e', '-t', '-tl', '-sl']
 
   let cmd_line_before_cursor = a:cmd_line[:a:cursor_pos - 1]

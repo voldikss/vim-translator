@@ -152,6 +152,31 @@ class BasicTranslator(object):
         return self._trans
 
 
+class BaicizhanTranslator(BasicTranslator):
+    def __init__(self, name="baicizhan"):
+        super(BaicizhanTranslator, self).__init__(name)
+
+    def translate(self, sl, tl, text, options=None):
+        url = "http://mall.baicizhan.com/ws/search"
+        req = {}
+        req["w"] = text
+        r = self.http_get(url, req, None)
+        if r:
+            resp = json.loads(r)
+            if not resp:
+                return
+
+            self._trans["phonetic"] = self.get_phonetic(resp)
+            self._trans["explain"] = self.get_explain(resp)
+        return self._trans
+
+    def get_phonetic(self, obj):
+        return obj["accent"]
+
+    def get_explain(self, obj):
+        return [obj["mean_cn"]]
+
+
 class BingTranslator(BasicTranslator):
     def __init__(self, name="bing"):
         super(BingTranslator, self).__init__(name)
@@ -445,7 +470,6 @@ class SdcvShell(BasicTranslator):
         if self._proxy_url:
             options.append("-proxy {}".format(self._proxy_url))
 
-        source_lang = "" if sl == "auto" else sl
         dictionary = self.get_dictionary(sl, tl)
         if dictionary == "":
             default_opts = []
@@ -470,6 +494,7 @@ class SdcvShell(BasicTranslator):
 
 
 ENGINES = {
+    "baicizhan": BaicizhanTranslator,
     "bing": BingTranslator,
     "ciba": CibaTranslator,
     "google": GoogleTranslator,
@@ -572,5 +597,10 @@ if __name__ == "__main__":
         r = t.translate("auto", "zh", "family")
         print(r)
 
-    # test4()
-    main()
+    def test7():
+        t = BaicizhanTranslator()
+        r = t.translate("", "zh", "family")
+        print(r)
+
+    test7()
+    # main()

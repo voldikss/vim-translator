@@ -10,6 +10,7 @@ script_path = os.path.join(curr_dir, "../script")
 sys.path.append(script_path)
 
 from translator import Translation
+from translator import BaicizhanTranslator
 from translator import BingTranslator
 from translator import CibaTranslator
 from translator import ICibaTranslator
@@ -21,6 +22,17 @@ from translator import TranslateShell
 class TestTranslator(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super(TestTranslator, self).__init__(*args, **kwargs)
+
+    def test_baicizhan(self):
+        translation = {
+            "engine": "baicizhan",
+            "phonetic": "/ˈfæməli/",
+            "paraphrase": "",
+            "explain": ["n. 家，家庭成员；氏族，家庭；族，科"],
+        }
+        t = BaicizhanTranslator()
+        r = t.translate("", "", "family")
+        self.assertEqual(translation, r)
 
     # def test_bing(self):
     #     translation = Translation("bing")
