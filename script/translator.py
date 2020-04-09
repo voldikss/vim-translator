@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import re
+import threading
 import socket
 import sys
 import time
@@ -391,15 +392,15 @@ class SdcvShell(BasicTranslator):
         :returns: dictionary
 
         """
-        dictionary = ''
-        if (sl == 'en') & (tl == 'zh'):
-            dictionary = '朗道英汉字典5.0'
-        elif (sl == 'zh') & (tl == 'en'):
-            dictionary = '朗道汉英字典5.0'
-        elif (sl == 'en') & (tl == 'ja'):
-            dictionary = 'jmdict-en-ja'
-        elif (sl == 'ja') & (tl == 'en'):
-            dictionary = 'jmdict-ja-en'
+        dictionary = ""
+        if (sl == "en") & (tl == "zh"):
+            dictionary = "朗道英汉字典5.0"
+        elif (sl == "zh") & (tl == "en"):
+            dictionary = "朗道汉英字典5.0"
+        elif (sl == "en") & (tl == "ja"):
+            dictionary = "jmdict-en-ja"
+        elif (sl == "ja") & (tl == "en"):
+            dictionary = "jmdict-ja-en"
         return dictionary
 
     def translate(self, sl, tl, text, options=None):
@@ -411,12 +412,11 @@ class SdcvShell(BasicTranslator):
 
         source_lang = "" if sl == "auto" else sl
         dictionary = self.get_dictionary(sl, tl)
-        if dictionary == '':
-            default_opts = [
-            ]
+        if dictionary == "":
+            default_opts = []
         else:
             default_opts = [
-                ' '.join(['-u', dictionary]),
+                " ".join(["-u", dictionary]),
             ]
         options = default_opts + options
         cmd = "sdcv {} '{}'".format(" ".join(options), text)
@@ -467,8 +467,20 @@ def main():
 
     translation = {}
     translation["text"] = text
-    translation["status"] = 0
+    translation["status"] = 1
     translation["results"] = []
+
+    def runner(translator):
+        res = translator.translate(from_lang, to_lang, text, options)
+        if res:
+            if is_py3:
+                translation["results"].append(copy.deepcopy(res))
+            else:
+                translation["results"].append(copy.deepcopy(res.translation))
+        else:
+            translation["status"] = 0
+
+    threads = []
     for e in engines:
         cls = ENGINES.get(e)
         if not cls:
@@ -477,13 +489,12 @@ def main():
         translator = cls()
         if args.proxy:
             translator.set_proxy(args.proxy)
-        res = translator.translate(from_lang, to_lang, text, options)
-        if res:
-            translation["status"] = 1
-            if is_py3:
-                translation["results"].append(copy.deepcopy(res))
-            else:
-                translation["results"].append(copy.deepcopy(res.translation))
+
+        t = threading.Thread(target=runner, args=(translator,))
+        threads.append(t)
+
+    list(map(lambda x: x.start(), threads))
+    list(map(lambda x: x.join(), threads))
 
     sys.stdout.write(json.dumps(translation))
 
