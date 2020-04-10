@@ -5,9 +5,7 @@
 " ============================================================================
 
 function! s:parse_args(argstr) abort
-  if g:translator_debug_mode
-    call add(g:translator_log, printf('- cmdline args: %s', a:argstr))
-  endif
+  call translator#debug#info(a:argstr)
   let argsmap = {
     \ 'engines': '',
     \ 'text': '',
@@ -92,9 +90,7 @@ function! translator#cmdline#parse(visualmode, args, bang, line1, line2, count) 
     let argsmap.target_lang = tmp
   endif
 
-  if g:translator_debug_mode
-    call add(g:translator_log, printf('- argsmap: %s', argsmap))
-  endif
+  call translator#debug#info(argsmap)
   return [argsmap, v:true]
 endfunction
 

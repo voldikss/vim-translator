@@ -4,8 +4,9 @@
 " GitHub: https://github.com/voldikss
 " ============================================================================
 
+call translator#debug#init()
+
 let s:py_file = expand('<sfile>:p:h') . '/../script/translator.py'
-let g:translator_log = []
 
 if !exists('s:python_executable')
   if exists('g:python3_host_prog')
@@ -60,8 +61,6 @@ function! translator#translate(method, visualmode, args, bang, ...) abort
     let cmd .= printf(" --options='%s'", join(g:translator_translate_shell_options, ','))
   endif
 
-  if g:translator_debug_mode
-    call add(g:translator_log, printf('- cmd: "%s"', cmd))
-  endif
+  call translator#debug#info(cmd)
   call translator#job#job_start(cmd, a:method)
 endfunction

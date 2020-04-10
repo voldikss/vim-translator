@@ -20,7 +20,6 @@ let g:translator_window_max_width = get(g:, 'translator_window_max_width', v:nul
 let g:translator_window_max_height = get(g:, 'translator_window_max_height', v:null)
 let g:translator_window_borderchars = get(g:, 'translator_window_borderchars', ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
 let g:translator_window_enable_icon = get(g:, 'translator_window_enable_icon', v:true)
-let g:translator_debug_mode = get(g:, 'translator_debug_mode', v:false)
 let g:translator_translate_shell_options = get(g:, 'translator_translate_shell_options', [])
 
 " For old variables
