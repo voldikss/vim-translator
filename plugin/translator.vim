@@ -48,30 +48,26 @@ vnoremap <silent> <Plug>TranslateWV :<C-U>call translator#translate('window', v:
 nnoremap <silent> <Plug>TranslateR  viw:<C-U>call translator#translate('replace', v:false, '', '')<CR>
 vnoremap <silent> <Plug>TranslateRV :<C-U>call translator#translate('replace', v:true, '', '')<CR>
 nnoremap <silent> <Plug>TranslateH  :call translator#history#export()
+nnoremap <silent> <Plug>TranslateX  :call translator#translate('echo', v:false, @*, '')<CR>
+nnoremap <silent> <Plug>TranslateXW :call translator#translate('window', v:false, @*, '')<CR>
 
-if !exists(':Translate')
-  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
-    \ Translate
-    \ call translator#translate('echo', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
-endif
+command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
+  \ Translate
+  \ call translator#translate('echo', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
 
-if !exists(':TranslateW')
-  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
-    \ TranslateW
-    \ call translator#translate('window', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
-endif
+command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
+  \ TranslateW
+  \ call translator#translate('window', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
 
-if !exists(':TranslateR')
-  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
-    \ TranslateR
-    \ exec 'normal viw<Esc>' |
-    \ call translator#translate('replace', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
-endif
+command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
+  \ TranslateR
+  \ exec 'normal viw<Esc>' |
+  \ call translator#translate('replace', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
 
-if !exists(':TranslateH')
-  command! -nargs=0   TranslateH call translator#history#export()
-endif
+command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
+  \ TranslateX
+  \ call translator#translate('echo', v:false, <q-args> . ' ' . @*, '<bang>', <line1>, <line2>, <count>)
 
-if !exists(':TranslateL')
-  command! -nargs=0   TranslateL call translator#debug#open_log()
-endif
+command! -nargs=0   TranslateH call translator#history#export()
+
+command! -nargs=0   TranslateL call translator#debug#open_log()

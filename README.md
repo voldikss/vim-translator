@@ -102,6 +102,8 @@ vmap <silent> <Leader>w <Plug>TranslateWV
 " Replace the text with translation
 nmap <silent> <Leader>r <Plug>TranslateR
 vmap <silent> <Leader>r <Plug>TranslateRV
+" Translate the text in clipboard
+nmap <silent> <Leader>x <Plug>TranslateX
 ```
 
 Once the translation window is opened, type `<Leader>w` again to jump into it and again to jump back
@@ -135,6 +137,10 @@ Like `:Translate...`, but display the translation in a window
 #### `:TranslateR[!] [engines=] [target_lang=] [source_lang=] [your text]`
 
 Like `:Translate...`, but replace the current text with the translation
+
+#### `:TranslateX [engines=] [target_lang=] [source_lang=] [your text]`
+
+Translate the text in the clipboard
 
 #### `:TranslateH`
 
