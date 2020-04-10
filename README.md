@@ -71,13 +71,13 @@ Plug 'voldikss/vim-translator'
 
 #### **`g:translator_window_max_width`**
 
-> Max width value of the popup/floating window
+> Type `int` (number of columns) or `float` (between 0 and 1). If `float`, the width is relative to `&columns`. Default: `0.6`
 
 - Default: `0.6*&columns`
 
 #### **`g:translator_window_max_height`**
 
-> Max height value of popup/floating window
+> Type `int` (number of columns) or `float` (between 0 and 1). If `float`, the height is relative to `&lines`. Default: `0.6`
 
 - Default: `0.6*&lines`
 
