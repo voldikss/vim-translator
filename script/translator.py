@@ -173,10 +173,10 @@ class BaicizhanTranslator(BasicTranslator):
         return self._trans
 
     def get_phonetic(self, obj):
-        return obj["accent"]
+        return obj["accent"] if "accent" in obj else ""
 
     def get_explain(self, obj):
-        return [obj["mean_cn"]]
+        return [obj["mean_cn"]] if "mean_cn" in obj else []
 
 
 class BingTranslator(BasicTranslator):
@@ -337,20 +337,25 @@ class ICibaTranslator(BasicTranslator):
             resp = json.loads(r)
             if not resp:
                 return
+            if 'baesInfo' not in resp:
+                return
+            if 'symbols' not in resp['baesInfo']:
+                return
 
-            self._trans["paraphrase"] = self.get_paraphrase(resp)
-            self._trans["phonetic"] = self.get_phonetic(resp)
-            self._trans["explain"] = self.get_explain(resp)
+            obj = resp['baesInfo']['symbols']
+            self._trans["paraphrase"] = self.get_paraphrase(obj)
+            self._trans["phonetic"] = self.get_phonetic(obj)
+            self._trans["explain"] = self.get_explain(obj)
         return self._trans
 
     def get_paraphrase(self, obj):
-        return obj["baesInfo"]["symbols"][0]["parts"][0]["means"][0]
+        return obj[0]["parts"][0]["means"][0]
 
     def get_phonetic(self, obj):
-        return obj["baesInfo"]["symbols"][0]["ph_en"]
+        return obj[0]["ph_en"]
 
     def get_explain(self, obj):
-        parts = obj["baesInfo"]["symbols"][0]["parts"]
+        parts = obj[0]["parts"]
         explains = []
         for part in parts:
             explains.append(part["part"] + ", ".join(part["means"]))
