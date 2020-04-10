@@ -11,7 +11,6 @@ sys.path.append(script_path)
 
 from translator import BaicizhanTranslator
 from translator import BingTranslator
-from translator import CibaTranslator
 from translator import GoogleTranslator
 from translator import HaiciTranslator
 from translator import ICibaTranslator
@@ -47,22 +46,6 @@ class TestTranslator(unittest.TestCase):
             ],
         }
         t = BingTranslator()
-        r = t.translate("", "", "master")
-        self.assertEqual(translation, r)
-
-    @unittest.skip("Skip for GitHub Action")
-    def test_ciba(self):
-        translation = {
-            "engine": "ciba",
-            "phonetic": "ˈmɑ:stə(r)",
-            "paraphrase": "",
-            "explain": [
-                "n. 硕士;主人（尤指男性）;大师;男教师;",
-                "vt. 精通，熟练;作为主人，做…的主人;征服;使干燥（染过的物品）;",
-                "adj. 主要的;主人的;精通的，优秀的;原版的;",
-            ],
-        }
-        t = CibaTranslator()
         r = t.translate("", "", "master")
         self.assertEqual(translation, r)
 

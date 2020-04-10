@@ -218,35 +218,6 @@ class BingTranslator(BasicTranslator):
         return expls
 
 
-class CibaTranslator(BasicTranslator):
-    def __init__(self, name="ciba"):
-        super(CibaTranslator, self).__init__(name)
-
-    def translate(self, sl, tl, text, options=None):
-        url = "https://fy.iciba.com/ajax.php"
-        req = {}
-        req["a"] = "fy"
-        req["f"] = sl
-        req["t"] = tl
-        req["w"] = text
-        r = self.http_get(url, req, None)
-        if r:
-            resp = json.loads(r)
-            if not resp:
-                return
-
-            self._trans["paraphrase"] = ""
-            if "content" in resp:
-                if "ph_en" in resp["content"]:
-                    # sometimes it responses `None`
-                    self._trans["phonetic"] = resp["content"]["ph_en"] or ""
-                if "out" in resp["content"]:
-                    self._trans["paraphrase"] = resp["content"]["out"] or ""
-                if "word_mean" in resp["content"]:
-                    self._trans["explain"] = resp["content"]["word_mean"] or ""
-        return self._trans
-
-
 class GoogleTranslator(BasicTranslator):
     def __init__(self, name="google"):
         super(GoogleTranslator, self).__init__(name)
@@ -337,12 +308,12 @@ class ICibaTranslator(BasicTranslator):
             resp = json.loads(r)
             if not resp:
                 return
-            if 'baesInfo' not in resp:
+            if "baesInfo" not in resp:
                 return
-            if 'symbols' not in resp['baesInfo']:
+            if "symbols" not in resp["baesInfo"]:
                 return
 
-            obj = resp['baesInfo']['symbols']
+            obj = resp["baesInfo"]["symbols"]
             self._trans["paraphrase"] = self.get_paraphrase(obj)
             self._trans["phonetic"] = self.get_phonetic(obj)
             self._trans["explain"] = self.get_explain(obj)
@@ -528,7 +499,6 @@ class SdcvShell(BasicTranslator):
 ENGINES = {
     "baicizhan": BaicizhanTranslator,
     "bing": BingTranslator,
-    "ciba": CibaTranslator,
     "haici": HaiciTranslator,
     "google": GoogleTranslator,
     "iciba": ICibaTranslator,
@@ -606,36 +576,31 @@ if __name__ == "__main__":
         print(r)
 
     def test2():
-        t = CibaTranslator()
-        r = t.translate("", "", "family")
-        print(r)
-
-    def test3():
         gt = GoogleTranslator()
         r = gt.translate("auto", "zh", "family")
         print(r)
 
-    def test4():
+    def test3():
         t = ICibaTranslator()
         r = t.translate("", "", "master")
         print(r)
 
-    def test5():
+    def test4():
         t = YoudaoTranslator()
         r = t.translate("auto", "zh", "family")
         print(r)
 
-    def test6():
+    def test5():
         t = TranslateShell()
         r = t.translate("auto", "zh", "family")
         print(r)
 
-    def test7():
+    def test6():
         t = BaicizhanTranslator()
         r = t.translate("", "zh", "family")
         print(r)
 
-    def test8():
+    def test7():
         t = HaiciTranslator()
         r = t.translate("", "zh", "family")
         print(r)

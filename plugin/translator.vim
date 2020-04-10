@@ -36,9 +36,16 @@ call s:transfer('g:translator_window_max_height', 'g:vtm_popup_max_height')
 call s:transfer('g:translator_default_mappings', 'g:vtm_default_mapping')
 
 if match(g:translator_target_lang, 'zh') >= 0
-  let g:translator_default_engines = get(g:, 'translator_default_engines', ['ciba', 'youdao'])
+  let g:translator_default_engines = get(g:, 'translator_default_engines', [
+    \ 'baicizhan',
+    \ 'bing',
+    \ 'google',
+    \ 'haici',
+    \ 'iciba',
+    \ 'youdao'
+    \ ])
 else
-  let g:translator_default_engines = get(g:, 'translator_default_engines', ['google', 'bing'])
+  let g:translator_default_engines = get(g:, 'translator_default_engines', ['google'])
 endif
 
 nnoremap <silent> <Plug>Translate   :call translator#translate('echo', v:false, expand('<cword>'), '')<CR>
