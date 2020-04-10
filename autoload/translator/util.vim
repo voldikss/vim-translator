@@ -73,11 +73,7 @@ endfunction
 
 " Style always makes me frantic
 function! translator#util#build_lines(translations) abort
-  if g:translator_window_enable_icon == v:true
-    let marker = '• '
-  else
-    let marker = '_*_ '
-  endif
+  let marker = '• '
 
   let content = []
   if len(a:translations['text']) > 30

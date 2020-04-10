@@ -19,7 +19,6 @@ let g:translator_window_type = get(g:, 'translator_window_type', 'popup')
 let g:translator_window_max_width = get(g:, 'translator_window_max_width', v:null)
 let g:translator_window_max_height = get(g:, 'translator_window_max_height', v:null)
 let g:translator_window_borderchars = get(g:, 'translator_window_borderchars', ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
-let g:translator_window_enable_icon = get(g:, 'translator_window_enable_icon', v:true)
 let g:translator_translate_shell_options = get(g:, 'translator_translate_shell_options', [])
 
 " For old variables

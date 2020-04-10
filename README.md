@@ -87,12 +87,6 @@ Plug 'voldikss/vim-translator'
 
 - Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
 
-#### **`g:translator_window_enable_icon`**
-
-> Set it to `v:false` if your terminal doesn't support Unicode symbols
-
-- Default: `v:true`
-
 ## Key Mappings
 
 This plugin doesn't supply any default mappings.
@@ -157,9 +151,8 @@ Here are the default highlight links. To customize, use `hi` or `hi link`
 ```vim
 " Text highlight of translator window
 hi def link TranslatorQuery             Identifier
-hi def link TranslatorPhonetic          Type
-hi def link TranslatorExplain           Statement
 hi def link TranslatorDelimiter         Special
+hi def link TranslatorExplain           Statement
 
 " Background of translator window border
 hi def link TranslatorNF                NormalFloat
