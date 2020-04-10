@@ -4,8 +4,6 @@
 " GitHub: https://github.com/voldikss
 " ============================================================================
 
-call translator#debug#init()
-
 let s:py_file = expand('<sfile>:p:h') . '/../script/translator.py'
 
 if !exists('s:python_executable')
@@ -28,7 +26,9 @@ if stridx(s:py_file, ' ') >= 0
   let s:py_file = shellescape(s:py_file)
 endif
 
-function! translator#translate(method, visualmode, args, bang, ...) abort
+function! translator#translate(method, visualmode, argstr, bang, ...) abort
+  call translator#debug#init()
+
   " jump to popup or close popup
   if a:method ==# 'window'
     if &filetype ==# 'translator'
@@ -40,9 +40,9 @@ function! translator#translate(method, visualmode, args, bang, ...) abort
   endif
 
   if a:0 > 0
-    let [argsmap, success] = translator#cmdline#parse(a:visualmode, a:args, a:bang, a:1, a:2, a:3)
+    let [argsmap, success] = translator#cmdline#parse(a:visualmode, a:argstr, a:bang, a:1, a:2, a:3)
   else
-    let [argsmap, success] = translator#cmdline#parse(a:visualmode, a:args, a:bang, -1, -1, -1)
+    let [argsmap, success] = translator#cmdline#parse(a:visualmode, a:argstr, a:bang, -1, -1, -1)
   endif
   if success != v:true
     call translator#util#show_msg('Arguments error', 'error')

@@ -114,7 +114,7 @@ Once the translation window is opened, type `<Leader>w` again to jump into it an
 
 ## Commands
 
-#### `:Translate[!] [-e engines] [-t text] [-tl target_lang] [-sl source_lang]`
+#### `:Translate[!] [engines=] [target_lang=] [source_lang=] [your text]`
 
 Translate the `text` from the source language `source_lang` to the target language `target_lang` with `engine`, echo the result in the cmdline
 
@@ -128,11 +128,17 @@ The command can also be passed to a range, i.e., `:'<,'>Translate ...`, which tr
 
 If `!` is included, the plugin will perform a reverse translating by switching `target_lang` and `source_lang`
 
-#### `:TranslateW[!] [-e engines] [-t text] [-tl target_lang] [-sl source_lang]`
+Here is an example(you can use `<Tab>` to get completion):
+
+```
+:Translate engines=google,youdao are you ok
+```
+
+#### `:TranslateW[!] [engines=] [target_lang=] [source_lang=] [your text]`
 
 Like `:Translate...`, but display the translation in a window
 
-#### `:TranslateR[!] [-e engines] [-t text] [-tl target_lang] [-sl source_lang]`
+#### `:TranslateR[!] [engines=] [target_lang=] [source_lang=] [your text]`
 
 Like `:Translate...`, but replace the current text with the translation
 
@@ -140,11 +146,9 @@ Like `:Translate...`, but replace the current text with the translation
 
 Export the translation history
 
-**Example**:
+#### `:TranslateL`
 
-```
-:TranslateW -t text -e bing youdao -tl zh -sl en
-```
+Display log
 
 ## Highlight
 

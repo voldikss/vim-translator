@@ -42,9 +42,9 @@ else
   let g:translator_default_engines = get(g:, 'translator_default_engines', ['google', 'bing'])
 endif
 
-nnoremap <silent> <Plug>Translate   :call translator#translate('echo', v:false, '-t ' . expand('<cword>'), '')<CR>
+nnoremap <silent> <Plug>Translate   :call translator#translate('echo', v:false, expand('<cword>'), '')<CR>
 vnoremap <silent> <Plug>TranslateV  :<C-U>call translator#translate('echo', v:true, '', '')<CR>
-nnoremap <silent> <Plug>TranslateW  :call translator#translate('window', v:false, '-t ' . expand('<cword>'), '')<CR>
+nnoremap <silent> <Plug>TranslateW  :call translator#translate('window', v:false, expand('<cword>'), '')<CR>
 vnoremap <silent> <Plug>TranslateWV :<C-U>call translator#translate('window', v:true, '', '')<CR>
 nnoremap <silent> <Plug>TranslateR  viw:<C-U>call translator#translate('replace', v:false, '', '')<CR>
 vnoremap <silent> <Plug>TranslateRV :<C-U>call translator#translate('replace', v:true, '', '')<CR>

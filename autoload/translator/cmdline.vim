@@ -6,51 +6,46 @@
 
 function! s:parse_args(argstr) abort
   call translator#debug#info(a:argstr)
-  let argsmap = {
+  let opts = {
     \ 'engines': '',
     \ 'text': '',
     \ 'target_lang': '',
     \ 'source_lang': ''
     \ }
-  let flag = ''
-  for arg in split(a:argstr, '\v\s+')
-    if '-e' ==# arg
-      let flag = 'engines'
-    elseif '-t' ==# arg
-      let flag = 'text'
-    elseif '-tl' ==# arg
-      let flag = 'target_lang'
-    elseif '-sl' ==# arg
-      let flag = 'source_lang'
-    else
-      if flag ==# 'text'
-        let argsmap.text .= arg . ' '
-      elseif flag ==# 'target_lang'
-        let argsmap.target_lang = arg
-      elseif flag ==# 'source_lang'
-        let argsmap.source_lang = arg
-      elseif flag ==# 'engines'
-        let argsmap.engines .= arg
-      else
-        return [argsmap, v:false]
-      endif
-    endif
-  endfor
 
-  if empty(argsmap.engines)
-    let argsmap.engines = join(g:translator_default_engines, ' ')
+  let arglist = split(a:argstr)
+  if !empty(arglist)
+    let c = 0
+    for arg in arglist
+      let opt = split(arg, '=')
+      if len(opt) == 1
+        let opts.text = join(arglist[c:])
+        break
+      elseif len(opt) == 2
+        if opt[0] == 'engines'
+          let opts.engines = substitute(opt[1], ',', ' ', 'g')
+        else
+          let opts[opt[0]] = opt[1]
+        endif
+      endif
+      let c += 1
+    endfor
   endif
-  if empty(argsmap.target_lang)
-    let argsmap.target_lang = g:translator_target_lang
+
+  if empty(opts.engines)
+    let opts.engines = join(g:translator_default_engines, ' ')
   endif
-  if empty(argsmap.source_lang)
-    let argsmap.source_lang = g:translator_source_lang
+  if empty(opts.target_lang)
+    let opts.target_lang = g:translator_target_lang
   endif
-  return [argsmap, v:true]
+  if empty(opts.source_lang)
+    let opts.source_lang = g:translator_source_lang
+  endif
+  return [opts, v:true]
 endfunction
 
-function! translator#cmdline#parse(visualmode, args, bang, line1, line2, count) abort
-  let [argsmap, success] = s:parse_args(a:args)
+function! translator#cmdline#parse(visualmode, argstr, bang, line1, line2, count) abort
+  let [argsmap, success] = s:parse_args(a:argstr)
   if success != v:true
     return [v:null, v:false]
   endif
@@ -95,38 +90,50 @@ function! translator#cmdline#parse(visualmode, args, bang, line1, line2, count) 
 endfunction
 
 function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
-  let engines = ['baicizhan', 'bing', 'ciba', 'google', 'haici', 'iciba', 'sdcv', 'trans', 'youdao']
-  let args_prompt = ['-e', '-t', '-tl', '-sl']
+  let opts_key = ['engines=', 'target_lang=', 'source_lang=']
+  let candidates = opts_key
 
   let cmd_line_before_cursor = a:cmd_line[:a:cursor_pos - 1]
   let args = split(cmd_line_before_cursor, '\v\\@<!(\\\\)*\zs\s+', 1)
   call remove(args, 0)
 
-  if len(args) ==# 1
-    if args[0] ==# ''
-      return sort(args_prompt)
-    else
-      let prefix = args[-1]
-      let candidates = filter(engines+args_prompt, 'v:val[:len(prefix) - 1] ==# prefix')
-      return sort(candidates)
+  for key in opts_key
+    if match(cmd_line_before_cursor, key) != -1
+      let idx = index(candidates, key)
+      call remove(candidates, idx)
     endif
-  elseif len(args) > 1
-    if args[-1] ==# ''
-      if '-e' ==# args[-2]
-        return sort(engines)
-      elseif '-t' ==# args[-2]
-        return
-      elseif '-tl' ==# args[-2]
-        return
-      elseif '-sl' ==# args[-2]
-        return
-      else
-        return sort(engines + args_prompt)
-      endif
-    else
-      let prefix = args[-1]
-      let candidates = filter(engines+args_prompt, 'v:val[:len(prefix) - 1] ==# prefix')
-      return sort(candidates)
-    endif
+  endfor
+
+  let prefix = args[-1]
+
+  if prefix ==# ''
+    return candidates
   endif
+
+  let engines = ['baicizhan', 'bing', 'ciba', 'google', 'haici', 'iciba', 'sdcv', 'trans', 'youdao']
+  if match(prefix, ',') > -1
+    let pos = s:matchlastpos(prefix, ',')
+    let preprefix = prefix[:pos]
+    let unused_engines = []
+    for e in engines
+      if match(prefix, e) == -1
+        call add(unused_engines, e)
+      endif
+    endfor
+    let candidates = map(unused_engines, {idx -> preprefix . unused_engines[idx]})
+  elseif match(prefix, 'engines=') > -1
+    let candidates = map(engines, {idx -> "engines=" . engines[idx]})
+  endif
+  return filter(candidates, 'v:val[:len(prefix) - 1] ==# prefix')
+endfunction
+
+function! s:matchlastpos(expr, pat) abort
+  let pos = -1
+  for i in range(1, 10)
+    let p = match(a:expr, a:pat, 0, i)
+    if p > pos
+      let pos = p
+    endif
+  endfor
+  return pos
 endfunction
