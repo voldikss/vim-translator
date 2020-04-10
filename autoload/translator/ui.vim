@@ -70,20 +70,20 @@ function! translator#ui#window(translations) abort
       \ 'col': 'cursor',
       \ 'moved': 'any',
       \ 'padding': [0, 0, 0, 0],
-      \ 'border': [1, 1, 1, 1],
-      \ 'borderhighlight': [
-        \ 'TranslatorBorderNF',
-        \ 'TranslatorBorderNF',
-        \ 'TranslatorBorderNF',
-        \ 'TranslatorBorderNF'
-      \ ],
       \ 'maxwidth': width,
       \ 'minwidth': width,
       \ 'maxheight': height,
       \ 'minheight': height
       \ }
-    if g:translator_window_borderchars isnot  v:null
+    if !empty(g:translator_window_borderchars)
       let options.borderchars = g:translator_window_borderchars
+      let options.border = [1, 1, 1, 1]
+      let options.borderhighlight = [
+        \ 'TranslatorBorderNF',
+        \ 'TranslatorBorderNF',
+        \ 'TranslatorBorderNF',
+        \ 'TranslatorBorderNF'
+        \ ]
     endif
     let winid = popup_create('', options)
     let bufnr = winbufnr(winid)

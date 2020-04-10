@@ -11,15 +11,15 @@ if exists('g:loaded_translator')
 endif
 let g:loaded_translator= 1
 
-let g:translator_target_lang = get(g:, 'translator_target_lang', 'zh')
-let g:translator_source_lang = get(g:, 'translator_source_lang', 'auto')
-let g:translator_proxy_url = get(g:, 'translator_proxy_url', v:null)
-let g:translator_history_enable = get(g:, 'translator_history_enable', v:false)
-let g:translator_window_type = get(g:, 'translator_window_type', 'popup')
-let g:translator_window_max_width = get(g:, 'translator_window_max_width', v:null)
-let g:translator_window_max_height = get(g:, 'translator_window_max_height', v:null)
-let g:translator_window_borderchars = get(g:, 'translator_window_borderchars', ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
+let g:translator_history_enable          = get(g:, 'translator_history_enable', v:false)
+let g:translator_proxy_url               = get(g:, 'translator_proxy_url', v:null)
+let g:translator_source_lang             = get(g:, 'translator_source_lang', 'auto')
+let g:translator_target_lang             = get(g:, 'translator_target_lang', 'zh')
 let g:translator_translate_shell_options = get(g:, 'translator_translate_shell_options', [])
+let g:translator_window_borderchars      = get(g:, 'translator_window_borderchars', ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
+let g:translator_window_max_height       = get(g:, 'translator_window_max_height', v:null)
+let g:translator_window_max_width        = get(g:, 'translator_window_max_width', v:null)
+let g:translator_window_type             = get(g:, 'translator_window_type', 'popup')
 
 " For old variables
 function! s:transfer(var1, var2) abort

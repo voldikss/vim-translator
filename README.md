@@ -83,7 +83,7 @@ Plug 'voldikss/vim-translator'
 
 #### **`g:translator_window_borderchars`**
 
-> Floating window border will be disabled if `g:translator_window_borderchars` is `v:null`
+> Disable window border will be disabled by setting `g:translator_window_borderchars` to `[]`
 
 - Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
 

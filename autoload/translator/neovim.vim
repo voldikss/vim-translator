@@ -39,7 +39,7 @@ function! translator#neovim#get_floatwin_pos(width, height) abort
   let y_pos = pos[0] + winline() - 1
   let x_pos = pos[1] + wincol() -1
 
-  let border = (g:translator_window_borderchars is v:null) ? 0 : 2
+  let border = empty(g:translator_window_borderchars) ? 0 : 2
   let y_margin = 2
   let [width, height] = [a:width, a:height]
 
@@ -82,7 +82,7 @@ endfunction
 " @param:
 "   winid: translator window id
 function! translator#neovim#add_border(winid) abort
-  if g:translator_window_borderchars is v:null
+  if empty(g:translator_window_borderchars)
     return -1
   endif
   let opts = nvim_win_get_config(a:winid)
