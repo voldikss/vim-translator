@@ -50,7 +50,7 @@ function! translator#history#save(translations) abort
   endif
 
   execute 'redir >> ' . s:history_file
-    silent! echo item
+    silent! echon item . "\n"
   redir END
 endfunction
 
