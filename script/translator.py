@@ -455,7 +455,6 @@ class SdcvShell(BasicTranslator):
         :returns: dictionary
 
         """
-        sl = "zh
         dictionary = ""
         if (sl == "en") & (tl == "zh"):
             dictionary = "朗道英汉字典5.0"
