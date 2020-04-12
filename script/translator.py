@@ -10,7 +10,6 @@ import copy
 import json
 import argparse
 import codecs
-import langdetect
 
 if sys.version_info[0] < 3:
     is_py3 = False
@@ -456,18 +455,23 @@ class SdcvShell(BasicTranslator):
         :returns: dictionary
 
         """
-        dictionary = ''
-        if sl == '':
+        dictionary = ""
+        if sl == "":
+            try:
+                import langdetect
+            except ImportError:
+                sys.stderr.write("langdetect module should be installed\n")
+                return None
             sl = langdetect.detect(text)
 
-        if (sl == 'en') & (tl == 'zh'):
-            dictionary = '朗道英汉字典5.0'
-        elif (sl == 'zh_cn') & (tl == 'en'):
-            dictionary = '朗道汉英字典5.0'
-        elif (sl == 'en') & (tl == 'ja'):
-            dictionary = 'jmdict-en-ja'
-        elif (sl == 'ja') & (tl == 'en'):
-            dictionary = 'jmdict-ja-en'
+        if (sl == "en") & (tl == "zh"):
+            dictionary = "朗道英汉字典5.0"
+        elif (sl == "zh_cn") & (tl == "en"):
+            dictionary = "朗道汉英字典5.0"
+        elif (sl == "en") & (tl == "ja"):
+            dictionary = "jmdict-en-ja"
+        elif (sl == "ja") & (tl == "en"):
+            dictionary = "jmdict-ja-en"
         return dictionary
 
     def translate(self, sl, tl, text, options=None):
@@ -479,9 +483,8 @@ class SdcvShell(BasicTranslator):
 
         source_lang = "" if sl == "auto" else sl
         dictionary = self.get_dictionary(source_lang, tl, text)
-        if dictionary == '':
-            default_opts = [
-            ]
+        if dictionary == "":
+            default_opts = []
         else:
             default_opts = [
                 " ".join(["-u", dictionary]),
