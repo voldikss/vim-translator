@@ -10,6 +10,7 @@ import copy
 import json
 import argparse
 import codecs
+import langdetect
 
 if sys.version_info[0] < 3:
     is_py3 = False
@@ -447,7 +448,7 @@ class SdcvShell(BasicTranslator):
     def __init__(self, name="sdcv"):
         super(SdcvShell, self).__init__(name)
 
-    def get_dictionary(self, sl, tl):
+    def get_dictionary(self, sl, tl, text):
         """get dictionary of sdcv
 
         :sl: source_lang
@@ -455,15 +456,18 @@ class SdcvShell(BasicTranslator):
         :returns: dictionary
 
         """
-        dictionary = ""
-        if (sl == "en") & (tl == "zh"):
-            dictionary = "朗道英汉字典5.0"
-        elif (sl == "zh") & (tl == "en"):
-            dictionary = "朗道汉英字典5.0"
-        elif (sl == "en") & (tl == "ja"):
-            dictionary = "jmdict-en-ja"
-        elif (sl == "ja") & (tl == "en"):
-            dictionary = "jmdict-ja-en"
+        dictionary = ''
+        if sl == '':
+            sl = langdetect.detect(text)
+
+        if (sl == 'en') & (tl == 'zh'):
+            dictionary = '朗道英汉字典5.0'
+        elif (sl == 'zh_cn') & (tl == 'en'):
+            dictionary = '朗道汉英字典5.0'
+        elif (sl == 'en') & (tl == 'ja'):
+            dictionary = 'jmdict-en-ja'
+        elif (sl == 'ja') & (tl == 'en'):
+            dictionary = 'jmdict-ja-en'
         return dictionary
 
     def translate(self, sl, tl, text, options=None):
@@ -473,14 +477,11 @@ class SdcvShell(BasicTranslator):
         if self._proxy_url:
             options.append("-proxy {}".format(self._proxy_url))
 
-        if sl == "auto" or sl == "":
-            sl = "en"
-        if to == "auto" or tl == "":
-            tl = "zh"
-
-        dictionary = self.get_dictionary(sl, tl)
-        if dictionary == "":
-            default_opts = []
+        source_lang = "" if sl == "auto" else sl
+        dictionary = self.get_dictionary(source_lang, tl, text)
+        if dictionary == '':
+            default_opts = [
+            ]
         else:
             default_opts = [
                 " ".join(["-u", dictionary]),
