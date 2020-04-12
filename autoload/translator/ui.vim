@@ -17,14 +17,14 @@ endif
 
 function! translator#ui#window(translations) abort
   let linelist = translator#util#build_lines(a:translations)
-  let max_height =
-    \ g:translator_window_max_height ==# v:null
-    \ ? float2nr(0.6*&lines)
-    \ : float2nr(g:translator_window_max_height)
-  let max_width =
-    \ g:translator_window_max_width ==# v:null
-    \ ? float2nr(0.6*&columns)
-    \ : float2nr(g:translator_window_max_width)
+  let max_width = g:translator_window_max_width == v:null ? 0.6 : g:translator_window_max_width
+  if type(max_width) == v:t_float | let max_width = max_width * &columns | endif
+  let max_width = float2nr(max_width)
+
+  let max_height = g:translator_window_max_height == v:null ? 0.6 : g:translator_window_max_height
+  if type(max_height) == v:t_float | let max_height = max_height * &lines | endif
+  let max_height = float2nr(max_height)
+
   let [width, height] = translator#neovim#get_floatwin_size(linelist, max_width, max_height)
   let [y_offset, x_offset, vert, hor, width, height] = translator#neovim#get_floatwin_pos(width, height)
 
@@ -70,20 +70,20 @@ function! translator#ui#window(translations) abort
       \ 'col': 'cursor',
       \ 'moved': 'any',
       \ 'padding': [0, 0, 0, 0],
-      \ 'border': [1, 1, 1, 1],
-      \ 'borderhighlight': [
-        \ 'TranslatorBorderNF',
-        \ 'TranslatorBorderNF',
-        \ 'TranslatorBorderNF',
-        \ 'TranslatorBorderNF'
-      \ ],
       \ 'maxwidth': width,
       \ 'minwidth': width,
       \ 'maxheight': height,
       \ 'minheight': height
       \ }
-    if g:translator_window_borderchars isnot  v:null
+    if !empty(g:translator_window_borderchars)
       let options.borderchars = g:translator_window_borderchars
+      let options.border = [1, 1, 1, 1]
+      let options.borderhighlight = [
+        \ 'TranslatorBorderNF',
+        \ 'TranslatorBorderNF',
+        \ 'TranslatorBorderNF',
+        \ 'TranslatorBorderNF'
+        \ ]
     endif
     let winid = popup_create('', options)
     let bufnr = winbufnr(winid)

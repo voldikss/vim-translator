@@ -5,7 +5,6 @@
 " ============================================================================
 
 let s:py_file = expand('<sfile>:p:h') . '/../script/translator.py'
-let g:translator_log = []
 
 if !exists('s:python_executable')
   if exists('g:python3_host_prog')
@@ -27,7 +26,9 @@ if stridx(s:py_file, ' ') >= 0
   let s:py_file = shellescape(s:py_file)
 endif
 
-function! translator#translate(method, visualmode, args, bang, ...) abort
+function! translator#translate(method, visualmode, argstr, bang, ...) abort
+  call translator#debug#init()
+
   " jump to popup or close popup
   if a:method ==# 'window'
     if &filetype ==# 'translator'
@@ -39,9 +40,9 @@ function! translator#translate(method, visualmode, args, bang, ...) abort
   endif
 
   if a:0 > 0
-    let [argsmap, success] = translator#cmdline#parse(a:visualmode, a:args, a:bang, a:1, a:2, a:3)
+    let [argsmap, success] = translator#cmdline#parse(a:visualmode, a:argstr, a:bang, a:1, a:2, a:3)
   else
-    let [argsmap, success] = translator#cmdline#parse(a:visualmode, a:args, a:bang, -1, -1, -1)
+    let [argsmap, success] = translator#cmdline#parse(a:visualmode, a:argstr, a:bang, -1, -1, -1)
   endif
   if success != v:true
     call translator#util#show_msg('Arguments error', 'error')
@@ -60,8 +61,6 @@ function! translator#translate(method, visualmode, args, bang, ...) abort
     let cmd .= printf(" --options='%s'", join(g:translator_translate_shell_options, ','))
   endif
 
-  if g:translator_debug_mode
-    call add(g:translator_log, printf('- cmd: "%s"', cmd))
-  endif
+  call translator#debug#info(cmd)
   call translator#job#job_start(cmd, a:method)
 endfunction

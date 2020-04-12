@@ -54,8 +54,8 @@ Execute (Floating: Jump into floating window):
   Assert FindBuffer('translator_border') == -1
 
 
-Execute (Floating: let g:translator_window_borderchars = v:null):
-  let g:translator_window_borderchars = v:null
+Execute (Floating: let g:translator_window_borderchars = []):
+  let g:translator_window_borderchars = []
   call translator#ui#window(translations)
   call translator#ui#try_jump_into()
   AssertEqual 'translator', &filetype

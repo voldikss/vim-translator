@@ -2,6 +2,10 @@
 
 Author : voldikss <https://github.com/voldikss>
 License: MIT license
+NOTE: This is outdated, please refer to the README file:
+    ../README.md
+    or
+    https://github.com/voldikss/vim-translator/blob/master/README.md
 ==============================================================================
 CONTENTS                                               *translator-contents*
 
@@ -43,8 +47,8 @@ g:translator_source_lang                            *g:translator_source_lang*
 
 g:translator_default_engines                   *g:translator_default_engines*
 
-		Available: "bing", "ciba", "google", "youdao", "trans".
-		Default: ["ciba", "youdao"] if |g:translator_target_lang|
+		Available: "bing", "iciba", "google", "youdao", "trans", "sdcv".
+		Default: ["iciba", "youdao"] if |g:translator_target_lang|
 		is "zh"`, otherwise ["google", "bing"]
 
 g:translator_proxy_url                               *g:translator_proxy_url*
@@ -81,15 +85,9 @@ g:translator_window_max_height                *g:translator_window_max_height*
 g:translator_window_borderchars              *g:translator_window_borderchars*
 
 		Border will be disabled if |g:translator_window_borderchars|
-		is set to |v:null|
+		is set to |[]|
 		Default: ['─', '│', '─', '│', '┌', '┐', '┘', '└']
 
-
-g:translator_window_enable_icon             *g:translator_window_enable_icon*
-
-		Set it to |v:false| if your terminal doesn't
-		support Unicode symbols
-		Default: |v:true|
 
 ==============================================================================
 

@@ -3,10 +3,8 @@ Before (Default configurations):
   let g:translator_source_lang = 'auto'
   let g:translator_default_engines = ['ciba', 'youdao']
   let g:translator_proxy_url = v:null
-  let g:translator_debug_mode = v:false
   let g:translator_history_enable = v:false
   let g:translator_translate_shell_options = []
   let g:translator_window_max_width = v:null
   let g:translator_window_max_height = v:null
-  let g:translator_window_enable_icon = v:true
   let g:translator_window_borderchars = ['─', '│', '─', '│', '┌', '┐', '┘', '└']

@@ -11,17 +11,15 @@ if exists('g:loaded_translator')
 endif
 let g:loaded_translator= 1
 
-let g:translator_target_lang = get(g:, 'translator_target_lang', 'zh')
-let g:translator_source_lang = get(g:, 'translator_source_lang', 'auto')
-let g:translator_proxy_url = get(g:, 'translator_proxy_url', v:null)
-let g:translator_history_enable = get(g:, 'translator_history_enable', v:false)
-let g:translator_window_type = get(g:, 'translator_window_type', 'popup')
-let g:translator_window_max_width = get(g:, 'translator_window_max_width', v:null)
-let g:translator_window_max_height = get(g:, 'translator_window_max_height', v:null)
-let g:translator_window_borderchars = get(g:, 'translator_window_borderchars', ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
-let g:translator_window_enable_icon = get(g:, 'translator_window_enable_icon', v:true)
-let g:translator_debug_mode = get(g:, 'translator_debug_mode', v:false)
+let g:translator_history_enable          = get(g:, 'translator_history_enable', v:false)
+let g:translator_proxy_url               = get(g:, 'translator_proxy_url', v:null)
+let g:translator_source_lang             = get(g:, 'translator_source_lang', 'auto')
+let g:translator_target_lang             = get(g:, 'translator_target_lang', 'zh')
 let g:translator_translate_shell_options = get(g:, 'translator_translate_shell_options', [])
+let g:translator_window_borderchars      = get(g:, 'translator_window_borderchars', ['─', '│', '─', '│', '┌', '┐', '┘', '└'])
+let g:translator_window_max_height       = get(g:, 'translator_window_max_height', v:null)
+let g:translator_window_max_width        = get(g:, 'translator_window_max_width', v:null)
+let g:translator_window_type             = get(g:, 'translator_window_type', 'popup')
 
 " For old variables
 function! s:transfer(var1, var2) abort
@@ -38,42 +36,45 @@ call s:transfer('g:translator_window_max_height', 'g:vtm_popup_max_height')
 call s:transfer('g:translator_default_mappings', 'g:vtm_default_mapping')
 
 if match(g:translator_target_lang, 'zh') >= 0
-  let g:translator_default_engines = get(g:, 'translator_default_engines', ['ciba', 'youdao'])
+  let g:translator_default_engines = get(g:, 'translator_default_engines', [
+    \ 'baicizhan',
+    \ 'bing',
+    \ 'google',
+    \ 'haici',
+    \ 'iciba',
+    \ 'youdao'
+    \ ])
 else
-  let g:translator_default_engines = get(g:, 'translator_default_engines', ['google', 'bing'])
+  let g:translator_default_engines = get(g:, 'translator_default_engines', ['google'])
 endif
 
-nnoremap <silent> <Plug>Translate   :call translator#translate('echo', v:false, '-t ' . expand('<cword>'), '')<CR>
+nnoremap <silent> <Plug>Translate   :call translator#translate('echo', v:false, expand('<cword>'), '')<CR>
 vnoremap <silent> <Plug>TranslateV  :<C-U>call translator#translate('echo', v:true, '', '')<CR>
-nnoremap <silent> <Plug>TranslateW  :call translator#translate('window', v:false, '-t ' . expand('<cword>'), '')<CR>
+nnoremap <silent> <Plug>TranslateW  :call translator#translate('window', v:false, expand('<cword>'), '')<CR>
 vnoremap <silent> <Plug>TranslateWV :<C-U>call translator#translate('window', v:true, '', '')<CR>
 nnoremap <silent> <Plug>TranslateR  viw:<C-U>call translator#translate('replace', v:false, '', '')<CR>
 vnoremap <silent> <Plug>TranslateRV :<C-U>call translator#translate('replace', v:true, '', '')<CR>
 nnoremap <silent> <Plug>TranslateH  :call translator#history#export()
+nnoremap <silent> <Plug>TranslateX  :call translator#translate('echo', v:false, @*, '')<CR>
+nnoremap <silent> <Plug>TranslateXW :call translator#translate('window', v:false, @*, '')<CR>
 
-if !exists(':Translate')
-  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
-    \ Translate
-    \ call translator#translate('echo', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
-endif
+command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
+  \ Translate
+  \ call translator#translate('echo', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
 
-if !exists(':TranslateW')
-  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
-    \ TranslateW
-    \ call translator#translate('window', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
-endif
+command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
+  \ TranslateW
+  \ call translator#translate('window', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
 
-if !exists(':TranslateR')
-  command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
-    \ TranslateR
-    \ exec 'normal viw<Esc>' |
-    \ call translator#translate('replace', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
-endif
+command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
+  \ TranslateR
+  \ exec 'normal viw<Esc>' |
+  \ call translator#translate('replace', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
 
-if !exists(':TranslateH')
-  command! -nargs=0   TranslateH call translator#history#export()
-endif
+command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
+  \ TranslateX
+  \ call translator#translate('echo', v:false, <q-args> . ' ' . @*, '<bang>', <line1>, <line2>, <count>)
 
-if !exists(':TranslateL')
-  command! -nargs=0   TranslateL call translator#debug#open_log()
-endif
+command! -nargs=0   TranslateH call translator#history#export()
+
+command! -nargs=0   TranslateL call translator#debug#open_log()

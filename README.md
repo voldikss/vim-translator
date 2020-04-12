@@ -22,12 +22,12 @@ Plug 'voldikss/vim-translator'
 
 ## Features
 
-- Asynchronous translating
+- Asynchronous & mutithreading translating
 - Floatwin(NeoVim) & popup(Vim8) support
-- Multi engines: [bing](https://bing.com/translator), [ciba](https://fy.iciba.com/), [google](https://translate.google.com/), [youdao](http://fanyi.youdao.com/), [translate-shell](https://github.com/soimort/translate-shell)
+- Multiple engines: see [g:translator_default_engines](#gtranslator_default_engines)
 - Save and export translation history
 - Proxy support(http, socks4, socks5)
-- No requirement for appid/appkey
+- No need for appid/appkey
 
 ## Configuration
 
@@ -49,9 +49,9 @@ Plug 'voldikss/vim-translator'
 
 #### **`g:translator_default_engines`**
 
-- Available: `'bing'`, `'ciba'`, `'google'`, `'youdao'`, `'trans'`
+- Available: `'baicizhan'`, `'bing'`, `'google'`, `'haici'`, `'iciba'`, `'sdcv'`, `'trans'`, `'youdao'`
 
-- Default: `['ciba', 'youdao']` if `g:translator_target_lang` is `'zh'`, otherwise `['google', 'bing']`
+- Default: If `g:translator_target_lang` is `'zh'`, `['baicizhan', 'bing', 'google', 'haici', 'iciba', 'youdao']`, otherwise `['google']`
 
 #### **`g:translator_proxy_url`**
 
@@ -71,27 +71,21 @@ Plug 'voldikss/vim-translator'
 
 #### **`g:translator_window_max_width`**
 
-> Max width value of the popup/floating window
+> Type `int` (number of columns) or `float` (between 0 and 1). If `float`, the width is relative to `&columns`. Default: `0.6`
 
 - Default: `0.6*&columns`
 
 #### **`g:translator_window_max_height`**
 
-> Max height value of popup/floating window
+> Type `int` (number of columns) or `float` (between 0 and 1). If `float`, the height is relative to `&lines`. Default: `0.6`
 
 - Default: `0.6*&lines`
 
 #### **`g:translator_window_borderchars`**
 
-> Floating window border will be disabled if `g:translator_window_borderchars` is `v:null`
+> Disable window border will be disabled by setting `g:translator_window_borderchars` to `[]`
 
 - Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
-
-#### **`g:translator_window_enable_icon`**
-
-> Set it to `v:false` if your terminal doesn't support Unicode symbols
-
-- Default: `v:true`
 
 ## Key Mappings
 
@@ -108,13 +102,15 @@ vmap <silent> <Leader>w <Plug>TranslateWV
 " Replace the text with translation
 nmap <silent> <Leader>r <Plug>TranslateR
 vmap <silent> <Leader>r <Plug>TranslateRV
+" Translate the text in clipboard
+nmap <silent> <Leader>x <Plug>TranslateX
 ```
 
 Once the translation window is opened, type `<Leader>w` again to jump into it and again to jump back
 
 ## Commands
 
-#### `:Translate[!] [-e engines] [-t text] [-tl target_lang] [-sl source_lang]`
+#### `:Translate[!] [engines=] [target_lang=] [source_lang=] [your text]`
 
 Translate the `text` from the source language `source_lang` to the target language `target_lang` with `engine`, echo the result in the cmdline
 
@@ -128,23 +124,31 @@ The command can also be passed to a range, i.e., `:'<,'>Translate ...`, which tr
 
 If `!` is included, the plugin will perform a reverse translating by switching `target_lang` and `source_lang`
 
-#### `:TranslateW[!] [-e engines] [-t text] [-tl target_lang] [-sl source_lang]`
+Here is an example(you can use `<Tab>` to get completion):
+
+```
+:Translate engines=google,youdao are you ok
+```
+
+#### `:TranslateW[!] [engines=] [target_lang=] [source_lang=] [your text]`
 
 Like `:Translate...`, but display the translation in a window
 
-#### `:TranslateR[!] [-e engines] [-t text] [-tl target_lang] [-sl source_lang]`
+#### `:TranslateR[!] [engines=] [target_lang=] [source_lang=] [your text]`
 
 Like `:Translate...`, but replace the current text with the translation
+
+#### `:TranslateX [engines=] [target_lang=] [source_lang=] [your text]`
+
+Translate the text in the clipboard
 
 #### `:TranslateH`
 
 Export the translation history
 
-**Example**:
+#### `:TranslateL`
 
-```
-:TranslateW -t text -e bing youdao -tl zh -sl en
-```
+Display log
 
 ## Highlight
 
@@ -153,9 +157,8 @@ Here are the default highlight links. To customize, use `hi` or `hi link`
 ```vim
 " Text highlight of translator window
 hi def link TranslatorQuery             Identifier
-hi def link TranslatorPhonetic          Type
-hi def link TranslatorExplain           Statement
 hi def link TranslatorDelimiter         Special
+hi def link TranslatorExplain           Statement
 
 " Background of translator window border
 hi def link TranslatorNF                NormalFloat

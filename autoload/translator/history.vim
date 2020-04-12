@@ -49,17 +49,9 @@ function! translator#history#save(translations) abort
     return
   endif
 
-  " default history count
-  if len(trans_data) == 1000
-    call remove(trans_data, 0)
-  endif
-
-  let trans_data += [item]
-  let result = writefile(trans_data, s:history_file)
-  if result == -1
-    let message = 'Failed to save the translation data.'
-    call translator#util#show_msg(message, 'warning')
-  endif
+  execute 'redir >> ' . s:history_file
+    silent! echon item . "\n"
+  redir END
 endfunction
 
 function! translator#history#export() abort
