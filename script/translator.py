@@ -9,6 +9,7 @@ import copy
 import json
 import argparse
 import codecs
+import langdetect
 
 if sys.version_info[0] < 3:
     is_py3 = False
@@ -383,7 +384,7 @@ class SdcvShell(BasicTranslator):
     def __init__(self, name="sdcv"):
         super(SdcvShell, self).__init__(name)
 
-    def get_dictionary(self, sl, tl):
+    def get_dictionary(self, sl, tl, text):
         """get dictionary of sdcv
 
         :sl: source_lang
@@ -392,9 +393,12 @@ class SdcvShell(BasicTranslator):
 
         """
         dictionary = ''
+        if sl == '':
+            sl = langdetect.detect(text)
+
         if (sl == 'en') & (tl == 'zh'):
             dictionary = '朗道英汉字典5.0'
-        elif (sl == 'zh') & (tl == 'en'):
+        elif (sl == 'zh_cn') & (tl == 'en'):
             dictionary = '朗道汉英字典5.0'
         elif (sl == 'en') & (tl == 'ja'):
             dictionary = 'jmdict-en-ja'
@@ -410,7 +414,7 @@ class SdcvShell(BasicTranslator):
             options.append("-proxy {}".format(self._proxy_url))
 
         source_lang = "" if sl == "auto" else sl
-        dictionary = self.get_dictionary(sl, tl)
+        dictionary = self.get_dictionary(source_lang, tl, text)
         if dictionary == '':
             default_opts = [
             ]
