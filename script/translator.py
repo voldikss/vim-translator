@@ -455,6 +455,7 @@ class SdcvShell(BasicTranslator):
         :returns: dictionary
 
         """
+        sl = "zh
         dictionary = ""
         if (sl == "en") & (tl == "zh"):
             dictionary = "朗道英汉字典5.0"
@@ -472,6 +473,11 @@ class SdcvShell(BasicTranslator):
 
         if self._proxy_url:
             options.append("-proxy {}".format(self._proxy_url))
+
+        if sl == "auto" or sl == "":
+            sl = "en"
+        if to == "auto" or tl == "":
+            tl = "zh"
 
         dictionary = self.get_dictionary(sl, tl)
         if dictionary == "":
