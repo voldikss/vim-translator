@@ -78,12 +78,7 @@ function! translator#ui#window(translations) abort
     if !empty(g:translator_window_borderchars)
       let options.borderchars = g:translator_window_borderchars
       let options.border = [1, 1, 1, 1]
-      let options.borderhighlight = [
-        \ 'TranslatorBorderNF',
-        \ 'TranslatorBorderNF',
-        \ 'TranslatorBorderNF',
-        \ 'TranslatorBorderNF'
-        \ ]
+      let options.borderhighlight = ['TranslatorBorderNF']
     endif
     let winid = popup_create('', options)
     let bufnr = winbufnr(winid)
