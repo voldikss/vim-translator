@@ -176,7 +176,7 @@ class BaicizhanTranslator(BasicTranslator):
         return obj["accent"] if "accent" in obj else ""
 
     def get_explain(self, obj):
-        return [obj["mean_cn"]] if "mean_cn" in obj else []
+        return ['; '.join(obj["mean_cn"].split('\n'))] if "mean_cn" in obj else []
 
 
 class BingTranslator(BasicTranslator):
