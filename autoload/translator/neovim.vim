@@ -92,7 +92,7 @@ function! translator#neovim#add_border(winid) abort
   let inner_opts.row += inner_opts.anchor[0] ==# 'N' ? 1 : -1
   let inner_opts.col += inner_opts.anchor[1] ==# 'W' ? 1 : -1
   call nvim_win_set_config(a:winid, inner_opts)
-  call nvim_win_set_option(a:winid, 'foldcolumn', type(&foldcolumn) == 0 ? 1 : '1')
+  call nvim_win_set_option(a:winid, 'foldcolumn', type(&foldcolumn) == 0 ? 0 : '0')
 
   let borderlines = s:build_border(inner_opts.width, inner_opts.height)
   let border_bufnr = translator#neovim#nvim_create_buf(borderlines, 'translator_border')
