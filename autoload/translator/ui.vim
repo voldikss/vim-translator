@@ -47,7 +47,7 @@ function! translator#ui#window(translations) abort
     let translator_bufnr = translator#neovim#nvim_create_buf(linelist, 'translator')
     call nvim_buf_set_option(translator_bufnr, 'bufhidden', 'wipe')
     let s:translator_winid = nvim_open_win(translator_bufnr, v:false, opts)
-    call nvim_win_set_option(s:translator_winid, 'foldcolumn', 1)
+    call nvim_win_set_option(s:translator_winid, 'foldcolumn', type(&foldcolumn) == 0 ? 1 : '1')
     call nvim_win_set_option(s:translator_winid, 'wrap', v:true)
     call nvim_win_set_option(s:translator_winid, 'conceallevel', 3)
     call nvim_win_set_option(s:translator_winid, 'winhl', 'NormalFloat:TranslatorNF,FoldColumn:TranslatorNF')
