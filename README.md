@@ -14,6 +14,17 @@ Asynchronous translating plugin for Vim/Neovim
 	<img src="https://user-images.githubusercontent.com/20282795/71475802-da9ae100-281c-11ea-9eba-c8c4eee04bd9.png" width=750>
 </div>
 
+- [Installation](#installation)
+- [Features](#features)
+- [Configuration](#configuration)
+- [Keymaps](#key-mappings)
+- [Commands](#commands)
+- [Highlight](#highlight)
+- [Know bugs](#know-bugs)
+- [FAQ](#faq)
+- [References](#references)
+- [License](#license)
+
 ## Installation
 
 ```vim
@@ -23,11 +34,11 @@ Plug 'voldikss/vim-translator'
 ## Features
 
 - Asynchronous & mutithreading translating
-- Floatwin(NeoVim) & popup(Vim8) support
+- Popup(vim8) & floatwin(neovim) support
 - Multiple engines: see [g:translator_default_engines](#gtranslator_default_engines)
 - Save and export translation history
-- Proxy support(http, socks4, socks5)
-- No need for appid/appkey
+- Proxy support
+- No requirements for appid/appkey
 
 ## Configuration
 
@@ -124,10 +135,14 @@ The command can also be passed to a range, i.e., `:'<,'>Translate ...`, which tr
 
 If `!` is included, the plugin will perform a reverse translating by switching `target_lang` and `source_lang`
 
-Here is an example(you can use `<Tab>` to get completion):
+Examples(you can use `<Tab>` to get completion):
 
-```
-:Translate engines=google,youdao are you ok
+```vim
+:Translate                                  " translate the word under the cursor
+:Translate engines=google,youdao are you ok " translate text `are you ok` using google and youdao engines
+:2Translate ...                             " translate line 2
+:1,3Translate ...                           " translate line 1 to line 3
+:'<,'>Translate ...                         " translate selected lines
 ```
 
 #### `:TranslateW[!] [engines=] [target_lang=] [source_lang=] [your text]`
@@ -138,7 +153,7 @@ Like `:Translate...`, but display the translation in a window
 
 Like `:Translate...`, but replace the current text with the translation
 
-#### `:TranslateX [engines=] [target_lang=] [source_lang=] [your text]`
+#### `:TranslateX [engines=] [target_lang=] [source_lang=]`
 
 Translate the text in the clipboard
 
