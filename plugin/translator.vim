@@ -21,29 +21,8 @@ let g:translator_window_max_height       = get(g:, 'translator_window_max_height
 let g:translator_window_max_width        = get(g:, 'translator_window_max_width', v:null)
 let g:translator_window_type             = get(g:, 'translator_window_type', 'popup')
 
-" For old variables
-function! s:transfer(var1, var2) abort
-  if exists(a:var2)
-    execute 'let '. a:var1 . '=' . a:var2
-  endif
-endfunction
-
-call s:transfer('g:translator_target_lang', 'g:vtm_target_lang')
-call s:transfer('g:translator_proxy_url', 'g:vtm_proxy_url')
-call s:transfer('g:translator_history_enable', 'g:vtm_history_enable')
-call s:transfer('g:translator_window_max_width', 'g:vtm_popup_max_width')
-call s:transfer('g:translator_window_max_height', 'g:vtm_popup_max_height')
-call s:transfer('g:translator_default_mappings', 'g:vtm_default_mapping')
-
 if match(g:translator_target_lang, 'zh') >= 0
-  let g:translator_default_engines = get(g:, 'translator_default_engines', [
-    \ 'baicizhan',
-    \ 'bing',
-    \ 'google',
-    \ 'haici',
-    \ 'iciba',
-    \ 'youdao'
-    \ ])
+  let g:translator_default_engines = get(g:, 'translator_default_engines', ['baicizhan', 'bing', 'google', 'haici', 'iciba', 'youdao'])
 else
   let g:translator_default_engines = get(g:, 'translator_default_engines', ['google'])
 endif
