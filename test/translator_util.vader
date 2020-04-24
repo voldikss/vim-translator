@@ -81,7 +81,7 @@ Do:
   viw
   \<Esc>
 Then (Test translator#util#visual_select):
-  AssertEqual 'are', translator#util#visual_select()
+  AssertEqual 'are', translator#util#visual_select(0, 0, 0)
 
 
 Execute (Exit):
