@@ -48,32 +48,30 @@ else
   let g:translator_default_engines = get(g:, 'translator_default_engines', ['google'])
 endif
 
-nnoremap <silent> <Plug>Translate   :call translator#translate('echo', v:false, expand('<cword>'), '')<CR>
-vnoremap <silent> <Plug>TranslateV  :<C-U>call translator#translate('echo', v:true, '', '')<CR>
-nnoremap <silent> <Plug>TranslateW  :call translator#translate('window', v:false, expand('<cword>'), '')<CR>
-vnoremap <silent> <Plug>TranslateWV :<C-U>call translator#translate('window', v:true, '', '')<CR>
-nnoremap <silent> <Plug>TranslateR  viw:<C-U>call translator#translate('replace', v:false, '', '')<CR>
-vnoremap <silent> <Plug>TranslateRV :<C-U>call translator#translate('replace', v:true, '', '')<CR>
-nnoremap <silent> <Plug>TranslateH  :call translator#history#export()
-nnoremap <silent> <Plug>TranslateX  :call translator#translate('echo', v:false, @*, '')<CR>
-nnoremap <silent> <Plug>TranslateXW :call translator#translate('window', v:false, @*, '')<CR>
+nnoremap <silent> <Plug>Translate   :Translate<CR>
+vnoremap <silent> <Plug>TranslateV  :Translate<CR>
+nnoremap <silent> <Plug>TranslateW  :TranslateW<CR>
+vnoremap <silent> <Plug>TranslateWV :TranslateW<CR>
+nnoremap <silent> <Plug>TranslateR  :TranslateR<CR>
+vnoremap <silent> <Plug>TranslateRV :TranslateR<CR>
+nnoremap <silent> <Plug>TranslateX  :TranslateX<CR>
 
 command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
   \ Translate
-  \ call translator#translate('echo', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
+  \ call translator#start('echo', <bang>0, <range>, <line1>, <line2>, <q-args>)
 
 command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
   \ TranslateW
-  \ call translator#translate('window', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
+  \ call translator#start('window', <bang>0, <range>, <line1>, <line2>, <q-args>)
 
 command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
   \ TranslateR
   \ exec 'normal viw<Esc>' |
-  \ call translator#translate('replace', v:false, <q-args>, '<bang>', <line1>, <line2>, <count>)
+  \ call translator#start('replace', <bang>0, <range>, <line1>, <line2>, <q-args>)
 
 command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
   \ TranslateX
-  \ call translator#translate('echo', v:false, <q-args> . ' ' . @*, '<bang>', <line1>, <line2>, <count>)
+  \ call translator#start('echo', <bang>0, <range>, <line1>, <line2>, <q-args> . ' ' . @*)
 
 command! -nargs=0   TranslateH call translator#history#export()
 

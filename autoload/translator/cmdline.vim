@@ -4,15 +4,15 @@
 " GitHub: https://github.com/voldikss
 " ============================================================================
 
-function! s:parse_args(argstr) abort
+function! translator#cmdline#parse(bang, range, line1, line2, argstr) abort
   call translator#debug#info(a:argstr)
+
   let opts = {
     \ 'engines': '',
     \ 'text': '',
     \ 'target_lang': '',
     \ 'source_lang': ''
     \ }
-
   let arglist = split(a:argstr)
   if !empty(arglist)
     let c = 0
@@ -32,61 +32,34 @@ function! s:parse_args(argstr) abort
     endfor
   endif
 
-  if empty(opts.engines)
-    let opts.engines = join(g:translator_default_engines, ' ')
+  let text = opts.text
+  if empty(text)
+    let text = translator#util#visual_select(a:range, a:line1, a:line2)
   endif
-  if empty(opts.target_lang)
-    let opts.target_lang = g:translator_target_lang
-  endif
-  if empty(opts.source_lang)
-    let opts.source_lang = g:translator_source_lang
-  endif
-  return [opts, v:true]
-endfunction
+  let text = translator#util#text_proc(text)
 
-function! translator#cmdline#parse(visualmode, argstr, bang, line1, line2, count) abort
-  let [argsmap, success] = s:parse_args(a:argstr)
-  if success != v:true
-    return [v:null, v:false]
+  let engines = opts.engines
+  if empty(engines)
+    let engines = join(g:translator_default_engines, ' ')
   endif
 
-  if argsmap.text == ''
-    if a:visualmode
-      let argsmap.text = translator#util#visual_select()
-    elseif a:count != -1
-      for lnum in range(a:line1, a:line2)
-        let argsmap.text .= getline(lnum)
-      endfor
-    else
-      let argsmap.text = expand('<cfile>')
-    endif
+  let tl = opts.target_lang
+  if empty(tl)
+    let tl = g:translator_target_lang
   endif
 
-  " Trim the text
-  let argsmap.text = substitute(argsmap.text, "\n", ' ', 'g')
-  let argsmap.text = substitute(argsmap.text, "\n\r", ' ', 'g')
-  let argsmap.text = substitute(argsmap.text, '\v^\s+', '', '')
-  let argsmap.text = substitute(argsmap.text, '\v\s+$', '', '')
-  if argsmap.text == ''
-    return [v:null, v:false]
-  else
-    let argsmap.text = shellescape(argsmap.text)
+  let sl = opts.source_lang
+  if empty(sl)
+    let sl = g:translator_source_lang
   endif
 
-  " Reverse translation
-  if a:bang ==# '!'
-    if argsmap.source_lang ==# 'auto'
-      let msg = 'reverse translate is not possible with "auto" target_lang'
-      call translator#util#show_msg(msg, 'error')
-      return [v:null, v:false]
-    endif
-    let tmp = argsmap.source_lang
-    let argsmap.source_lang = argsmap.target_lang
-    let argsmap.target_lang = tmp
+  if a:bang && sl != 'auto'
+    let tmp = sl
+    let sl = tl
+    let tl = tmp
   endif
 
-  call translator#debug#info(argsmap)
-  return [argsmap, v:true]
+  return [text, engines, tl, sl]
 endfunction
 
 function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort

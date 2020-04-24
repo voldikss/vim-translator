@@ -115,16 +115,41 @@ function! translator#util#build_lines(translations) abort
 endfunction
 
 
-function! translator#util#visual_select() abort
-  let reg_tmp = @a
-  silent normal! gv"ay
-  let select_text=@a
-  let @a = reg_tmp
-  unlet reg_tmp
-  return select_text
+function! translator#util#visual_select(range, line1, line2) abort
+  if a:range == 0
+    let lines = [expand('<cword>')]
+  elseif a:range == 1
+    let lines = [getline('.')]
+  else
+    if a:line1 == a:line2
+      " https://vi.stackexchange.com/a/11028/17515
+      let [lnum1, col1] = getpos("'<")[1:2]
+      let [lnum2, col2] = getpos("'>")[1:2]
+      let lines = getline(lnum1, lnum2)
+      if empty(lines)
+        call floaterm#util#show_msg('No lines were selected', 'error')
+        return
+      endif
+      let lines[-1] = lines[-1][: col2 - 1]
+      let lines[0] = lines[0][col1 - 1:]
+    else
+      let lines = getline(a:line1, a:line2)
+    endif
+  endif
+  return join(lines)
 endfunction
 
 
 function! translator#util#safe_trim(text) abort
   return substitute(a:text,'\%#=1^[[:space:]]\+\|[[:space:]]\+$', '', 'g')
+endfunction
+
+
+function! translator#util#text_proc(text) abort
+  let text = substitute(a:text, "\n", ' ', 'g')
+  let text = substitute(text, "\n\r", ' ', 'g')
+  let text = substitute(text, '\v^\s+', '', '')
+  let text = substitute(text, '\v\s+$', '', '')
+  let text = shellescape(text)
+  return text
 endfunction
