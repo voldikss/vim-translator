@@ -27,6 +27,8 @@ else
   let g:translator_default_engines = get(g:, 'translator_default_engines', ['google'])
 endif
 
+let g:translator_status = ''
+
 nnoremap <silent> <Plug>Translate   :Translate<CR>
 vnoremap <silent> <Plug>TranslateV  :Translate<CR>
 nnoremap <silent> <Plug>TranslateW  :TranslateW<CR>

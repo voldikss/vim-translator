@@ -63,4 +63,5 @@ function! translator#translate(text, engines, tl, sl, method) abort
 
   call translator#debug#info(cmd)
   call translator#job#job_start(cmd, a:method)
+  let g:translator_status = 'translating'
 endfunction

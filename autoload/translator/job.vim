@@ -45,6 +45,7 @@ function! translator#job#job_start(cmd, type) abort
 endfunction
 
 function! s:start(type, data, event) abort
+  let g:translator_status = ''
   " Since Nvim will return a v:t_list, while Vim will return a v:t_string
   if type(a:data) == 3
     let message = join(a:data, ' ')

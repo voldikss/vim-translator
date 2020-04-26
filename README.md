@@ -20,6 +20,7 @@ Asynchronous translating plugin for Vim/Neovim
 - [Keymaps](#key-mappings)
 - [Commands](#commands)
 - [Highlight](#highlight)
+- [Statusline](#statusline)
 - [Know bugs](#know-bugs)
 - [FAQ](#faq)
 - [References](#references)
@@ -179,6 +180,10 @@ hi def link TranslatorExplain           Statement
 hi def link TranslatorNF                NormalFloat
 hi def link TranslatorBorderNF          NormalFloat
 ```
+
+## Statusline
+
+- `g:translator_status`
 
 ## Known bugs
 
