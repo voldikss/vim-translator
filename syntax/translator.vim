@@ -12,11 +12,9 @@ endif
 
 syntax match TranslatorQuery               /\v⟦.*⟧/
 syntax match TranslatorDelimiter           /\v\─.*\─/
-syntax match TranslatorExplain             /\v\*.*/ contains=TranslatorPhonetic
 
 hi def link TranslatorQuery             Identifier
 hi def link TranslatorDelimiter         Special
-hi def link TranslatorExplain           Statement
 
 hi def link TranslatorNF                NormalFloat
 hi def link TranslatorBorderNF          NormalFloat
