@@ -161,7 +161,7 @@ class BaicizhanTranslator(BasicTranslator):
     def translate(self, sl, tl, text, options=None):
         url = "http://mall.baicizhan.com/ws/search"
         req = {}
-        req["w"] = text
+        req["w"] = url_quote(text)
         r = self.http_get(url, req, None)
         if r:
             resp = json.loads(r)
@@ -302,7 +302,7 @@ class ICibaTranslator(BasicTranslator):
         req = {}
         req["a"] = "getWordMean"
         req["c"] = "search"
-        req["word"] = text
+        req["word"] = url_quote(text)
         r = self.http_get(url, req, None)
         if r:
             resp = json.loads(r)
@@ -361,7 +361,7 @@ class YoudaoTranslator(BasicTranslator):
             "User-Agent": "Mozilla/5.0 (Windows NT 6.2; rv:51.0) Gecko/20100101 Firefox/51.0",
         }
         data = {
-            "i": text,
+            "i": url_quote(text),
             "from": sl,
             "to": tl,
             "smartresult": "dict",
