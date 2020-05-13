@@ -54,7 +54,7 @@ function! translator#translate(text, engines, tl, sl, method) abort
   let cmd .= printf(' --engines %s', a:engines)
   let cmd .= printf(' --target_lang %s', a:tl)
   let cmd .= printf(' --source_lang %s', a:sl)
-  if g:translator_proxy_url != v:null
+  if !empty(g:translator_proxy_url)
     let cmd .= printf(' --proxy %s', g:translator_proxy_url)
   endif
   if match(a:engines, 'trans') >= 0

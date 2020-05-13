@@ -69,7 +69,7 @@ Plug 'voldikss/vim-translator'
 
 > e.g. `let g:translator_proxy_url = 'socks5://127.0.0.1:1080'`
 
-- Default: `v:null`
+- Default: `''`
 
 #### **`g:translator_history_enable`**
 
@@ -85,13 +85,13 @@ Plug 'voldikss/vim-translator'
 
 > Type `int` (number of columns) or `float` (between 0 and 1). If `float`, the width is relative to `&columns`. Default: `0.6`
 
-- Default: `0.6*&columns`
+- Default: `0.6`
 
 #### **`g:translator_window_max_height`**
 
 > Type `int` (number of columns) or `float` (between 0 and 1). If `float`, the height is relative to `&lines`. Default: `0.6`
 
-- Default: `0.6*&lines`
+- Default: `0.6`
 
 #### **`g:translator_window_borderchars`**
 

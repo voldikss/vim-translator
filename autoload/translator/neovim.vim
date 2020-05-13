@@ -12,7 +12,7 @@ function! translator#neovim#nvim_create_buf(linelist, filetype) abort
 endfunction
 
 
-function! translator#neovim#get_floatwin_size(translation, max_width, max_height) abort
+function! translator#neovim#floatwin_size(translation, max_width, max_height) abort
   let width = 0
   let height = 0
 
@@ -34,7 +34,7 @@ function! translator#neovim#get_floatwin_size(translation, max_width, max_height
 endfunction
 
 
-function! translator#neovim#get_floatwin_pos(width, height) abort
+function! translator#neovim#floatwin_pos(width, height) abort
   let pos = win_screenpos('.')
   let y_pos = pos[0] + winline() - 1
   let x_pos = pos[1] + wincol() -1

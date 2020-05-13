@@ -17,16 +17,16 @@ endif
 
 function! translator#ui#window(translations) abort
   let linelist = translator#util#build_lines(a:translations)
-  let max_width = g:translator_window_max_width == v:null ? 0.6 : g:translator_window_max_width
+  let max_width = g:translator_window_max_width
   if type(max_width) == v:t_float | let max_width = max_width * &columns | endif
   let max_width = float2nr(max_width)
 
-  let max_height = g:translator_window_max_height == v:null ? 0.6 : g:translator_window_max_height
+  let max_height = g:translator_window_max_height
   if type(max_height) == v:t_float | let max_height = max_height * &lines | endif
   let max_height = float2nr(max_height)
 
-  let [width, height] = translator#neovim#get_floatwin_size(linelist, max_width, max_height)
-  let [y_offset, x_offset, vert, hor, width, height] = translator#neovim#get_floatwin_pos(width, height)
+  let [width, height] = translator#neovim#floatwin_size(linelist, max_width, max_height)
+  let [y_offset, x_offset, vert, hor, width, height] = translator#neovim#floatwin_pos(width, height)
 
   let linelist = translator#util#fit_lines(linelist, width)
 
