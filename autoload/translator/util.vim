@@ -90,14 +90,14 @@ function! translator#util#build_lines(translations) abort
     call add(content, '')
     call add(content, printf('─── %s ───', t.engine))
 
-    if !empty(t.paraphrase)
-      let paraphrase = marker . t.paraphrase
-      call add(content, paraphrase)
-    endif
-
     if !empty(t.phonetic)
       let phonetic = marker . printf('[%s]', t.phonetic)
       call add(content, phonetic)
+    endif
+
+    if !empty(t.paraphrase)
+      let paraphrase = marker . t.paraphrase
+      call add(content, paraphrase)
     endif
 
     if !empty(t.explain)
