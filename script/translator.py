@@ -37,7 +37,7 @@ else:
     from urllib.error import HTTPError
 
 
-class Translation:
+class Translation(object):
     translation = {"engine": "", "phonetic": "", "paraphrase": "", "explain": []}
 
     def __init__(self, engine):
@@ -546,10 +546,7 @@ def main():
     def runner(translator):
         res = translator.translate(from_lang, to_lang, text, options)
         if res:
-            if is_py3:
-                translation["results"].append(copy.deepcopy(res))
-            else:
-                translation["results"].append(copy.deepcopy(res.translation))
+            translation["results"].append(copy.deepcopy(res))
         else:
             translation["status"] = 0
 
