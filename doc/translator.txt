@@ -47,7 +47,8 @@ g:translator_source_lang                            *g:translator_source_lang*
 
 g:translator_default_engines                   *g:translator_default_engines*
 
-		Available: "bing", "iciba", "google", "youdao", "trans", "sdcv".
+		Available: "bing", "iciba", "google", "youdao", "trans", "sdcv",
+		           "qx".
 		Default: ["iciba", "youdao"] if |g:translator_target_lang|
 		is "zh"`, otherwise ["google", "bing"]
 

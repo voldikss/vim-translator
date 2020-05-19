@@ -505,6 +505,36 @@ class SdcvShell(BasicTranslator):
         return self._trans
 
 
+class QXTranslator(BasicTranslator):
+    def __init__(self, name="qx(wubi)"):
+        super(QXTranslator, self).__init__(name)
+
+    def translate(self, sl, tl, text, options=None):
+        url = "http://m.4qx.net/m/wubi_results.php"
+        req = {}
+        text = text if is_py3 else text.decode('utf-8')
+        req["wubi_key"] = text[:6] if len(text) > 6 else text
+        resp = self.http_post(url, req)
+        if not resp:
+            return
+
+        self._trans["phonetic"] = self.get_phonetic(resp)
+        self._trans["explain"] = self.get_explain(resp)
+        return self._trans
+
+    def get_phonetic(self, html):
+        return ''
+
+    def get_explain(self, html):
+        html = html if is_py3 else html.encode('utf-8')
+        m1 = re.findall(r'编码查询：<a href="dictionary_results.php\?dictionary_key=.*?">(.*?)</a>', html)
+        m2 = re.findall(r'全码：<span>(.*?)</span>', html)
+        explains = []
+        for item in zip(m1, m2):
+            explains.append(' '.join(item))
+        return explains
+
+
 ENGINES = {
     "baicizhan": BaicizhanTranslator,
     "bing": BingTranslator,
@@ -514,6 +544,7 @@ ENGINES = {
     "sdcv": SdcvShell,
     "trans": TranslateShell,
     "youdao": YoudaoTranslator,
+    "qx": QXTranslator,
 }
 
 
