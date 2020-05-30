@@ -73,7 +73,8 @@ function! translator#ui#window(translations) abort
       \ 'maxwidth': width,
       \ 'minwidth': width,
       \ 'maxheight': height,
-      \ 'minheight': height
+      \ 'minheight': height,
+      \ 'filter': function('s:popup_filter'),
       \ }
     if !empty(g:translator_window_borderchars)
       let options.borderchars = g:translator_window_borderchars
@@ -193,4 +194,19 @@ function! s:close_translator_window() abort
   if exists('#translator_close')
     autocmd! translator_close *
   endif
+endfunction
+
+
+" Filter for popup window
+function! s:popup_filter(winid, key) abort
+  if a:key ==# "\<c-k>"
+    call win_execute(a:winid, "normal! \<c-y>")
+    return v:true
+  elseif a:key ==# "\<c-j>"
+    call win_execute(a:winid, "normal! \<c-e>")
+    return v:true
+  elseif a:key ==# 'q' || a:key ==# 'x'
+    return popup_filter_menu(a:winid, 'x')
+  endif
+  return v:false
 endfunction
