@@ -22,7 +22,7 @@ let g:translator_window_max_width        = get(g:, 'translator_window_max_width'
 let g:translator_window_type             = get(g:, 'translator_window_type', 'popup')
 
 if match(g:translator_target_lang, 'zh') >= 0
-  let g:translator_default_engines = get(g:, 'translator_default_engines', ['baicizhan', 'bing', 'google', 'haici', 'iciba', 'youdao'])
+  let g:translator_default_engines = get(g:, 'translator_default_engines', ['baicizhan', 'bing', 'google', 'haici', 'youdao'])
 else
   let g:translator_default_engines = get(g:, 'translator_default_engines', ['google'])
 endif

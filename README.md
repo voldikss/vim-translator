@@ -63,7 +63,7 @@ Plug 'voldikss/vim-translator'
 
 - Available: `'baicizhan'`, `'bing'`, `'google'`, `'haici'`, `'iciba'`, `'sdcv'`, `'trans'`, `'youdao'`
 
-- Default: If `g:translator_target_lang` is `'zh'`, `['baicizhan', 'bing', 'google', 'haici', 'iciba', 'youdao']`, otherwise `['google']`
+- Default: If `g:translator_target_lang` is `'zh'`, `['baicizhan', 'bing', 'google', 'haici', 'youdao']`, otherwise `['google']`
 
 #### **`g:translator_proxy_url`**
 

@@ -293,6 +293,7 @@ class HaiciTranslator(BasicTranslator):
         return explains
 
 
+# this api was deprecated
 class ICibaTranslator(BasicTranslator):
     def __init__(self, name="iciba"):
         super(ICibaTranslator, self).__init__(name)
