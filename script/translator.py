@@ -148,10 +148,19 @@ class BasicTranslator(object):
         print(self.request(test_url))
 
     def translate(self, sl, tl, text, options=None):
-        self._trans["paraphrase"] = None  # 简单翻译
-        self._trans["phonetic"] = None  # 读音
-        self._trans["explain"] = None  # 详细翻译
-        return self._trans
+        """Need to be implemented by subclass"""
+        raise NotImplementedError
+
+    def get_paraphrase(self, obj):
+        """Need to be implemented by subclass"""
+        raise NotImplementedError
+
+    def get_phonetic(self, obj):
+        """Need to be implemented by subclass"""
+        raise NotImplementedError
+
+    def get_explain(self, obj):
+        raise NotImplementedError
 
 
 class BaicizhanTranslator(BasicTranslator):
