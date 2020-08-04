@@ -587,39 +587,39 @@ if __name__ == "__main__":
         t.test_request("https://www.google.com")
 
     def test1():
-        t = BingTranslator()
-        r = t.translate("", "", "family")
+        t = BaicizhanTranslator()
+        r = t.translate("", "zh", "naive")
         print(r)
 
     def test2():
-        gt = GoogleTranslator()
-        r = gt.translate("auto", "zh", "family")
+        t = BingTranslator()
+        r = t.translate("", "", "naive")
         print(r)
 
     def test3():
-        t = ICibaTranslator()
-        r = t.translate("", "", "master")
+        gt = GoogleTranslator()
+        r = gt.translate("auto", "zh", "naive")
         print(r)
 
     def test4():
-        t = YoudaoTranslator()
-        r = t.translate("auto", "zh", "family")
+        t = HaiciTranslator()
+        r = t.translate("", "zh", "naive")
         print(r)
 
     def test5():
-        t = TranslateShell()
-        r = t.translate("auto", "zh", "family")
+        t = ICibaTranslator()
+        r = t.translate("", "", "naive")
         print(r)
 
     def test6():
-        t = BaicizhanTranslator()
-        r = t.translate("", "zh", "family")
+        t = TranslateShell()
+        r = t.translate("auto", "zh", "naive")
         print(r)
 
     def test7():
-        t = HaiciTranslator()
-        r = t.translate("", "zh", "family")
+        t = YoudaoTranslator()
+        r = t.translate("auto", "zh", "naive")
         print(r)
 
-    # test8()
+    test6()
     main()
