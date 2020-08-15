@@ -51,9 +51,12 @@ endfunction
 
 function! translator#util#padding(text, width, char) abort
   let padding_size = (a:width - strdisplaywidth(a:text)) / 2
-  let padding = repeat(a:char, padding_size)
+  let padding = repeat(a:char, padding_size / strdisplaywidth(a:char))
   let padend = repeat(a:char, (a:width - strdisplaywidth(a:text)) % 2)
-  let text = padding . a:text . padding . padend
+  let text = padding . a:text . padding
+  if a:width >= strdisplaywidth(text) + strdisplaywidth(padend)
+    let text .= padend
+  endif
   return text
 endfunction
 
