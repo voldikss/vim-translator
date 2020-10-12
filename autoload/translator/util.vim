@@ -153,6 +153,7 @@ function! translator#util#text_proc(text) abort
   let text = substitute(text, "\n\r", ' ', 'g')
   let text = substitute(text, '\v^\s+', '', '')
   let text = substitute(text, '\v\s+$', '', '')
-  let text = shellescape(text)
+  let text = escape(text, '"')
+  let text = printf('"%s"', text)
   return text
 endfunction
