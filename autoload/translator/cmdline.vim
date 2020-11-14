@@ -51,7 +51,7 @@ function! translator#cmdline#parse(bang, range, line1, line2, argstr) abort
     let options.source_lang = g:translator_source_lang
   endif
 
-  if a:bang && sl != 'auto'
+  if a:bang && options.source_lang != 'auto'
     let [options.source_lang, options.target_lang] = [options.target_lang, options.source_lang]
   endif
 

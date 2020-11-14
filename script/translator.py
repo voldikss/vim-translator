@@ -163,6 +163,7 @@ class BasicTranslator(object):
         raise NotImplementedError
 
 
+# NOTE: expired
 class BaicizhanTranslator(BasicTranslator):
     def __init__(self, name="baicizhan"):
         super(BaicizhanTranslator, self).__init__(name)
