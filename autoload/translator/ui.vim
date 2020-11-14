@@ -52,7 +52,8 @@ function! translator#ui#window(translations) abort
     call nvim_win_set_option(s:translator_winid, 'conceallevel', 3)
     call nvim_win_set_option(s:translator_winid, 'winhl', 'NormalFloat:TranslatorNF,FoldColumn:TranslatorNF')
     let s:border_winid = translator#neovim#add_border(s:translator_winid)
-    call nvim_set_current_win(s:translator_winid)
+    " NOTE: dont use call nvim_set_current_win(s:translator_winid)
+    execute win_id2win(s:translator_winid) . 'wincmd w'
     noa wincmd p
 
     function! s:close_floatwin(...) abort
