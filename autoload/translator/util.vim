@@ -113,7 +113,7 @@ function! translator#util#build_lines(translations) abort
       endfor
     endif
   endfor
-  call translator#debug#info(content)
+  call translator#logger#log(content)
   return content
 endfunction
 

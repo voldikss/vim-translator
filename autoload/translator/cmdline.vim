@@ -5,11 +5,10 @@
 " ============================================================================
 
 function! translator#cmdline#parse(bang, range, line1, line2, argstr) abort
-  call translator#debug#info(a:argstr)
-
-  let opts = {
-    \ 'engines': '',
+  call translator#logger#log(a:argstr)
+  let options = {
     \ 'text': '',
+    \ 'engines': '',
     \ 'target_lang': '',
     \ 'source_lang': ''
     \ }
@@ -19,47 +18,44 @@ function! translator#cmdline#parse(bang, range, line1, line2, argstr) abort
     for arg in arglist
       let opt = split(arg, '=')
       if len(opt) == 1
-        let opts.text = join(arglist[c:])
+        let options.text = join(arglist[c:])
         break
       elseif len(opt) == 2
         if opt[0] == 'engines'
-          let opts.engines = substitute(opt[1], ',', ' ', 'g')
+          let options.engines = substitute(opt[1], ',', ' ', 'g')
         else
-          let opts[opt[0]] = opt[1]
+          let options[opt[0]] = opt[1]
         endif
       endif
       let c += 1
     endfor
   endif
 
-  let text = opts.text
-  if empty(text)
-    let text = translator#util#visual_select(a:range, a:line1, a:line2)
+  if empty(options.text)
+    let options.text = translator#util#visual_select(a:range, a:line1, a:line2)
   endif
-  let text = translator#util#text_proc(text)
-
-  let engines = opts.engines
-  if empty(engines)
-    let engines = join(g:translator_default_engines, ' ')
+  let options.text = translator#util#text_proc(options.text)
+  if empty(options.text)
+    return v:null
   endif
 
-  let tl = opts.target_lang
-  if empty(tl)
-    let tl = g:translator_target_lang
+  if empty(options.engines)
+    let options.engines = join(g:translator_default_engines, ' ')
   endif
 
-  let sl = opts.source_lang
-  if empty(sl)
-    let sl = g:translator_source_lang
+  if empty(options.target_lang)
+    let options.target_lang = g:translator_target_lang
+  endif
+
+  if empty(options.source_lang)
+    let options.source_lang = g:translator_source_lang
   endif
 
   if a:bang && sl != 'auto'
-    let tmp = sl
-    let sl = tl
-    let tl = tmp
+    let [options.source_lang, options.target_lang] = [options.target_lang, options.source_lang]
   endif
 
-  return [text, engines, tl, sl]
+  return options
 endfunction
 
 function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort

@@ -20,7 +20,7 @@ else
   endfunction
 endif
 
-function! translator#job#job_start(cmd, type) abort
+function! translator#job#jobstart(cmd, type) abort
   if has('nvim')
     let callback = {
       \ 'on_stdout': function('s:on_stdout_nvim', [a:type]),
@@ -46,7 +46,7 @@ endfunction
 
 function! s:start(type, data, event) abort
   let g:translator_status = ''
-  " Since Nvim will return a v:t_list, while Vim will return a v:t_string
+  " Nvim will return a v:t_list, while Vim will return a v:t_string
   if type(a:data) == 3
     let message = join(a:data, ' ')
   else
@@ -55,11 +55,8 @@ function! s:start(type, data, event) abort
 
   " On Nvim, this function will be executed twice, firstly it returns data, and then an empty string
   " Check the data value in order to prevent overlap
-  if translator#util#safe_trim(message) ==# ''
-    return
-  endif
-
-  call translator#debug#info(message)
+  if translator#util#safe_trim(message) ==# '' | return | endif
+  call translator#logger#log(message)
 
   " python2 will return unicode object which is hard to solve in python
   " so solve it in vim
@@ -69,7 +66,7 @@ function! s:start(type, data, event) abort
   let message = substitute(message, "\\([: \\|: \[]\\)\\(u\\)\\('\\)", '\=submatch(1).submatch(3)', 'g')
   " 2. convert unicode to normal chinese string
   let message = substitute(message, '\\u\(\x\{4\}\)', '\=nr2char("0x".submatch(1),1)', 'g')
-  call translator#debug#info(message)
+  call translator#logger#log(message)
 
   if a:event ==# 'stdout'
     let translations = eval(message)

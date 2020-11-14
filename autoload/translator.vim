@@ -26,11 +26,11 @@ if stridx(s:py_file, ' ') >= 0
   let s:py_file = shellescape(s:py_file)
 endif
 
-function! translator#start(method, bang, range, line1, line2, argstr) abort
-  call translator#debug#init()
+function! translator#start(displaymode, bang, range, line1, line2, argstr) abort
+  call translator#logger#init()
 
   " jump to popup or close popup
-  if a:method ==# 'window'
+  if a:displaymode ==# 'window'
     if &filetype ==# 'translator'
       hide
       return
@@ -39,29 +39,29 @@ function! translator#start(method, bang, range, line1, line2, argstr) abort
     endif
   endif
 
-  " parse arguments
-  let [text, engines, tl, sl] = translator#cmdline#parse(a:bang, a:range, a:line1, a:line2, a:argstr)
-  if empty(text)
-    return
-  endif
-
-  call translator#translate(text, engines, tl, sl, a:method)
+  let options = translator#cmdline#parse(a:bang, a:range, a:line1, a:line2, a:argstr)
+  if options is v:null | return | endif
+  call translator#translate(options, a:displaymode)
 endfunction
 
-function! translator#translate(text, engines, tl, sl, method) abort
-  let cmd = printf('%s %s', s:python_executable, s:py_file)
-  let cmd .= printf(' --text %s', a:text)
-  let cmd .= printf(' --engines %s', a:engines)
-  let cmd .= printf(' --target_lang %s', a:tl)
-  let cmd .= printf(' --source_lang %s', a:sl)
+function! translator#translate(options, displaymode) abort
+  let cmd = printf(
+    \ '%s %s --text %s --engines %s --target_lang %s --source_lang %s',
+    \ s:python_executable,
+    \ s:py_file,
+    \ a:options.text,
+    \ a:options.engines,
+    \ a:options.target_lang,
+    \ a:options.source_lang
+    \ )
   if !empty(g:translator_proxy_url)
     let cmd .= printf(' --proxy %s', g:translator_proxy_url)
   endif
-  if match(a:engines, 'trans') >= 0
+  if match(a:options.engines, 'trans') >= 0
     let cmd .= printf(" --options='%s'", join(g:translator_translate_shell_options, ','))
   endif
 
-  call translator#debug#info(cmd)
-  call translator#job#job_start(cmd, a:method)
+  call translator#logger#log(cmd)
+  call translator#job#jobstart(cmd, a:displaymode)
   let g:translator_status = 'translating'
 endfunction
