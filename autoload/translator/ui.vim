@@ -52,11 +52,26 @@ function! translator#ui#window(translations) abort
     call nvim_win_set_option(s:translator_winid, 'conceallevel', 3)
     call nvim_win_set_option(s:translator_winid, 'winhl', 'NormalFloat:TranslatorNF,FoldColumn:TranslatorNF')
     let s:border_winid = translator#neovim#add_border(s:translator_winid)
+    call nvim_set_current_win(s:translator_winid)
+    noa wincmd p
 
-    augroup translator_close
+    function! s:close_floatwin(...) abort
+      if win_getid() == s:translator_winid
+        return
+      else
+        if !empty(getwininfo(s:translator_winid))
+          call nvim_win_close(s:translator_winid, v:true)
+        endif
+        if !empty(getwininfo(s:border_winid))
+          call nvim_win_close(s:border_winid, v:true)
+        endif
+        autocmd! close_translator_floatwin
+      endif
+    endfunction
+
+    augroup close_translator_floatwin
       autocmd!
-      autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call s:close_translator_window()
-      execute 'autocmd BufWipeout,BufDelete <buffer=' . translator_bufnr . '> call s:close_translator_window()'
+      autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call timer_start(200, function('s:close_floatwin'))
     augroup END
 
   elseif s:wintype ==# 'popup'
@@ -116,9 +131,19 @@ function! translator#ui#window(translations) abort
     setlocal nobuflisted noswapfile nocursorline
     noautocmd wincmd p
 
-    augroup translator_close
+    function! s:close_preview(...) abort
+      if win_getid() == s:translator_winid
+        return
+      else
+        if !empty(getwininfo(s:translator_winid))
+          execute win_id2win(s:translator_winid) . 'hide'
+        endif
+        autocmd! close_translator_preview
+      endif
+    endfunction
+    augroup close_translator_preview
       autocmd!
-      autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call s:close_translator_window()
+      autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call timer_start(200, function('s:close_preview'))
     augroup END
   endif
 endfunction

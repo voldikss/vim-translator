@@ -110,7 +110,7 @@ vmap <silent> <Leader>r <Plug>TranslateRV
 nmap <silent> <Leader>x <Plug>TranslateX
 ```
 
-Once the translation window is opened, type `<Leader>w` again to jump into it and again to jump back
+Once the translation window is opened, type `<C-w>p` to jump into it and again to jump back
 
 ## Commands
 

@@ -28,17 +28,6 @@ endif
 
 function! translator#start(displaymode, bang, range, line1, line2, argstr) abort
   call translator#logger#init()
-
-  " jump to popup or close popup
-  if a:displaymode ==# 'window'
-    if &filetype ==# 'translator'
-      hide
-      return
-    elseif translator#ui#try_jump_into()
-      return
-    endif
-  endif
-
   let options = translator#cmdline#parse(a:bang, a:range, a:line1, a:line2, a:argstr)
   if options is v:null | return | endif
   call translator#translate(options, a:displaymode)
