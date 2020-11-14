@@ -21,6 +21,7 @@ else
 endif
 
 function! translator#job#jobstart(cmd, type) abort
+  let s:stdout_save = {}
   if has('nvim')
     let callback = {
       \ 'on_stdout': function('s:on_stdout_nvim', [a:type]),
@@ -74,6 +75,7 @@ function! s:start(type, data, event) abort
       call translator#util#show_msg('Translation failed', 'error')
     endif
 
+    let s:stdout_save = translations
     if a:type ==# 'echo'
       call translator#ui#echo(translations)
     elseif a:type ==# 'window'
@@ -84,5 +86,8 @@ function! s:start(type, data, event) abort
     call translator#history#save(translations)
   elseif a:event ==# 'stderr'
     call translator#util#show_msg(message, 'error')
+    if !empty(s:stdout_save) && a:type == 'echo'
+      call translator#ui#echo(s:stdout_save)
+    endif
   endif
 endfunction
