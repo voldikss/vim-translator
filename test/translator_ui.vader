@@ -24,7 +24,7 @@ Before:
   function! HasBuffer(filetype)
     let found_bufnr = -1
     for bufnr in range(1, bufnr('$'))
-      if getbufvar(bufnr, '&filetype') ==# a:filetype
+      if getbufvar(bufnr, '&filetype') == a:filetype
         let found_bufnr = bufnr
       endif
     endfor

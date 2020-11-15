@@ -5,7 +5,7 @@
 " ============================================================================
 
 function! translator#util#echo(group, msg) abort
-  if a:msg ==# '' | return | endif
+  if a:msg == '' | return | endif
   execute 'echohl' a:group
   echo a:msg
   echon ' '
@@ -13,7 +13,7 @@ function! translator#util#echo(group, msg) abort
 endfunction
 
 function! translator#util#echon(group, msg) abort
-  if a:msg ==# '' | return | endif
+  if a:msg == '' | return | endif
   execute 'echohl' a:group
   echon a:msg
   echon ' '
@@ -35,11 +35,11 @@ function! translator#util#show_msg(message, ...) abort
 
   call translator#util#echo('Constant', '[vim-translator]')
 
-  if msg_type ==# 'info'
+  if msg_type == 'info'
     call translator#util#echon('Normal', message)
-  elseif msg_type ==# 'warning'
+  elseif msg_type == 'warning'
     call translator#util#echon('WarningMsg', message)
-  elseif msg_type ==# 'error'
+  elseif msg_type == 'error'
     call translator#util#echon('Error', message)
   endif
 endfunction
@@ -58,9 +58,9 @@ endfunction
 function! translator#util#fit_lines(linelist, width) abort
   for i in range(len(a:linelist))
     let line = a:linelist[i]
-    if match(line, '───') ==# 0 && a:width > strdisplaywidth(line)
+    if match(line, '───') == 0 && a:width > strdisplaywidth(line)
       let a:linelist[i] = translator#util#pad(a:linelist[i], a:width, '─')
-    elseif match(line, '⟦') ==# 0 && a:width > strdisplaywidth(line)
+    elseif match(line, '⟦') == 0 && a:width > strdisplaywidth(line)
       let a:linelist[i] = translator#util#pad(a:linelist[i], a:width, ' ')
     endif
   endfor

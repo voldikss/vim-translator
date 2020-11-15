@@ -75,7 +75,7 @@ function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
 
   let prefix = args[-1]
 
-  if prefix ==# ''
+  if prefix == ''
     return candidates
   endif
 
@@ -93,7 +93,7 @@ function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
   elseif match(prefix, 'engines=') > -1
     let candidates = map(engines, {idx -> "engines=" . engines[idx]})
   endif
-  return filter(candidates, 'v:val[:len(prefix) - 1] ==# prefix')
+  return filter(candidates, 'v:val[:len(prefix) - 1] == prefix')
 endfunction
 
 function! s:matchlastpos(expr, pat) abort

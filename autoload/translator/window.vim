@@ -100,13 +100,13 @@ function! s:floatwin_pos(width, height) abort
 endfunction
 
 function! s:popup_filter(winid, key) abort
-  if a:key ==# "\<c-k>"
+  if a:key == "\<c-k>"
     call win_execute(a:winid, "normal! \<c-y>")
     return v:true
-  elseif a:key ==# "\<c-j>"
+  elseif a:key == "\<c-j>"
     call win_execute(a:winid, "normal! \<c-e>")
     return v:true
-  elseif a:key ==# 'q' || a:key ==# 'x'
+  elseif a:key == 'q' || a:key == 'x'
     return popup_filter_menu(a:winid, 'x')
   endif
   return v:false
@@ -275,9 +275,9 @@ function! translator#window#open(content) abort
     \ 'height': height,
     \ 'borderchars': g:translator_window_borderchars
     \ }
-  if s:wintype ==# 'floating'
+  if s:wintype == 'floating'
     call s:open_float(linelist, options)
-  elseif s:wintype ==# 'popup'
+  elseif s:wintype == 'popup'
     call s:open_popup(linelist, options)
   else
     call s:open_preview(linelist, options)

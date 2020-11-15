@@ -57,7 +57,7 @@ function! s:start(type, data, event) abort
 
   " On Nvim, this function will be executed twice, firstly it returns data, and then an empty string
   " Check the data value in order to prevent overlap
-  if translator#util#safe_trim(message) ==# '' | return | endif
+  if translator#util#safe_trim(message) == '' | return | endif
   call translator#logger#log(message)
 
   " python2 will return unicode object which is hard to solve in python
@@ -70,22 +70,22 @@ function! s:start(type, data, event) abort
   let message = substitute(message, '\\u\(\x\{4\}\)', '\=nr2char("0x".submatch(1),1)', 'g')
   call translator#logger#log(message)
 
-  if a:event ==# 'stdout'
+  if a:event == 'stdout'
     let translations = eval(message)
     if type(translations) != 4 && !translations['status']
       call translator#util#show_msg('Translation failed', 'error')
     endif
 
     let s:stdout_save = translations
-    if a:type ==# 'echo'
+    if a:type == 'echo'
       call translator#action#echo(translations)
-    elseif a:type ==# 'window'
+    elseif a:type == 'window'
       call translator#action#window(translations)
     else
       call translator#action#replace(translations)
     endif
     call translator#history#save(translations)
-  elseif a:event ==# 'stderr'
+  elseif a:event == 'stderr'
     call translator#util#show_msg(message, 'error')
     if !empty(s:stdout_save) && a:type == 'echo'
       call translator#action#echo(s:stdout_save)
