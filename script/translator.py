@@ -530,17 +530,15 @@ ENGINES = {
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--text", required=True)
-    parser.add_argument("--engines", nargs="+", required=True)
-    parser.add_argument("--target_lang", required=True)
-    parser.add_argument("--source_lang", required=True)
+    parser.add_argument("--engines", nargs="+", required=False, default=["google"])
+    parser.add_argument("--target_lang", required=False, default="zh")
+    parser.add_argument("--source_lang", required=False, default="en")
     parser.add_argument("--proxy", required=False)
     parser.add_argument("--options", type=str, default=None, required=False)
+    parser.add_argument("text", nargs="+", type=str)
     args = parser.parse_args()
 
-    text = args.text.strip("'")
-    text = text.strip('"')
-    text = text.strip()
+    text = " ".join(args.text).strip("'").strip('"').strip()
     engines = args.engines
     to_lang = args.target_lang
     from_lang = args.source_lang

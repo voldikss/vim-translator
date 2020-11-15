@@ -8,7 +8,7 @@ function! translator#cmdline#parse(bang, range, line1, line2, argstr) abort
   call translator#logger#log(a:argstr)
   let options = {
     \ 'text': '',
-    \ 'engines': '',
+    \ 'engines': [],
     \ 'target_lang': '',
     \ 'source_lang': ''
     \ }
@@ -22,7 +22,7 @@ function! translator#cmdline#parse(bang, range, line1, line2, argstr) abort
         break
       elseif len(opt) == 2
         if opt[0] == 'engines'
-          let options.engines = substitute(opt[1], ',', ' ', 'g')
+          let options.engines = split(opt[1], ',')
         else
           let options[opt[0]] = opt[1]
         endif
@@ -40,7 +40,7 @@ function! translator#cmdline#parse(bang, range, line1, line2, argstr) abort
   endif
 
   if empty(options.engines)
-    let options.engines = join(g:translator_default_engines, ' ')
+    let options.engines = g:translator_default_engines
   endif
 
   if empty(options.target_lang)
