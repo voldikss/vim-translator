@@ -55,4 +55,4 @@ command! -complete=customlist,translator#cmdline#complete -nargs=* -bang -range
 
 command! -nargs=0   TranslateH call translator#history#export()
 
-command! -nargs=0   TranslateL call translator#debug#open_log()
+command! -nargs=0   TranslateL call translator#logger#open_log()
