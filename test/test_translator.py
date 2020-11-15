@@ -51,7 +51,7 @@ class TestTranslator(unittest.TestCase):
             "engine": "google",
             "phonetic": "",
             "paraphrase": "幼稚",
-            "explain": ["[形] 幼稚;老实;戆;稚气的;天真的;"],
+            "explain": ["[形] 幼稚;老实;戆;天真的;稚气的;"],
         }
         t = GoogleTranslator()
         r = t.translate("auto", "zh", "naive")
@@ -101,11 +101,11 @@ class TestTranslator(unittest.TestCase):
                 "老实",
                 "honest, frank, naive, simple-minded",
                 "戆",
-                "stupid, simple, ingenuous, innocent, untutored, naive",
-                "稚气的",
-                "childly, ingenuous, babyish, questionless, untutored, naive",
+                "stupid, simple, naive, ingenuous, innocent, unsophisticated",
                 "天真的",
                 "naive",
+                "稚气的",
+                "babyish, childly, ingenuous, naive, questionless, untutored",
                 "",
                 "naive",
                 "幼稚, 天真",
