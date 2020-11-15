@@ -49,8 +49,6 @@ function! translator#translate(options, displaymode) abort
   if match(a:options.engines, 'trans') >= 0
     let cmd .= printf(" --options='%s'", join(g:translator_translate_shell_options, ','))
   endif
-
   call translator#logger#log(cmd)
   call translator#job#jobstart(cmd, a:displaymode)
-  let g:translator_status = 'translating'
 endfunction

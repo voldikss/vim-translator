@@ -21,6 +21,7 @@ else
 endif
 
 function! translator#job#jobstart(cmd, type) abort
+  let g:translator_status = 'translating'
   let s:stdout_save = {}
   if has('nvim')
     let callback = {
@@ -77,17 +78,17 @@ function! s:start(type, data, event) abort
 
     let s:stdout_save = translations
     if a:type ==# 'echo'
-      call translator#ui#echo(translations)
+      call translator#action#echo(translations)
     elseif a:type ==# 'window'
-      call translator#ui#window(translations)
+      call translator#action#window(translations)
     else
-      call translator#ui#replace(translations)
+      call translator#action#replace(translations)
     endif
     call translator#history#save(translations)
   elseif a:event ==# 'stderr'
     call translator#util#show_msg(message, 'error')
     if !empty(s:stdout_save) && a:type == 'echo'
-      call translator#ui#echo(s:stdout_save)
+      call translator#action#echo(s:stdout_save)
     endif
   endif
 endfunction

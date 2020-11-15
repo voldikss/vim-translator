@@ -22,6 +22,7 @@ class TestTranslator(unittest.TestCase):
     def __init__(self, *args, **kwargs):
         super(TestTranslator, self).__init__(*args, **kwargs)
 
+    @unittest.skip("Expired")
     def test_baicizhan(self):
         translation = {
             "engine": "baicizhan",

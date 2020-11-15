@@ -84,8 +84,6 @@ g:translator_window_max_height                *g:translator_window_max_height*
 
 g:translator_window_borderchars              *g:translator_window_borderchars*
 
-		Border will be disabled if |g:translator_window_borderchars|
-		is set to |[]|
 		Default: ['─', '│', '─', '│', '┌', '┐', '┘', '└']
 
 

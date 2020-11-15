@@ -8,9 +8,9 @@ Execute (Call-only functions):
   call translator#util#show_msg('test msg', 'error')
 
 
-Execute (Test translator#util#padding):
-  AssertEqual '*abc*', translator#util#padding('abc', 5, '*')
-  AssertEqual '*abc**', translator#util#padding('abc', 6, '*')
+Execute (Test translator#util#pad):
+  AssertEqual '*abc*', translator#util#pad('abc', 5, '*')
+  AssertEqual '*abc**', translator#util#pad('abc', 6, '*')
 
 
 Execute (Test translator#util#fit_lines):
@@ -43,31 +43,6 @@ Execute (Test translator#util#fit_lines):
     \ '• vt. 呼叫；称呼；召集'
     \ ]
   AssertEqual fit_linelist, translator#util#fit_lines(linelist, 53)
-
-
-Execute (Test translator#util#build_lines):
-  let translations = {
-    \ 'status': 1,
-    \ 'results': [
-    \     {'paraphrase': '', 'explain': ['n. 著作家;作者;创造者;发起人;', 'vt. 创作出版;'], 'phonetic': 'ˈɔ:θə(r)', 'engine': 'ciba'},
-    \     {'paraphrase': '作者', 'explain': ['n. 作者；作家；创始人', 'vt. 创作出版'], 'phonetic': '', 'engine': 'youdao'}
-    \ ],
-    \ 'text': 'Author'
-    \ }
-  let content = [
-    \ '⟦ Author ⟧',
-    \ '',
-    \ '─── ciba ───',
-    \ '• [ˈɔ:θə(r)]',
-    \ '• n. 著作家;作者;创造者;发起人;',
-    \ '• vt. 创作出版;',
-    \ '',
-    \ '─── youdao ───',
-    \ '• 作者',
-    \ '• n. 作者；作家；创始人',
-    \ '• vt. 创作出版'
-    \ ]
-  AssertEqual content, translator#util#build_lines(translations)
 
 
 Execute (Test translator#util#safe_trim):

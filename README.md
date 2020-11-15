@@ -87,8 +87,6 @@ Plug 'voldikss/vim-translator'
 
 #### **`g:translator_window_borderchars`**
 
-> Disable window border will be disabled by setting `g:translator_window_borderchars` to `[]`
-
 - Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
 
 ## Key Mappings
