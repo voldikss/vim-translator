@@ -539,6 +539,8 @@ def main():
     args = parser.parse_args()
 
     text = " ".join(args.text).strip("'").strip('"').strip()
+    text = re.sub(r"([a-z])([A-Z][a-z])", r"\1 \2", text)
+    text = re.sub(r"([a-zA-Z])_([a-zA-Z])", r"\1 \2", text).lower()
     engines = args.engines
     to_lang = args.target_lang
     from_lang = args.source_lang
