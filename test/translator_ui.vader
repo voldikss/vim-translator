@@ -48,7 +48,6 @@ Execute (Floating: Jump into floating window):
   AssertEqual 'translator', &filetype
   AssertEqual 1, &wrap
   AssertEqual 3, &conceallevel
-"   AssertEqual 'NormalFloat:TranslatorNF', &winhl
   Assert HasBuffer('translator') > -1
   Assert HasBuffer('translatorborder') > -1
   wincmd p
