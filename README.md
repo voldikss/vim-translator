@@ -122,7 +122,9 @@ Once the translation window is opened, type `<C-w>p` to jump into it and again t
 
 ## Commands
 
-#### `:Translate[!] [--engines=ENGINES] [--target_lang=TARGET_LANG] [--source_lang=SOURCE_LANG] [your text]`
+#### `Translate`
+
+`:Translate[!] [--engines=ENGINES] [--target_lang=TARGET_LANG] [--source_lang=SOURCE_LANG] [your text]`
 
 Translate the `text` from the source language `source_lang` to the target language `target_lang` with `engine`, echo the result in the cmdline
 
@@ -146,23 +148,33 @@ Examples(you can use `<Tab>` to get completion):
 :'<,'>Translate ...                         " translate selected lines
 ```
 
-#### `:TranslateW[!] [--engines=ENGINES] [--target_lang=TARGET_LANG] [--source_lang=SOURCE_LANG] [your text]`
+#### `TranslateW`
+
+`:TranslateW[!] [--engines=ENGINES] [--target_lang=TARGET_LANG] [--source_lang=SOURCE_LANG] [your text]`
 
 Like `:Translate...`, but display the translation in a window
 
-#### `:TranslateR[!] [--engines=ENGINES] [--target_lang=TARGET_LANG] [--source_lang=SOURCE_LANG] [your text]`
+#### `TranslateR`
+
+`:TranslateR[!] [--engines=ENGINES] [--target_lang=TARGET_LANG] [--source_lang=SOURCE_LANG] [your text]`
 
 Like `:Translate...`, but replace the current text with the translation
 
-#### `:TranslateX[!] [--engines=ENGINES] [--target_lang=TARGET_LANG] [--source_lang=SOURCE_LANG] [your text]`
+#### `TranslateX`
+
+`:TranslateX[!] [--engines=ENGINES] [--target_lang=TARGET_LANG] [--source_lang=SOURCE_LANG] [your text]`
 
 Translate the text in the clipboard
 
-#### `:TranslateH`
+#### `TranslateH`
+
+`:TranslateH`
 
 Export the translation history
 
-#### `:TranslateL`
+#### `TranslateL`
+
+`:TranslateL`
 
 Display log message
 
