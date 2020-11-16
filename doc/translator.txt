@@ -47,9 +47,10 @@ g:translator_source_lang                     *g:translator_source_lang*
 
 g:translator_default_engines                 *g:translator_default_engines*
 	Type |List| of |String|
-	Available: "bing", "iciba", "google", "youdao", "trans", "sdcv".
-	Default: ["iciba", "youdao"] if |g:translator_target_lang|
-	is 'zh'`, otherwise ["google", "bing"]
+	Available: 'bing', 'google', 'haici', 'iciba'(expired), 'sdcv',
+	'trans', 'youdao'
+	Default: If g:translator_target_lang is 'zh', this will be
+	['bing', 'google', 'haici', 'youdao'], otherwise ['google']
 
 g:translator_proxy_url                       *g:translator_proxy_url*
 	Type |String|

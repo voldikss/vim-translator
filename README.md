@@ -55,9 +55,9 @@ Please refer to [language support list](https://github.com/voldikss/vim-translat
 
 Type `List` of `String`.
 
-Available: `'bing'`, `'google'`, `'haici'`, `'iciba'`, `'sdcv'`, `'trans'`, `'youdao'`
+Available: `'bing'`, `'google'`, `'haici'`, `'iciba'`(expired), `'sdcv'`, `'trans'`, `'youdao'`
 
-Default: If `g:translator_target_lang` is `'zh'`, `['bing', 'google', 'haici', 'youdao']`, otherwise `['google']`
+Default: If `g:translator_target_lang` is `'zh'`, this will be `['bing', 'google', 'haici', 'youdao']`, otherwise `['google']`
 
 #### **`g:translator_proxy_url`**
 
