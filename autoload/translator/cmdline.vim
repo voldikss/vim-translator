@@ -16,16 +16,21 @@ function! translator#cmdline#parse(bang, range, line1, line2, argstr) abort
   if !empty(arglist)
     let c = 0
     for arg in arglist
-      let opt = split(arg, '=')
-      if len(opt) == 1
+      if arg =~ '^--\S.*=.*$'
+        let opt = split(arg, '=')
+        if len(opt) != 2
+          call translator#util#show_msg('Argument Error: No value given to option: ' . opt[0], 'error')
+          return v:null
+        endif
+        let [key, value] = [opt[0][2:], opt[1]]
+        if key == 'engines'
+          let options.engines = split(value, ',')
+        else
+          let options[key] = value
+        endif
+      else
         let options.text = join(arglist[c:])
         break
-      elseif len(opt) == 2
-        if opt[0] == 'engines'
-          let options.engines = split(opt[1], ',')
-        else
-          let options[opt[0]] = opt[1]
-        endif
       endif
       let c += 1
     endfor
@@ -59,7 +64,7 @@ function! translator#cmdline#parse(bang, range, line1, line2, argstr) abort
 endfunction
 
 function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
-  let opts_key = ['engines=', 'target_lang=', 'source_lang=']
+  let opts_key = ['--engines=', '--target_lang=', '--source_lang=']
   let candidates = opts_key
 
   let cmd_line_before_cursor = a:cmd_line[:a:cursor_pos - 1]
@@ -90,8 +95,8 @@ function! translator#cmdline#complete(arg_lead, cmd_line, cursor_pos) abort
       endif
     endfor
     let candidates = map(unused_engines, {idx -> preprefix . unused_engines[idx]})
-  elseif match(prefix, 'engines=') > -1
-    let candidates = map(engines, {idx -> "engines=" . engines[idx]})
+  elseif match(prefix, '--engines=') > -1
+    let candidates = map(engines, {idx -> "--engines=" . engines[idx]})
   endif
   return filter(candidates, 'v:val[:len(prefix) - 1] == prefix')
 endfunction

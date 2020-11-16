@@ -1,4 +1,4 @@
-*translator.txt*    Vim/Neovim plugin for translating   Last change: 2019-02-16
+*translator.txt*    Vim/Neovim plugin for translating   Last change: 2020-11-16
 
 Author : voldikss <https://github.com/voldikss>
 License: MIT license
@@ -7,162 +7,161 @@ NOTE: This is outdated, please refer to the README file:
     or
     https://github.com/voldikss/vim-translator/blob/master/README.md
 ==============================================================================
-CONTENTS                                               *translator-contents*
+CONTENTS                                     *translator-contents*
 
-    Introduction                                       |translator-introduction|
-    Install                                            |translator-install|
-    Variables                                          |translator-variables|
-    Keymappings                                        |translator-key-mappings|
-    Commands                                           |translator-commands|
-    Highlight                                          |translator-highlight|
-    Repository                                         |translator-repository|
-
-
-==============================================================================
-INTRODUCTION                                        *translator-introduction*
-
-	Asynchronous translating plugin for Vim/Neovim
+    Introduction                             |translator-introduction|
+    Install                                  |translator-install|
+    Variables                                |translator-variables|
+    Keymappings                              |translator-key-mappings|
+    Commands                                 |translator-commands|
+    Highlight                                |translator-highlight|
+    Repository                               |translator-repository|
 
 
 ==============================================================================
-INSTALL                                                 *translator-install*
+INTRODUCTION                                 *translator-introduction*
 
-	Using vim-plug:
+Asynchronous translating plugin for Vim/Neovim
+
+
+==============================================================================
+INSTALL                                      *translator-install*
+
+Using vim-plug:
  >
-	    Plug 'voldikss/vim-translator'
+	Plug 'voldikss/vim-translator'
 <
 
 ==============================================================================
-VARIABLES                                            *translator-variables*
+VARIABLES                                    *translator-variables*
 
-g:translator_target_lang                            *g:translator_target_lang*
+g:translator_target_lang                     *g:translator_target_lang*
+	Type |String|
+	Refer to https://github.com/voldikss/vim-translator/wiki
+	Default: 'zh'
 
-		Refer to https://github.com/voldikss/vim-translator/wiki
-		Default: "zh"
+g:translator_source_lang                     *g:translator_source_lang*
+	Type |String|
+	Refer to https://github.com/voldikss/vim-translator/wiki
+	Default: 'auto'
 
-g:translator_source_lang                            *g:translator_source_lang*
+g:translator_default_engines                 *g:translator_default_engines*
+	Type |List| of |String|
+	Available: "bing", "iciba", "google", "youdao", "trans", "sdcv".
+	Default: ["iciba", "youdao"] if |g:translator_target_lang|
+	is 'zh'`, otherwise ["google", "bing"]
 
-		Refer to https://github.com/voldikss/vim-translator/wiki
-		Default: "auto"
+g:translator_proxy_url                       *g:translator_proxy_url*
+	Type |String|
+	E.g.
+	`let g:translator_proxy_url = 'socks5://127.0.0.1:1080'`
+	Default: ''
 
-g:translator_default_engines                   *g:translator_default_engines*
+g:translator_history_enable                  *g:translator_history_enable*
+	Type |Boolean|
+	Default: |v:false|
 
-		Available: "bing", "iciba", "google", "youdao", "trans", "sdcv".
-		Default: ["iciba", "youdao"] if |g:translator_target_lang|
-		is "zh"`, otherwise ["google", "bing"]
+g:translator_window_type                     *g:translator_window_type*
+	Type |String|
+	Available: 'popup'(use floatwin in nvim or popup in vim),
+			'preview'
+	Default: 'popup'
 
-g:translator_proxy_url                               *g:translator_proxy_url*
+g:translator_window_max_width                *g:translator_window_max_width*
+	Type |Number|
+	Max width value of the popup/floating window
+	Default: 0.6*&columns
 
-		E.g.
-		`let g:translator_proxy_url = 'socks5://127.0.0.1:1080'`
-		Default: |v:null|
-
-g:translator_history_enable                      *g:translator_history_enable*
-
-		Default: |v:false|
-
-g:translator_enable_history                      *g:translator_enable_history*
-
-		Default: |v:false|
-
-g:translator_window_type                            *g:translator_window_type*
-
-		Available: "popup"(use floatwin in nvim or popup in vim),
-			   "preview"
-
-		Default: "popup"
-
-g:translator_window_max_width                  *g:translator_window_max_width*
-
-		Max width value of the popup/floating window
-		Default: 0.6*&columns
-
-g:translator_window_max_height                *g:translator_window_max_height*
-
-		Max width value of the popup/floating height
-		Default: 0.6*&lines
+g:translator_window_max_height               *g:translator_window_max_height*
+	Type |Number|
+	Max width value of the popup/floating height
+	Default: 0.6*&lines
 
 g:translator_window_borderchars              *g:translator_window_borderchars*
-
-		Default: ['─', '│', '─', '│', '┌', '┐', '┘', '└']
-
-
-==============================================================================
-
-MAPPINGS                                       *translator-key-mappings*
-
-		This plugin doesn't supply any default mappings.
-	    >
-		""" Configuration example
-
-		" Echo translation in the cmdline
-		nmap <silent> <Leader>t <Plug>Translate
-		vmap <silent> <Leader>t <Plug>TranslateV
-		" Display translation in a window
-		nmap <silent> <Leader>w <Plug>TranslateW
-		vmap <silent> <Leader>w <Plug>TranslateWV
-		" Replace the text with translation
-		nmap <silent> <Leader>r <Plug>TranslateR
-		vmap <silent> <Leader>r <Plug>TranslateRV
+	Type |List| of |String|
+	Default: ['─', '│', '─', '│', '┌', '┐', '┘', '└']
 
 
 ==============================================================================
-COMMANDS                                    *translator-commands*
 
-:Translate[!] [-e engine] [-t text] [-tl target_lang] [-sl source_lang] *:Translate*
+MAPPINGS                                     *translator-key-mappings*
 
-	Translate the `text` to target language `target_lang` with `engine`, echo
-	the result in the cmdline
+	This plugin doesn't supply any default mappings. >
 
-	If no `engine`, use |g:translator_default_engines|
+	""" Configuration example
 
-	If no `text`, use the text under the cursor
+	" Echo translation in the cmdline
+	nmap <silent> <Leader>t <Plug>Translate
+	vmap <silent> <Leader>t <Plug>TranslateV
+	" Display translation in a window
+	nmap <silent> <Leader>w <Plug>TranslateW
+	vmap <silent> <Leader>w <Plug>TranslateWV
+	" Replace the text with translation
+	nmap <silent> <Leader>r <Plug>TranslateR
+	vmap <silent> <Leader>r <Plug>TranslateRV
+<
 
-	If no `target_lang`, use |g:translator_target_lang|
+==============================================================================
+COMMANDS                                     *translator-commands*
 
-	If `!` is included, the plugin will perform a reverse translating by
-	switching `target_lang` and `source_lang`
+Arguments:
+[--engines=ENGINES] [--target_lang=TARGET_LANG] [--source_lang=SOURCE_LANG] [your text]
+
+:Translate                                   *:Translate*
+
+	Translate the `text` from the source language `source_lang` to the target
+	language `target_lang` with `engine`, echo the result in the cmdline
+
+	- If `engines` is not given, use `g:translator_default_engines`
+	- If `text` is not given, use the text under the cursor
+	- If `target_lang` is not given, use `g:translator_target_lang`
 
 	The command can also be passed to a range, i.e., `:'<,'>Translate ...`,
 	which translates text in visual selection
 
-:TranslateW[!] [-e engine] [-t text] [-tl target_lang] [-sl source_lang] *:TranslateW*
+	If `!` is provided, the plugin will perform a reverse translating by switching `target_lang` and `source_lang`
 
-	Display the translation in a window
+	Examples(you can use `<Tab>` to get completion): >
+	:Translate                                  " translate the word under the cursor
+	:Translate --engines=google,youdao are you ok " translate text `are you ok` using google and youdao engines
+	:2Translate ...                             " translate line 2
+	:1,3Translate ...                           " translate line 1 to line 3
+	:'<,'>Translate ...                         " translate selected lines
+<
 
-:TranslateR[!] [-e engine] [-t text] [-tl target_lang] [-sl source_lang] *:TranslateR*
+:TranslateW                                  *:TranslateW*
+	Like |:Translate|, but display the translation in a window
 
-	Replace the current text with the translation
+:TranslateR                                  *:TranslateR*
+	Like |:Translate|, but replace the current text with the translation
 
-:TranslateH                                                    *:TranslateH*
+:TranslateH                                  *:TranslateH*
+    Export translation history
 
-	Export translation history
+:TranslateL                                  *:TranslateL*
 
-
-    Example:
- >
-	:TranslateW -t text -e bing youdao -tl zh
+	Display log message
 
 
 ==============================================================================
-HIGHLIGHT                                                *translator-highlight*
+HIGHLIGHT                                    *translator-highlight*
 
-    Here are the default highlight links.
-    To customize, use |highlight| command.
+Here are the default highlight links.
+To customize, use |highlight| command.
     >
-		" Text highlight of translator window
-		hi def link TranslatorQuery             Identifier
-		hi def link TranslatorPhonetic          Type
-		hi def link TranslatorExplain           Statement
-		hi def link TranslatorDelimiter         Special
+	" Text highlight of translator window
+	hi def link TranslatorQuery             Identifier
+	hi def link TranslatorPhonetic          Type
+	hi def link TranslatorExplain           Statement
+	hi def link TranslatorDelimiter         Special
 
-		" Background of translator window border
-		hi def link Translator                  Normal
-		hi def link TranslatorBorder            Normal
+	" Background of translator window border
+	hi def link Translator                  Normal
+	hi def link TranslatorBorder            Normal
 
 
 ==============================================================================
-REPOSITORY                                          *translator-repository-page*
+REPOSITORY                                   *translator-repository-page*
 
     |vim-translator| is developed on GitHub.
 
@@ -170,4 +169,4 @@ REPOSITORY                                          *translator-repository-page*
 
 
 ==============================================================================
-vim:tw=78:nosta:noet:ts=8:sts=0:ft=help:noet:fen:fdm=marker:
+vim:tw=78:nosta:noet:ts=4:sts=0:ft=help:noet:fen:fdm=marker:

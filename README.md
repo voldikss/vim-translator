@@ -28,9 +28,8 @@ Plug 'voldikss/vim-translator'
 ## Features
 
 - Asynchronous & mutithreading translating
-- Popup(vim8) & floatwin(neovim) support
+- Popupwin(vim8) & floatwin(neovim) support
 - Multiple engines: see [g:translator_default_engines](#gtranslator_default_engines)
-- Save and export translation history
 - Proxy support
 - No requirements for appid/appkey
 
@@ -38,57 +37,67 @@ Plug 'voldikss/vim-translator'
 
 #### **`g:translator_target_lang`**
 
-> Target language
+Type `String`.
 
-- Available: Please refer to [language support list](https://github.com/voldikss/vim-translator/wiki)
+Default: `'zh'`
 
-- Default: `'zh'`
+Please refer to [language support list](https://github.com/voldikss/vim-translator/wiki)
 
 #### **`g:translator_source_lang`**
 
-> Source language
+Type `String`.
 
-- Available: Please refer to [language support list](https://github.com/voldikss/vim-translator/wiki)
+Default: `'auto'`
 
-- Default: `'auto'`
+Please refer to [language support list](https://github.com/voldikss/vim-translator/wiki)
 
 #### **`g:translator_default_engines`**
 
-- Available: `'bing'`, `'google'`, `'haici'`, `'iciba'`, `'sdcv'`, `'trans'`, `'youdao'`
+Type `List` of `String`.
 
-- Default: If `g:translator_target_lang` is `'zh'`, `['bing', 'google', 'haici', 'youdao']`, otherwise `['google']`
+Available: `'bing'`, `'google'`, `'haici'`, `'iciba'`, `'sdcv'`, `'trans'`, `'youdao'`
+
+Default: If `g:translator_target_lang` is `'zh'`, `['bing', 'google', 'haici', 'youdao']`, otherwise `['google']`
 
 #### **`g:translator_proxy_url`**
 
-> e.g. `let g:translator_proxy_url = 'socks5://127.0.0.1:1080'`
+Type `String`. Default: `''`
 
-- Default: `''`
+Example: `let g:translator_proxy_url = 'socks5://127.0.0.1:1080'`
 
 #### **`g:translator_history_enable`**
 
-- Default: `v:false`
+Type `Boolean`.
+
+Default: `v:false`
 
 #### **`g:translator_window_type`**
 
-- Available: `'popup'`(use floatwin in nvim or popup in vim), `'preview'`
+Type `String`.
 
-- Default: `'popup'`
+Default: `'popup'`
+
+Available: `'popup'`(use floatwin in nvim or popup in vim), `'preview'`
 
 #### **`g:translator_window_max_width`**
 
-> Type `int` (number of columns) or `float` (between 0 and 1). If `float`, the width is relative to `&columns`. Default: `0.6`
+Type `Number` (number of columns) or `Float` (between 0 and 1). If `Float`,
+the width is relative to `&columns`.
 
-- Default: `0.6`
+Default: `0.6`
 
 #### **`g:translator_window_max_height`**
 
-> Type `int` (number of columns) or `float` (between 0 and 1). If `float`, the height is relative to `&lines`. Default: `0.6`
+Type `Number` (number of lines) or `Float` (between 0 and 1). If `Float`, the
+height is relative to `&lines`.
 
-- Default: `0.6`
+Default: `0.6`
 
 #### **`g:translator_window_borderchars`**
 
-- Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
+Type `List` of `String`. Characters of the floating window border.
+
+Default: `['─', '│', '─', '│', '┌', '┐', '┘', '└']`
 
 ## Key Mappings
 
@@ -113,39 +122,39 @@ Once the translation window is opened, type `<C-w>p` to jump into it and again t
 
 ## Commands
 
-#### `:Translate[!] [engines=] [target_lang=] [source_lang=] [your text]`
+#### `:Translate[!] [--engines=ENGINES] [--target_lang=TARGET_LANG] [--source_lang=SOURCE_LANG] [your text]`
 
 Translate the `text` from the source language `source_lang` to the target language `target_lang` with `engine`, echo the result in the cmdline
 
-If no `engines`, use `g:translator_default_engines`
+If `engines` is not given, use `g:translator_default_engines`
 
-If no `text`, use the text under the cursor
+If `text` is not given, use the text under the cursor
 
-If no `target_lang`, use `g:translator_target_lang`
+If `target_lang` is not given, use `g:translator_target_lang`
 
 The command can also be passed to a range, i.e., `:'<,'>Translate ...`, which translates text in visual selection
 
-If `!` is included, the plugin will perform a reverse translating by switching `target_lang` and `source_lang`
+If `!` is provided, the plugin will perform a reverse translating by switching `target_lang` and `source_lang`
 
 Examples(you can use `<Tab>` to get completion):
 
 ```vim
 :Translate                                  " translate the word under the cursor
-:Translate engines=google,youdao are you ok " translate text `are you ok` using google and youdao engines
+:Translate --engines=google,youdao are you ok " translate text `are you ok` using google and youdao engines
 :2Translate ...                             " translate line 2
 :1,3Translate ...                           " translate line 1 to line 3
 :'<,'>Translate ...                         " translate selected lines
 ```
 
-#### `:TranslateW[!] [engines=] [target_lang=] [source_lang=] [your text]`
+#### `:TranslateW[!] [--engines=ENGINES] [--target_lang=TARGET_LANG] [--source_lang=SOURCE_LANG] [your text]`
 
 Like `:Translate...`, but display the translation in a window
 
-#### `:TranslateR[!] [engines=] [target_lang=] [source_lang=] [your text]`
+#### `:TranslateR[!] [--engines=ENGINES] [--target_lang=TARGET_LANG] [--source_lang=SOURCE_LANG] [your text]`
 
 Like `:Translate...`, but replace the current text with the translation
 
-#### `:TranslateX [engines=] [target_lang=] [source_lang=]`
+#### `:TranslateX[!] [--engines=ENGINES] [--target_lang=TARGET_LANG] [--source_lang=SOURCE_LANG] [your text]`
 
 Translate the text in the clipboard
 
@@ -155,7 +164,7 @@ Export the translation history
 
 #### `:TranslateL`
 
-Display log
+Display log message
 
 ## Highlight
 
