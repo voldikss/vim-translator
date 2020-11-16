@@ -162,7 +162,7 @@ function! s:open_float(linelist, options) abort
   let s:winid = nvim_open_win(buf, v:false, options)
   call nvim_win_set_option(s:winid, 'wrap', v:true)
   call nvim_win_set_option(s:winid, 'conceallevel', 3)
-  call nvim_win_set_option(s:winid, 'winhl', 'Normal:TranslatorNF')
+  call nvim_win_set_option(s:winid, 'winhl', 'Normal:Translator')
 
   if !empty(a:options.borderchars)
     let border_options = deepcopy(options)
@@ -184,7 +184,7 @@ function! s:open_float(linelist, options) abort
     call nvim_buf_set_option(border_buf, 'filetype', 'translatorborder')
     call nvim_buf_set_option(border_buf, 'bufhidden', 'wipe')
     let s:border_winid = nvim_open_win(border_buf, v:false, border_options)
-    call nvim_win_set_option(s:border_winid, 'winhl', 'Normal:TranslatorBorderNF')
+    call nvim_win_set_option(s:border_winid, 'winhl', 'Normal:TranslatorBorder')
     call nvim_win_set_option(s:border_winid, 'cursorcolumn', v:false)
     call nvim_win_set_option(s:border_winid, 'colorcolumn', '')
   endif
@@ -213,7 +213,7 @@ function! s:open_popup(linelist, options) abort
   if !empty(g:translator_window_borderchars)
     let options.borderchars = g:translator_window_borderchars
     let options.border = [1, 1, 1, 1]
-    let options.borderhighlight = ['TranslatorBorderNF']
+    let options.borderhighlight = ['TranslatorBorder']
   endif
   let winid = popup_create('', options)
   let bufnr = winbufnr(winid)
@@ -225,7 +225,7 @@ function! s:open_popup(linelist, options) abort
   call setbufvar(bufnr, '&relativenumber', 0)
   call setbufvar(bufnr, '&foldcolumn', 0)
   call setwinvar(winid, '&conceallevel', 3)
-  call setwinvar(winid, '&wincolor', 'TranslatorNF')
+  call setwinvar(winid, '&wincolor', 'Translator')
 endfunction
 
 function! s:open_preview(linelist, options) abort

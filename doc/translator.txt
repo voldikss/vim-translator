@@ -157,8 +157,8 @@ HIGHLIGHT                                                *translator-highlight*
 		hi def link TranslatorDelimiter         Special
 
 		" Background of translator window border
-		hi def link TranslatorNF                NormalFloat
-		hi def link TranslatorBorderNF          NormalFloat
+		hi def link Translator                  Normal
+		hi def link TranslatorBorder            Normal
 
 
 ==============================================================================

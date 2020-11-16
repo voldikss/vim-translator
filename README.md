@@ -15,6 +15,7 @@ Asynchronous translating plugin for Vim/Neovim
 - [Statusline](#statusline)
 - [Know bugs](#know-bugs)
 - [FAQ](#faq)
+- [Breaking changes](#breaking-changes)
 - [References](#references)
 - [License](#license)
 
@@ -167,27 +168,21 @@ hi def link TranslatorDelimiter         Special
 hi def link TranslatorExplain           Statement
 
 " Background of translator window border
-hi def link TranslatorNF                NormalFloat
-hi def link TranslatorBorderNF          NormalFloat
+hi def link Translator                  Normal
+hi def link TranslatorBorder            Normal
 ```
 
 ## Statusline
 
 - `g:translator_status`
 
-## Known bugs
-
-- Can not translate sentences(because there are some spaces among words) in Vim8(see [#24](https://github.com/voldikss/vim-translator/issues/24))
-
 ## FAQ
 
-- ### Can not find python executable?
+https://github.com/voldikss/vim-translator/issues?q=label%3AFAQ
 
-  Set `g:python3_host_prog` variable in your vimrc. e.g.
+## Breaking Changes
 
-  ```vim
-  let g:python3_host_prog = /path/to/python_executable
-  ```
+https://github.com/voldikss/vim-translator/issues?q=label%3A%22breaking+change%22
 
 ## References
 
