@@ -193,7 +193,7 @@ function! s:open_float(linelist, options) abort
   noautocmd wincmd p
   augroup close_translator_floatwin
     autocmd!
-    autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call timer_start(200, function('s:close_floatwin'))
+    autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call timer_start(100, function('s:close_floatwin'))
   augroup END
 endfunction
 
@@ -250,7 +250,7 @@ function! s:open_preview(linelist, options) abort
   noautocmd wincmd p
   augroup close_translator_preview
     autocmd!
-    autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call timer_start(200, function('s:close_preview'))
+    autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call timer_start(100, function('s:close_preview'))
   augroup END
 endfunction
 
