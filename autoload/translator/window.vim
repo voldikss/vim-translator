@@ -6,6 +6,8 @@
 
 let s:has_popup = has('textprop') && has('patch-8.2.0286')
 let s:has_float = has('nvim') && exists('*nvim_win_set_config')
+let s:winid = -1
+let s:bd_winid = -1
 
 function! s:get_wintype() abort
   if g:translator_window_type == 'popup'
@@ -112,49 +114,38 @@ function! s:popup_filter(winid, key) abort
   return v:false
 endfunction
 
-function! s:close_floatwin(...) abort
+function! s:close_translator_window() abort
   if win_getid() == s:winid
     return
   else
     if s:winexists(s:winid)
-      call nvim_win_close(s:winid, v:true)
+      if has('nvim')
+        call nvim_win_close(s:winid, v:true)
+      else
+        execute win_id2win(s:winid) . 'hide'
+      endif
     endif
-    if exists('s:border_winid') && s:winexists(s:border_winid)
-      call nvim_win_close(s:border_winid, v:true)
+    if s:winexists(s:bd_winid)
+      call nvim_win_close(s:bd_winid, v:true)
     endif
-    autocmd! close_translator_floatwin
+    if exists('#close_translator_floatwin')
+      autocmd! close_translator_floatwin
+    endif
   endif
 endfunction
 
-function! s:close_preview(...) abort
-  if win_getid() == s:winid
-    return
-  else
-    if s:winexists(s:winid)
-      execute win_id2win(s:winid) . 'hide'
-    endif
-    autocmd! close_translator_preview
-  endif
-endfunction
-
-function! s:open_float(linelist, options) abort
-  if exists('s:winid') && s:winexists(s:winid)
-    call nvim_win_close(s:winid, v:true)
-  endif
-  if exists('s:border_winid') && s:winexists(s:border_winid)
-    call nvim_win_close(s:border_winid, v:true)
-  endif
+function! s:open_float(linelist, configs) abort
+  call s:close_translator_window()
 
   let options = {
     \ 'relative': 'editor',
-    \ 'anchor': a:options.anchor,
-    \ 'row': a:options.row,
-    \ 'col': a:options.col,
-    \ 'width': a:options.width,
-    \ 'height': a:options.height,
+    \ 'anchor': a:configs.anchor,
+    \ 'row': a:configs.row + (a:configs.anchor[0] == 'N' ? 1 : -1),
+    \ 'col': a:configs.col + (a:configs.anchor[1] == 'W' ? 1 : -1),
+    \ 'width': a:configs.width - 2,
+    \ 'height': a:configs.height - 2,
     \ 'style':'minimal',
     \ }
-
   let buf = nvim_create_buf(v:false, v:true)
   call nvim_buf_set_lines(buf, 0, -1, v:false, a:linelist)
   call nvim_buf_set_option(buf, 'filetype', 'translator')
@@ -164,36 +155,27 @@ function! s:open_float(linelist, options) abort
   call nvim_win_set_option(s:winid, 'conceallevel', 3)
   call nvim_win_set_option(s:winid, 'winhl', 'Normal:Translator')
 
-  if !empty(a:options.borderchars)
-    let border_options = deepcopy(options)
-    let border_options.width += 2
-    let border_options.height += 2
-    let border_options.focusable = v:true
-    let options.row += (border_options.anchor[0] == 'N' ? 1 : -1)
-    let options.col += (border_options.anchor[1] == 'W' ? 1 : -1)
-    call nvim_win_set_config(s:winid, options)
-    let [c_top, c_right, c_bottom, c_left, c_topleft, c_topright, c_botright, c_botleft] = g:translator_window_borderchars
-    let repeat_top = (border_options.width - strwidth(c_topleft) - strwidth(c_topright)) / strwidth(c_top)
-    let repeat_mid = (border_options.width - strwidth(c_left) - strwidth(c_right))
-    let repeat_bot = (border_options.width - strwidth(c_botleft) - strwidth(c_botright)) / strwidth(c_bottom)
-    let content = [c_topleft . repeat(c_top, repeat_top) . c_topright]
-    let content += repeat([c_left . repeat(' ', repeat_mid) . c_right], border_options.height - 2)
-    let content += [c_botleft . repeat(c_bottom, repeat_bot) . c_botright]
-    let border_buf = nvim_create_buf(v:false, v:true)
-    call nvim_buf_set_lines(border_buf, 0, -1, v:true, content)
-    call nvim_buf_set_option(border_buf, 'filetype', 'translatorborder')
-    call nvim_buf_set_option(border_buf, 'bufhidden', 'wipe')
-    let s:border_winid = nvim_open_win(border_buf, v:false, border_options)
-    call nvim_win_set_option(s:border_winid, 'winhl', 'Normal:TranslatorBorder')
-    call nvim_win_set_option(s:border_winid, 'cursorcolumn', v:false)
-    call nvim_win_set_option(s:border_winid, 'colorcolumn', '')
-  endif
+  let bd_options = {
+    \ 'relative': 'editor',
+    \ 'anchor': a:configs.anchor,
+    \ 'row': a:configs.row,
+    \ 'col': a:configs.col,
+    \ 'width': a:configs.width,
+    \ 'height': a:configs.height,
+    \ 'focusable': v:false,
+    \ 'style':'minimal',
+    \ }
+  let bd_bufnr = translator#buffer#create_border(a:configs)
+  let s:bd_winid = nvim_open_win(bd_bufnr, v:false, bd_options)
+  call nvim_win_set_option(s:bd_winid, 'winhl', 'Normal:TranslatorBorder')
+
   " NOTE: dont use call nvim_set_current_win(s:translator_winid)
   noautocmd call win_gotoid(s:winid)
   noautocmd wincmd p
   augroup close_translator_floatwin
     autocmd!
-    autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call timer_start(100, function('s:close_floatwin'))
+    autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer>
+      \ call timer_start(100, { -> s:close_translator_window() })
   augroup END
 endfunction
 
@@ -229,6 +211,7 @@ function! s:open_popup(linelist, options) abort
 endfunction
 
 function! s:open_preview(linelist, options) abort
+  call s:close_translator_window()
   let curr_pos = getpos('.')
   execute 'noswapfile bo pedit!'
   call setpos('.', curr_pos)
@@ -250,7 +233,8 @@ function! s:open_preview(linelist, options) abort
   noautocmd wincmd p
   augroup close_translator_preview
     autocmd!
-    autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer> call timer_start(100, function('s:close_preview'))
+    autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer>
+      \ call timer_start(100, { -> s:close_translator_window() })
   augroup END
 endfunction
 
@@ -267,19 +251,20 @@ function! translator#window#open(content) abort
   let [anchor, row, col, width, height] = s:floatwin_pos(width, height)
   let linelist = translator#util#fit_lines(a:content, width)
 
-  let options = {
+  let configs = {
     \ 'anchor': anchor,
     \ 'row': row,
     \ 'col': col,
-    \ 'width': width,
-    \ 'height': height,
+    \ 'width': width + 2,
+    \ 'height': height + 2,
+    \ 'title': '',
     \ 'borderchars': g:translator_window_borderchars
     \ }
   if s:wintype == 'floating'
-    call s:open_float(linelist, options)
+    call s:open_float(linelist, configs)
   elseif s:wintype == 'popup'
-    call s:open_popup(linelist, options)
+    call s:open_popup(linelist, configs)
   else
-    call s:open_preview(linelist, options)
+    call s:open_preview(linelist, configs)
   endif
 endfunction
