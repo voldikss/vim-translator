@@ -56,17 +56,5 @@ Execute (Floating: Jump into floating window):
   Assert HasBuffer('translatorborder') == -1
 
 
-Execute (Floating: let g:translator_window_borderchars = []):
-  let g:translator_window_borderchars = []
-  call translator#action#window(translations)
-  wincmd p
-  Assert HasBuffer('translator') > -1
-  Assert HasBuffer('translatorborder') == -1
-  wincmd p
-  sleep 300m
-  Assert HasBuffer('translator') == -1
-  Assert HasBuffer('translatorborder') == -1
-
-
 Execute (Exit):
   sleep 100m
