@@ -6,29 +6,23 @@
 
 let s:has_popup = has('textprop') && has('patch-8.2.0286')
 let s:has_float = has('nvim') && exists('*nvim_win_set_config')
-let s:winid = -1
-let s:bd_winid = -1
 
-function! s:get_wintype() abort
+function! s:win_gettype() abort
   if g:translator_window_type == 'popup'
     if s:has_float
-      return 'floating'
+      return 'float'
     elseif s:has_popup
       return 'popup'
     else
-      call translator#util#show_msg("popup window is not supported in your vim, fall back to preview window", 'warning')
+      call translator#util#show_msg("popup is not supported, use preview window", 'warning')
       return 'preview'
     endif
   endif
-  return g:translator_window_type
+  return 'preview'
 endfunction
-let s:wintype = s:get_wintype()
+let s:wintype = s:win_gettype()
 
-function! s:winexists(winid) abort
-  return !empty(getwininfo(a:winid))
-endfunction
-
-function! s:floatwin_size(translation, max_width, max_height) abort
+function! s:win_getsize(translation, max_width, max_height) abort
   let width = 0
   let height = 0
 
@@ -49,7 +43,7 @@ function! s:floatwin_size(translation, max_width, max_height) abort
   return [width, height]
 endfunction
 
-function! s:floatwin_pos(width, height) abort
+function! s:win_getoptions(width, height) abort
   let pos = win_screenpos('.')
   let y_pos = pos[0] + winline() - 1
   let x_pos = pos[1] + wincol() -1
@@ -101,139 +95,19 @@ function! s:floatwin_pos(width, height) abort
   return [anchor, row, col, width, height]
 endfunction
 
-function! s:popup_filter(winid, key) abort
-  if a:key == "\<c-k>"
-    call win_execute(a:winid, "normal! \<c-y>")
-    return v:true
-  elseif a:key == "\<c-j>"
-    call win_execute(a:winid, "normal! \<c-e>")
-    return v:true
-  elseif a:key == 'q' || a:key == 'x'
-    return popup_filter_menu(a:winid, 'x')
-  endif
-  return v:false
-endfunction
-
-function! s:close_translator_window() abort
-  if win_getid() == s:winid
-    return
+" setwinvar also accept window-ID, which is not mentioned in the document
+function! translator#window#init(winid) abort
+  call setwinvar(a:winid, '&wrap', 1)
+  call setwinvar(a:winid, '&conceallevel', 3)
+  call setwinvar(a:winid, '&number', 0)
+  call setwinvar(a:winid, '&relativenumber', 0)
+  call setwinvar(a:winid, '&spell', 0)
+  call setwinvar(a:winid, '&foldcolumn', 0)
+  if has('nvim')
+    call setwinvar(a:winid, '&winhl', 'Normal:Translator')
   else
-    if s:winexists(s:winid)
-      if has('nvim')
-        call nvim_win_close(s:winid, v:true)
-      else
-        execute win_id2win(s:winid) . 'hide'
-      endif
-    endif
-    if s:winexists(s:bd_winid)
-      call nvim_win_close(s:bd_winid, v:true)
-    endif
-    if exists('#close_translator_floatwin')
-      autocmd! close_translator_floatwin
-    endif
+    call setwinvar(a:winid, 'wincolor', 'Translator')
   endif
-endfunction
-
-function! s:open_float(linelist, configs) abort
-  call s:close_translator_window()
-
-  let options = {
-    \ 'relative': 'editor',
-    \ 'anchor': a:configs.anchor,
-    \ 'row': a:configs.row + (a:configs.anchor[0] == 'N' ? 1 : -1),
-    \ 'col': a:configs.col + (a:configs.anchor[1] == 'W' ? 1 : -1),
-    \ 'width': a:configs.width - 2,
-    \ 'height': a:configs.height - 2,
-    \ 'style':'minimal',
-    \ }
-  let buf = nvim_create_buf(v:false, v:true)
-  call nvim_buf_set_lines(buf, 0, -1, v:false, a:linelist)
-  call nvim_buf_set_option(buf, 'filetype', 'translator')
-  call nvim_buf_set_option(buf, 'bufhidden', 'wipe')
-  let s:winid = nvim_open_win(buf, v:false, options)
-  call nvim_win_set_option(s:winid, 'wrap', v:true)
-  call nvim_win_set_option(s:winid, 'conceallevel', 3)
-  call nvim_win_set_option(s:winid, 'winhl', 'Normal:Translator')
-
-  let bd_options = {
-    \ 'relative': 'editor',
-    \ 'anchor': a:configs.anchor,
-    \ 'row': a:configs.row,
-    \ 'col': a:configs.col,
-    \ 'width': a:configs.width,
-    \ 'height': a:configs.height,
-    \ 'focusable': v:false,
-    \ 'style':'minimal',
-    \ }
-  let bd_bufnr = translator#buffer#create_border(a:configs)
-  let s:bd_winid = nvim_open_win(bd_bufnr, v:false, bd_options)
-  call nvim_win_set_option(s:bd_winid, 'winhl', 'Normal:TranslatorBorder')
-
-  " NOTE: dont use call nvim_set_current_win(s:translator_winid)
-  noautocmd call win_gotoid(s:winid)
-  noautocmd wincmd p
-  augroup close_translator_floatwin
-    autocmd!
-    autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer>
-      \ call timer_start(100, { -> s:close_translator_window() })
-  augroup END
-endfunction
-
-function! s:open_popup(linelist, configs) abort
-  let options = {
-    \ 'pos': a:configs.anchor,
-    \ 'col': 'cursor',
-    \ 'line': a:configs.anchor[0:2] == 'top' ? 'cursor+1' : 'cursor-1',
-    \ 'moved': 'any',
-    \ 'padding': [0, 0, 0, 0],
-    \ 'maxwidth': a:configs.width - 2,
-    \ 'minwidth': a:configs.width - 2,
-    \ 'maxheight': a:configs.height,
-    \ 'minheight': a:configs.height,
-    \ 'filter': function('s:popup_filter'),
-    \ 'borderchars' : a:configs.borderchars,
-    \ 'border': [1, 1, 1, 1],
-    \ 'borderhighlight': ['TranslatorBorder'],
-    \ }
-  let winid = popup_create('', options)
-  call setwinvar(winid, '&conceallevel', 3)
-  call setwinvar(winid, '&wincolor', 'Translator')
-  let bufnr = winbufnr(winid)
-  call appendbufline(bufnr, 0, a:linelist)
-  call setbufvar(bufnr, '&filetype', 'translator')
-  call setbufvar(bufnr, '&spell', 0)
-  call setbufvar(bufnr, '&wrap', 1)
-  call setbufvar(bufnr, '&number', 1)
-  call setbufvar(bufnr, '&relativenumber', 0)
-  call setbufvar(bufnr, '&foldcolumn', 0)
-endfunction
-
-function! s:open_preview(linelist, configs) abort
-  call s:close_translator_window()
-  let curr_pos = getpos('.')
-  execute 'noswapfile bo pedit!'
-  call setpos('.', curr_pos)
-  wincmd P
-  execute height+1 . 'wincmd _'
-  enew!
-  let s:winid = win_getid()
-  call append(0, linelist)
-  call setpos('.', [0, 1, 1, 0])
-  setlocal foldcolumn=1
-  setlocal buftype=nofile
-  setlocal bufhidden=wipe
-  setlocal signcolumn=no
-  setlocal filetype=translator
-  setlocal wrap nospell
-  setlocal nonumber norelativenumber
-  setlocal noautoindent nosmartindent
-  setlocal nobuflisted noswapfile nocursorline
-  noautocmd wincmd p
-  augroup close_translator_preview
-    autocmd!
-    autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer>
-      \ call timer_start(100, { -> s:close_translator_window() })
-  augroup END
 endfunction
 
 function! translator#window#open(content) abort
@@ -245,8 +119,8 @@ function! translator#window#open(content) abort
   if type(max_height) == v:t_float | let max_height = max_height * &lines | endif
   let max_height = float2nr(max_height)
 
-  let [width, height] = s:floatwin_size(a:content, max_width, max_height)
-  let [anchor, row, col, width, height] = s:floatwin_pos(width, height)
+  let [width, height] = s:win_getsize(a:content, max_width, max_height)
+  let [anchor, row, col, width, height] = s:win_getoptions(width, height)
   let linelist = translator#util#fit_lines(a:content, width)
 
   let configs = {
@@ -258,11 +132,5 @@ function! translator#window#open(content) abort
     \ 'title': '',
     \ 'borderchars': g:translator_window_borderchars
     \ }
-  if s:wintype == 'floating'
-    call s:open_float(linelist, configs)
-  elseif s:wintype == 'popup'
-    call s:open_popup(linelist, configs)
-  else
-    call s:open_preview(linelist, configs)
-  endif
+  call translator#window#{s:wintype}#create(linelist, configs)
 endfunction

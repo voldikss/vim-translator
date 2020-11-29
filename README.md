@@ -120,6 +120,15 @@ nmap <silent> <Leader>x <Plug>TranslateX
 
 Once the translation window is opened, type `<C-w>p` to jump into it and again to jump back
 
+Beside, there is a function which can be used to scroll window, only works in neovim.
+
+```vim
+nnoremap <silent><expr> <M-f> translator#window#float#has_scroll() ?
+                            \ translator#window#float#scroll(1) : "\<M-f>"
+nnoremap <silent><expr> <M-b> translator#window#float#has_scroll() ?
+                            \ translator#window#float#scroll(0) : "\<M-f>"
+```
+
 ## Commands
 
 #### `Translate`
