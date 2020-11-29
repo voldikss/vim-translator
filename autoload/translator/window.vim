@@ -179,25 +179,25 @@ function! s:open_float(linelist, configs) abort
   augroup END
 endfunction
 
-function! s:open_popup(linelist, options) abort
+function! s:open_popup(linelist, configs) abort
   let options = {
-    \ 'pos': a:options.anchor,
+    \ 'pos': a:configs.anchor,
     \ 'col': 'cursor',
-    \ 'line': a:options.anchor[0:2] == 'top' ? 'cursor+1' : 'cursor-1',
+    \ 'line': a:configs.anchor[0:2] == 'top' ? 'cursor+1' : 'cursor-1',
     \ 'moved': 'any',
     \ 'padding': [0, 0, 0, 0],
-    \ 'maxwidth': a:options.width,
-    \ 'minwidth': a:options.width,
-    \ 'maxheight': a:options.height,
-    \ 'minheight': a:options.height,
+    \ 'maxwidth': a:configs.width - 2,
+    \ 'minwidth': a:configs.width - 2,
+    \ 'maxheight': a:configs.height,
+    \ 'minheight': a:configs.height,
     \ 'filter': function('s:popup_filter'),
+    \ 'borderchars' : a:configs.borderchars,
+    \ 'border': [1, 1, 1, 1],
+    \ 'borderhighlight': ['TranslatorBorder'],
     \ }
-  if !empty(g:translator_window_borderchars)
-    let options.borderchars = g:translator_window_borderchars
-    let options.border = [1, 1, 1, 1]
-    let options.borderhighlight = ['TranslatorBorder']
-  endif
   let winid = popup_create('', options)
+  call setwinvar(winid, '&conceallevel', 3)
+  call setwinvar(winid, '&wincolor', 'Translator')
   let bufnr = winbufnr(winid)
   call appendbufline(bufnr, 0, a:linelist)
   call setbufvar(bufnr, '&filetype', 'translator')
@@ -206,11 +206,9 @@ function! s:open_popup(linelist, options) abort
   call setbufvar(bufnr, '&number', 1)
   call setbufvar(bufnr, '&relativenumber', 0)
   call setbufvar(bufnr, '&foldcolumn', 0)
-  call setwinvar(winid, '&conceallevel', 3)
-  call setwinvar(winid, '&wincolor', 'Translator')
 endfunction
 
-function! s:open_preview(linelist, options) abort
+function! s:open_preview(linelist, configs) abort
   call s:close_translator_window()
   let curr_pos = getpos('.')
   execute 'noswapfile bo pedit!'
