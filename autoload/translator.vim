@@ -34,21 +34,21 @@ function! translator#start(displaymode, bang, range, line1, line2, argstr) abort
 endfunction
 
 function! translator#translate(options, displaymode) abort
-  let cmd = printf(
-    \ '%s %s --engines %s --target_lang %s --source_lang %s %s',
+  let cmd = [
     \ s:python_executable,
     \ s:py_file,
-    \ join(a:options.engines, ' '),
-    \ a:options.target_lang,
-    \ a:options.source_lang,
-    \ a:options.text
-    \ )
+    \ '--target_lang', a:options.target_lang,
+    \ '--source_lang', a:options.source_lang,
+    \ a:options.text,
+    \ '--engines'
+    \ ]
+  \ + a:options.engines 
   if !empty(g:translator_proxy_url)
-    let cmd .= printf(' --proxy %s', g:translator_proxy_url)
+    let cmd += ['--proxy', g:translator_proxy_url]
   endif
   if match(a:options.engines, 'trans') >= 0
-    let cmd .= printf(" --options='%s'", join(g:translator_translate_shell_options, ','))
+    let cmd += [printf("--options='%s'", join(g:translator_translate_shell_options, ','))]
   endif
-  call translator#logger#log(cmd)
+  call translator#logger#log(join(cmd, ' '))
   call translator#job#jobstart(cmd, a:displaymode)
 endfunction
