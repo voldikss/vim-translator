@@ -35,14 +35,14 @@ endfunction
 
 function! translator#translate(options, displaymode) abort
   let cmd = [
-    \ s:python_executable,
-    \ s:py_file,
-    \ '--target_lang', a:options.target_lang,
-    \ '--source_lang', a:options.source_lang,
-    \ a:options.text,
-    \ '--engines'
-    \ ]
-  \ + a:options.engines 
+        \ s:python_executable,
+        \ s:py_file,
+        \ '--target_lang', a:options.target_lang,
+        \ '--source_lang', a:options.source_lang,
+        \ a:options.text,
+        \ '--engines'
+        \ ]
+        \ + a:options.engines
   if !empty(g:translator_proxy_url)
     let cmd += ['--proxy', g:translator_proxy_url]
   endif

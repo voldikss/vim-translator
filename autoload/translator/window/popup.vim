@@ -19,20 +19,20 @@ endfunction
 
 function! translator#window#popup#create(linelist, configs) abort
   let options = {
-    \ 'pos': a:configs.anchor,
-    \ 'col': 'cursor',
-    \ 'line': a:configs.anchor[0:2] == 'top' ? 'cursor+1' : 'cursor-1',
-    \ 'moved': 'any',
-    \ 'padding': [0, 0, 0, 0],
-    \ 'maxwidth': a:configs.width - 2,
-    \ 'minwidth': a:configs.width - 2,
-    \ 'maxheight': a:configs.height,
-    \ 'minheight': a:configs.height,
-    \ 'filter': function('s:popup_filter'),
-    \ 'borderchars' : a:configs.borderchars,
-    \ 'border': [1, 1, 1, 1],
-    \ 'borderhighlight': ['TranslatorBorder'],
-    \ }
+        \ 'pos': a:configs.anchor,
+        \ 'col': 'cursor',
+        \ 'line': a:configs.anchor[0:2] == 'top' ? 'cursor+1' : 'cursor-1',
+        \ 'moved': 'any',
+        \ 'padding': [0, 0, 0, 0],
+        \ 'maxwidth': a:configs.width - 2,
+        \ 'minwidth': a:configs.width - 2,
+        \ 'maxheight': a:configs.height,
+        \ 'minheight': a:configs.height,
+        \ 'filter': function('s:popup_filter'),
+        \ 'borderchars' : a:configs.borderchars,
+        \ 'border': [1, 1, 1, 1],
+        \ 'borderhighlight': ['TranslatorBorder'],
+        \ }
   let winid = popup_create('', options)
   call translator#window#init(winid)
   let bufnr = winbufnr(winid)

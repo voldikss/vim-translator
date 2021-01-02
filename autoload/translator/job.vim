@@ -25,23 +25,23 @@ function! translator#job#jobstart(cmd, type) abort
   let s:stdout_save = {}
   if has('nvim')
     let callback = {
-      \ 'on_stdout': function('s:on_stdout_nvim', [a:type]),
-      \ 'on_stderr': function('s:on_stdout_nvim', [a:type]),
-      \ 'on_exit': function('s:on_exit_nvim')
-      \ }
+          \ 'on_stdout': function('s:on_stdout_nvim', [a:type]),
+          \ 'on_stderr': function('s:on_stdout_nvim', [a:type]),
+          \ 'on_exit': function('s:on_exit_nvim')
+          \ }
     call jobstart(a:cmd, callback)
   else
     let callback = {
-      \ 'out_cb': function('s:on_stdout_vim', [a:type, 'stdout']),
-      \ 'err_cb': function('s:on_stdout_vim', [a:type, 'stderr']),
-      \ 'exit_cb': function('s:on_exit_vim'),
-      \ 'out_io': 'pipe',
-      \ 'err_io': 'pipe',
-      \ 'in_io': 'null',
-      \ 'out_mode': 'nl',
-      \ 'err_mode': 'nl',
-      \ 'timeout': '2000'
-      \ }
+          \ 'out_cb': function('s:on_stdout_vim', [a:type, 'stdout']),
+          \ 'err_cb': function('s:on_stdout_vim', [a:type, 'stderr']),
+          \ 'exit_cb': function('s:on_exit_vim'),
+          \ 'out_io': 'pipe',
+          \ 'err_io': 'pipe',
+          \ 'in_io': 'null',
+          \ 'out_mode': 'nl',
+          \ 'err_mode': 'nl',
+          \ 'timeout': '2000'
+          \ }
     call job_start(a:cmd, callback)
   endif
 endfunction
@@ -60,13 +60,11 @@ function! s:start(type, data, event) abort
   if translator#util#safe_trim(message) == '' | return | endif
   call translator#logger#log(message)
 
-  " python2 will return unicode object which is hard to solve in python
-  " so solve it in vim
   " 1. remove `u` before strings
   let message = substitute(message, '\(: \|: [\|{\)\(u\)\("\)', '\=submatch(1).submatch(3)', 'g')
   let message = substitute(message, "\\(: \\|: [\\|{\\)\\(u\\)\\('\\)", '\=submatch(1).submatch(3)', 'g')
   let message = substitute(message, "\\([: \\|: \[]\\)\\(u\\)\\('\\)", '\=submatch(1).submatch(3)', 'g')
-  " 2. convert unicode to normal chinese string
+  " 2. convert hex code to normal chars
   let message = substitute(message, '\\u\(\x\{4\}\)', '\=nr2char("0x".submatch(1),1)', 'g')
   call translator#logger#log(message)
 

@@ -106,7 +106,7 @@ function! translator#window#init(winid) abort
   if has('nvim')
     call setwinvar(a:winid, '&winhl', 'Normal:Translator')
   else
-    call setwinvar(a:winid, 'wincolor', 'Translator')
+    call setwinvar(a:winid, '&wincolor', 'Translator')
   endif
 endfunction
 
@@ -124,13 +124,13 @@ function! translator#window#open(content) abort
   let linelist = translator#util#fit_lines(a:content, width)
 
   let configs = {
-    \ 'anchor': anchor,
-    \ 'row': row,
-    \ 'col': col,
-    \ 'width': width + 2,
-    \ 'height': height + 2,
-    \ 'title': '',
-    \ 'borderchars': g:translator_window_borderchars
-    \ }
+        \ 'anchor': anchor,
+        \ 'row': row,
+        \ 'col': col,
+        \ 'width': width + 2,
+        \ 'height': height + 2,
+        \ 'title': '',
+        \ 'borderchars': g:translator_window_borderchars
+        \ }
   call translator#window#{s:wintype}#create(linelist, configs)
 endfunction

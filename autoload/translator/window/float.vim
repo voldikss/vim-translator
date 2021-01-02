@@ -98,17 +98,17 @@ function! s:get_options(winid) abort
     endif
     let info = getwininfo(a:winid)[0]
     return {
-      \ 'topline': info['topline'],
-      \ 'height': nvim_win_get_height(a:winid),
-      \ 'width': width
-      \ }
+          \ 'topline': info['topline'],
+          \ 'height': nvim_win_get_height(a:winid),
+          \ 'width': width
+          \ }
   else
     let pos = popup_getpos(a:winid)
     return {
-      \ 'topline': pos['firstline'],
-      \ 'width': pos['core_width'],
-      \ 'height': pos['core_height']
-      \ }
+          \ 'topline': pos['firstline'],
+          \ 'width': pos['core_width'],
+          \ 'height': pos['core_height']
+          \ }
   endif
 endfunction
 
@@ -197,29 +197,29 @@ function! translator#window#float#create(linelist, configs) abort
   call s:win_close_float()
 
   let options = {
-    \ 'relative': 'editor',
-    \ 'anchor': a:configs.anchor,
-    \ 'row': a:configs.row + (a:configs.anchor[0] == 'N' ? 1 : -1),
-    \ 'col': a:configs.col + (a:configs.anchor[1] == 'W' ? 1 : -1),
-    \ 'width': a:configs.width - 2,
-    \ 'height': a:configs.height - 2,
-    \ 'style':'minimal',
-    \ }
+        \ 'relative': 'editor',
+        \ 'anchor': a:configs.anchor,
+        \ 'row': a:configs.row + (a:configs.anchor[0] == 'N' ? 1 : -1),
+        \ 'col': a:configs.col + (a:configs.anchor[1] == 'W' ? 1 : -1),
+        \ 'width': a:configs.width - 2,
+        \ 'height': a:configs.height - 2,
+        \ 'style':'minimal',
+        \ }
   let bufnr = translator#buffer#create_scratch_buf(a:linelist)
   call translator#buffer#init(bufnr)
   let winid = nvim_open_win(bufnr, v:false, options)
   call translator#window#init(winid)
 
   let bd_options = {
-    \ 'relative': 'editor',
-    \ 'anchor': a:configs.anchor,
-    \ 'row': a:configs.row,
-    \ 'col': a:configs.col,
-    \ 'width': a:configs.width,
-    \ 'height': a:configs.height,
-    \ 'focusable': v:false,
-    \ 'style':'minimal',
-    \ }
+        \ 'relative': 'editor',
+        \ 'anchor': a:configs.anchor,
+        \ 'row': a:configs.row,
+        \ 'col': a:configs.col,
+        \ 'width': a:configs.width,
+        \ 'height': a:configs.height,
+        \ 'focusable': v:false,
+        \ 'style':'minimal',
+        \ }
   let bd_bufnr = translator#buffer#create_border(a:configs)
   let bd_winid = nvim_open_win(bd_bufnr, v:false, bd_options)
   call nvim_win_set_option(bd_winid, 'winhl', 'Normal:TranslatorBorder')
@@ -230,7 +230,7 @@ function! translator#window#float#create(linelist, configs) abort
   augroup close_translator_window
     autocmd!
     autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer>
-      \ call timer_start(100, { -> s:win_close_float() })
+          \ call timer_start(100, { -> s:win_close_float() })
   augroup END
   let s:winid = winid
   let s:bd_winid = bd_winid

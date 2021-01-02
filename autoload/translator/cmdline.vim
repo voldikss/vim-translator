@@ -7,11 +7,11 @@
 function! translator#cmdline#parse(bang, range, line1, line2, argstr) abort
   call translator#logger#log(a:argstr)
   let options = {
-    \ 'text': '',
-    \ 'engines': [],
-    \ 'target_lang': '',
-    \ 'source_lang': ''
-    \ }
+        \ 'text': '',
+        \ 'engines': [],
+        \ 'target_lang': '',
+        \ 'source_lang': ''
+        \ }
   let arglist = split(a:argstr)
   if !empty(arglist)
     let c = 0
