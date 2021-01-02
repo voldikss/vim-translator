@@ -11,7 +11,7 @@ import json
 import argparse
 import codecs
 
-if sys.version_info[0] < 3:
+if sys.version_info.major < 3:
     is_py3 = False
     reload(sys)
     sys.setdefaultencoding("utf-8")
@@ -156,6 +156,23 @@ class BaseTranslator(object):
         m.update(text)
         return m.hexdigest()
 
+    def html_unescape(self, text):
+        # https://stackoverflow.com/questions/2087370/decode-html-entities-in-python-string
+        # Python 3.4+
+        if sys.version_info[0] >= 3 and sys.version_info[1] >= 4:
+            import html
+
+            return html.unescape(text)
+        else:
+            try:
+                # Python 2.6-2.7
+                from HTMLParser import HTMLParser
+            except ImportError:
+                # Python 3
+                from html.parser import HTMLParser
+            h = HTMLParser()
+            return h.unescape(text)
+
 
 # NOTE: expired
 class BaicizhanTranslator(BaseTranslator):
@@ -213,7 +230,7 @@ class BingDict(BaseTranslator):
         m = re.findall(r'<span class="ht_attr" lang=".*?">\[(.*?)\] </span>', html)
         if not m:
             return ""
-        return m[0].strip()
+        return self.html_unescape(m[0].strip())
 
     def get_explain(self, html):
         if not html:
