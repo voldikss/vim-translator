@@ -199,7 +199,7 @@ hi def link TranslatorExplain           Statement
 
 " Background of translator window border
 hi def link Translator                  Normal
-hi def link TranslatorBorder            Normal
+hi def link TranslatorBorder            NormalFloat
 ```
 
 ## Statusline

@@ -14,9 +14,9 @@ syntax match TranslatorQuery               /\v⟦.*⟧/
 syntax match TranslatorDelimiter           /\v\─.*\─/
 
 hi def link TranslatorQuery             Identifier
-hi def link TranslatorDelimiter         Special
+hi def link TranslatorDelimiter         Comment
 
 hi def link Translator                  Normal
-hi def link TranslatorBorder            Normal
+hi def link TranslatorBorder            NormalFloat
 
 let b:current_syntax = 'translator'

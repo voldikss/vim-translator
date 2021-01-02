@@ -158,7 +158,7 @@ To customize, use |highlight| command.
 
 	" Background of translator window border
 	hi def link Translator                  Normal
-	hi def link TranslatorBorder            Normal
+	hi def link TranslatorBorder            NormalFloat
 
 
 ==============================================================================
