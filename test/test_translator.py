@@ -10,9 +10,9 @@ script_path = os.path.join(curr_dir, "../script")
 sys.path.append(script_path)
 
 from translator import BaicizhanTranslator
-from translator import BingTranslator
+from translator import BingDict
 from translator import GoogleTranslator
-from translator import HaiciTranslator
+from translator import HaiciDict
 from translator import ICibaTranslator
 from translator import YoudaoTranslator
 from translator import TranslateShell
@@ -30,7 +30,7 @@ class TestTranslator(unittest.TestCase):
 
     @unittest.skip("Skip for GitHub Action")
     def test_bing(self):
-        t = BingTranslator()
+        t = BingDict()
         r = t.translate("", "", "naive")
         self.assertTrue(len(r['paraphrase']) != 0 or len(r['explain']))
 
@@ -40,7 +40,7 @@ class TestTranslator(unittest.TestCase):
         self.assertTrue(len(r['paraphrase']) != 0 or len(r['explain']))
 
     def test_haici(self):
-        t = HaiciTranslator()
+        t = HaiciDict()
         r = t.translate("", "zh", "naive")
         self.assertTrue(len(r['paraphrase']) != 0 or len(r['explain']))
 
