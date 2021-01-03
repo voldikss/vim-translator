@@ -25,10 +25,10 @@ function! translator#history#save(translations) abort
   let text = a:translations['text']
   for t in a:translations['results']
     let paraphrase = t['paraphrase']
-    let explain = t['explain']
+    let explains = t['explains']
 
-    if !empty(explain)
-      let item = s:padding_end(text, 25) . explain[0]
+    if !empty(explains)
+      let item = s:padding_end(text, 25) . explains[0]
       break
     elseif !empty(paraphrase) && text !=? paraphrase
       let item = s:padding_end(text, 25) . paraphrase

@@ -15,7 +15,7 @@ function! translator#action#window(translations) abort
   call add(content, printf('⟦ %s ⟧', text))
 
   for t in a:translations['results']
-    if empty(t.paraphrase) && empty(t.explain)
+    if empty(t.paraphrase) && empty(t.explains)
       continue
     endif
     call add(content, '')
@@ -28,12 +28,12 @@ function! translator#action#window(translations) abort
       let paraphrase = marker . t['paraphrase']
       call add(content, paraphrase)
     endif
-    if !empty(t.explain)
-      for expl in t.explain
+    if !empty(t.explains)
+      for expl in t.explains
         let expl = translator#util#safe_trim(expl)
         if !empty(expl)
-          let explain = marker . expl
-          call add(content, explain)
+          let explains = marker . expl
+          call add(content, explains)
         endif
       endfor
     endif
@@ -45,7 +45,7 @@ endfunction
 function! translator#action#echo(translations) abort
   let phonetic = ''
   let paraphrase = ''
-  let explain = ''
+  let explains = ''
 
   for t in a:translations['results']
     if !empty(t.phonetic) && empty(phonetic)
@@ -54,8 +54,8 @@ function! translator#action#echo(translations) abort
     if !empty(t.paraphrase) && empty(paraphrase)
       let paraphrase = t.paraphrase
     endif
-    if !empty(t.explain) && empty(explain)
-      let explain = join(t.explain, ' ')
+    if !empty(t.explains) && empty(explains)
+      let explains = join(t.explains, ' ')
     endif
   endfor
 
@@ -68,7 +68,7 @@ function! translator#action#echo(translations) abort
   call translator#util#echon('Constant', '==>')
   call translator#util#echon('Type', phonetic)
   call translator#util#echon('Normal', paraphrase)
-  call translator#util#echon('Normal', explain)
+  call translator#util#echon('Normal', explains)
 endfunction
 
 function! translator#action#replace(translations) abort

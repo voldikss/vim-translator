@@ -136,7 +136,7 @@ class BaseTranslator(object):
         res["text"] = text  # 需要翻译的文本
         res["phonetic"] = ""  # 音标
         res["paraphrase"] = ""  # 简单释义
-        res["explain"] = []  # 分行解释
+        res["explains"] = []  # 分行解释
         return res
 
     # 翻译结果：需要填充如下字段
@@ -183,23 +183,23 @@ class BaicizhanTranslator(BaseTranslator):
         url = "http://mall.baicizhan.com/ws/search"
         req = {}
         req["w"] = url_quote(text)
-        r = self.http_get(url, req, None)
-        if not r:
+        resp = self.http_get(url, req, None)
+        if not resp:
             return None
         try:
-            resp = json.loads(r)
+            obj = json.loads(resp)
         except:
             return None
 
         res = self.create_translation(sl, tl, text)
-        res["phonetic"] = self.get_phonetic(resp)
-        res["explain"] = self.get_explain(resp)
+        res["phonetic"] = self.get_phonetic(obj)
+        res["explains"] = self.get_explains(obj)
         return res
 
     def get_phonetic(self, obj):
         return obj["accent"] if "accent" in obj else ""
 
-    def get_explain(self, obj):
+    def get_explains(self, obj):
         return ["; ".join(obj["mean_cn"].split("\n"))] if "mean_cn" in obj else []
 
 
@@ -221,7 +221,7 @@ class BingDict(BaseTranslator):
             return None
         res = self.create_translation(sl, tl, text)
         res["phonetic"] = self.get_phonetic(resp)
-        res["explain"] = self.get_explain(resp)
+        res["explains"] = self.get_explains(resp)
         return res
 
     def get_phonetic(self, html):
@@ -232,7 +232,7 @@ class BingDict(BaseTranslator):
             return ""
         return self.html_unescape(m[0].strip())
 
-    def get_explain(self, html):
+    def get_explains(self, html):
         if not html:
             return []
         m = re.findall(
@@ -263,19 +263,18 @@ class GoogleTranslator(BaseTranslator):
 
     def translate(self, sl, tl, text, options=None):
         url = self.get_url(sl, tl, text)
-        r = self.http_get(url)
-        if not r:
+        resp = self.http_get(url)
+        if not resp:
             return None
         try:
-            obj = json.loads(r)
+            obj = json.loads(resp)
         except:
             return None
 
         res = self.create_translation(sl, tl, text)
         res["paraphrase"] = self.get_paraphrase(obj)
-        res["explain"] = self.get_explain(obj)
+        res["explains"] = self.get_explains(obj)
         res["phonetic"] = self.get_phonetic(obj)
-        # todo: more
         res["detail"] = self.get_detail(obj)
         res["alternative"] = self.get_alternative(obj)
         return res
@@ -293,15 +292,15 @@ class GoogleTranslator(BaseTranslator):
                 paraphrase += x[0]
         return paraphrase
 
-    def get_explain(self, obj):
-        explain = []
+    def get_explains(self, obj):
+        explains = []
         if obj[1]:
             for x in obj[1]:
                 expl = "[{}] ".format(x[0][0])
                 for i in x[2]:
                     expl += i[0] + ";"
-                explain.append(expl)
-        return explain
+                explains.append(expl)
+        return explains
 
     def get_detail(self, resp):
         if len(resp) < 13:
@@ -342,14 +341,14 @@ class HaiciDict(BaseTranslator):
 
         res = self.create_translation(sl, tl, text)
         res["phonetic"] = self.get_phonetic(resp)
-        res["explain"] = self.get_explain(resp)
+        res["explains"] = self.get_explains(resp)
         return res
 
     def get_phonetic(self, html):
         m = re.findall(r"<span class='p'> \[(.*?)\]</span>", html)
         return m[0] if m else ""
 
-    def get_explain(self, html):
+    def get_explains(self, html):
         m = re.findall(r'<div id="e">(.*?)</div>', html)
         explains = []
         for item in m:
@@ -369,19 +368,19 @@ class ICibaTranslator(BaseTranslator):
         req["a"] = "getWordMean"
         req["c"] = "search"
         req["word"] = url_quote(text)
-        r = self.http_get(url, req, None)
-        if not r:
+        resp = self.http_get(url, req, None)
+        if not resp:
             return None
         try:
-            resp = json.loads(r)
-            obj = resp["baesInfo"]["symbols"][0]
+            obj = json.loads(resp)
+            obj = obj["baesInfo"]["symbols"][0]
         except:
             return None
 
         res = self.create_translation(sl, tl, text)
         res["paraphrase"] = self.get_paraphrase(obj)
         res["phonetic"] = self.get_phonetic(obj)
-        res["explain"] = self.get_explain(obj)
+        res["explains"] = self.get_explains(obj)
         return res
 
     def get_paraphrase(self, obj):
@@ -393,7 +392,7 @@ class ICibaTranslator(BaseTranslator):
     def get_phonetic(self, obj):
         return obj["ph_en"] if "ph_en" in obj else ""
 
-    def get_explain(self, obj):
+    def get_explains(self, obj):
         parts = obj["parts"] if "parts" in obj else []
         explains = []
         for part in parts:
@@ -434,17 +433,17 @@ class YoudaoTranslator(BaseTranslator):
             "action": "FY_BY_CL1CKBUTTON",
             "typoResult": "true",
         }
-        r = self.http_post(self.url, data, header)
-        if not r:
+        resp = self.http_post(self.url, data, header)
+        if not resp:
             return
         try:
-            obj = json.loads(r)
+            obj = json.loads(resp)
         except:
             return None
 
         res = self.create_translation(sl, tl, text)
         res["paraphrase"] = self.get_paraphrase(obj)
-        res["explain"] = self.get_explain(obj)
+        res["explains"] = self.get_explains(obj)
         return res
 
     def get_paraphrase(self, obj):
@@ -461,16 +460,16 @@ class YoudaoTranslator(BaseTranslator):
                     translation += ", ".join(part)
         return translation
 
-    def get_explain(self, obj):
-        explain = []
+    def get_explains(self, obj):
+        explains = []
         if "smartResult" in obj:
             smarts = obj["smartResult"]["entries"]
             for entry in smarts:
                 if entry:
                     entry = entry.replace("\r", "")
                     entry = entry.replace("\n", "")
-                    explain.append(entry)
-        return explain
+                    explains.append(entry)
+        return explains
 
 
 class TranslateShell(BaseTranslator):
@@ -503,7 +502,7 @@ class TranslateShell(BaseTranslator):
             line = re.sub(r"^\s*", "", line)
             lines.append(line)
         res = self.create_translation(sl, tl, text)
-        res["explain"] = lines
+        res["explains"] = lines
         run.close()
         return res
 
@@ -563,7 +562,7 @@ class SdcvShell(BaseTranslator):
             line = re.sub(r"^\*", "", line)
             lines.append(line)
         res = self.create_translation(sl, tl, text)
-        res["explain"] = lines
+        res["explains"] = lines
         run.close()
         return res
 

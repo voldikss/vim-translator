@@ -26,40 +26,40 @@ class TestTranslator(unittest.TestCase):
     def test_baicizhan(self):
         t = BaicizhanTranslator()
         r = t.translate("", "", "naive")
-        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explain']))
+        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explains']))
 
     @unittest.skip("Skip for GitHub Action")
     def test_bing(self):
         t = BingDict()
         r = t.translate("", "", "naive")
-        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explain']))
+        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explains']))
 
     def test_google(self):
         t = GoogleTranslator()
         r = t.translate("auto", "zh", "naive")
-        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explain']))
+        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explains']))
 
     def test_haici(self):
         t = HaiciDict()
         r = t.translate("", "zh", "naive")
-        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explain']))
+        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explains']))
 
     @unittest.skip("ciba api was deprecated")
     def test_iciba(self):
         t = ICibaTranslator()
         r = t.translate("", "", "naive")
-        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explain']))
+        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explains']))
 
     def test_translate_shell(self):
         t = TranslateShell()
         r = t.translate("auto", "zh", "naive")
         self.maxDiff = None
-        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explain']))
+        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explains']))
 
     def test_youdao(self):
         t = YoudaoTranslator()
         r = t.translate("auto", "zh", "naive")
-        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explain']))
+        self.assertTrue(len(r['paraphrase']) != 0 or len(r['explains']))
 
 
 if __name__ == "__main__":
