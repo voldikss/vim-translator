@@ -303,7 +303,7 @@ class GoogleTranslator(BaseTranslator):
         return explains
 
     def get_detail(self, resp):
-        if len(resp) < 13:
+        if len(resp) < 13 or resp[12] is None:
             return []
         result = []
         for x in resp[12]:
@@ -315,7 +315,7 @@ class GoogleTranslator(BaseTranslator):
         return result
 
     def get_alternative(self, resp):
-        if len(resp) < 6:
+        if len(resp) < 6 or resp[5] is None:
             return []
         definition = self.get_paraphrase(resp)
         result = []
