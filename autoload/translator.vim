@@ -7,7 +7,7 @@
 let s:py_file = expand('<sfile>:p:h') . '/../script/translator.py'
 
 if !exists('s:python_executable')
-  if exists('g:python3_host_prog')
+  if exists('g:python3_host_prog') && executable('g:python3_host_prog')
     let s:python_executable = g:python3_host_prog
   elseif executable('python3')
     let s:python_executable = 'python3'

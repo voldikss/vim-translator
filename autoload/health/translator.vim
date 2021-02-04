@@ -42,14 +42,14 @@ function! s:check_floating_window() abort
 endfunction
 
 function! s:check_python() abort
-  if exists('g:python3_host_prog')
+  if exists('g:python3_host_prog') && executable('g:python3_host_prog')
     let translator_python_host = g:python3_host_prog
   elseif executable('python3')
     let translator_python_host = 'python3'
   elseif executable('python')
     let translator_python_host = 'python'
   else
-    call health#report_error('Python is required but not found')
+    call health#report_error('Python is required but not executable: ' . translator_python_host)
     return
   endif
   call health#report_ok('Using '.translator_python_host)
