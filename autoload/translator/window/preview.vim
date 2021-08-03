@@ -25,7 +25,8 @@ let s:winid = -1
 function! translator#window#preview#create(linelist, configs) abort
   call s:win_close_preview()
   let curr_pos = getpos('.')
-  execute 'noswapfile bo pedit!'
+  noswapfile bo new
+  set previewwindow
   call setpos('.', curr_pos)
   wincmd P
   execute a:configs.height + 1 . 'wincmd _'
