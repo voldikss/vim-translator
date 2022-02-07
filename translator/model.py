@@ -1,0 +1,9 @@
+class Translation:
+    def __init__(self) -> None:
+        ...
+
+    def __repr__(self) -> str:
+        ...
+
+    def __str__(self) -> str:
+        ...

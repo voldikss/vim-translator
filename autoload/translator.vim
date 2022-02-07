@@ -4,7 +4,7 @@
 " GitHub: https://github.com/voldikss
 " ============================================================================
 
-let s:py_file = expand('<sfile>:p:h') . '/../script/translator.py'
+let s:py_file = expand('<sfile>:p:h') . '/../translator/main.py'
 
 if !exists('s:python_executable')
   if exists('g:python3_host_prog') && executable('g:python3_host_prog')

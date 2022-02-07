@@ -6,7 +6,7 @@ import unittest
 
 curr_filename = os.path.abspath(__file__)
 curr_dir = os.path.dirname(curr_filename)
-script_path = os.path.join(curr_dir, "../script")
+script_path = os.path.join(curr_dir, "../translator")
 sys.path.append(script_path)
 
 from translator import BaicizhanTranslator
