@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import re
 import os
-from ._base import BaseTranslator
+from ._base import BaseProvider
 
-class TranslateShell(BaseTranslator):
+class TranslateShellProvider(BaseProvider):
     def __init__(self):
-        super(TranslateShell, self).__init__("trans")
+        super(TranslateShellProvider, self).__init__("trans")
 
     def translate(self, sl, tl, text, options=None):
         if not options:

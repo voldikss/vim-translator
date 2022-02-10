@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import json
-from ._base import BaseTranslator
+from ._base import BaseProvider
 
 # NOTE: deprecated
-class ICibaTranslator(BaseTranslator):
+class ICibaProvider(BaseProvider):
     def __init__(self):
-        super(ICibaTranslator, self).__init__("iciba")
+        super(ICibaProvider, self).__init__("iciba")
 
     def translate(self, sl, tl, text, options=None):
         url = "http://www.iciba.com/index.php"

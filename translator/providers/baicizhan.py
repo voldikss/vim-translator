@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 import json
-from ._base import BaseTranslator
+from ._base import BaseProvider
 
 # NOTE: expired
-class BaicizhanTranslator(BaseTranslator):
+class BaicizhanProvider(BaseProvider):
     def __init__(self):
-        super(BaicizhanTranslator, self).__init__("baicizhan")
+        super(BaicizhanProvider, self).__init__("baicizhan")
 
     def translate(self, sl, tl, text, options=None):
         url = "http://mall.baicizhan.com/ws/search"

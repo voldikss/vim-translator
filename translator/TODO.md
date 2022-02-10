@@ -13,3 +13,5 @@
 - https://github.com/UlionTse/translators/blob/master/translators/apis.py
 
 - https://stackoverflow.com/questions/5189232/how-to-auto-register-a-class-when-its-defined
+
+https://github.com/kewuaa/nvim/blob/master/rplugin/python3/pytranslator.py

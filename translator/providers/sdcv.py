@@ -2,11 +2,11 @@
 import re
 import sys
 import os
-from ._base import BaseTranslator
+from ._base import BaseProvider
 
-class SdcvShell(BaseTranslator):
+class SdcvProvider(BaseProvider):
     def __init__(self):
-        super(SdcvShell, self).__init__("sdcv")
+        super(SdcvProvider, self).__init__("sdcv")
 
     def get_dictionary(self, sl, tl, text):
         """get dictionary of sdcv

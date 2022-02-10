@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import re
-from ._base import BaseTranslator
+from ._base import BaseProvider
 
-class BingDict(BaseTranslator):
+class BingProvider(BaseProvider):
     def __init__(self):
-        super(BingDict, self).__init__("bing")
+        super(BingProvider, self).__init__("bing")
         self._url = "http://bing.com/dict/SerpHoverTrans"
         self._cnurl = "http://cn.bing.com/dict/SerpHoverTrans"
 

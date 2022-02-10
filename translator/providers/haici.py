@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import re
-from ._base import BaseTranslator
+from ._base import BaseProvider
 
-class HaiciDict(BaseTranslator):
+class HaiciProvider(BaseProvider):
     def __init__(self):
-        super(HaiciDict, self).__init__("haici")
+        super(HaiciProvider, self).__init__("haici")
 
     def translate(self, sl, tl, text, options=None):
         url = "http://dict.cn/mini.php"

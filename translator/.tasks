@@ -1,0 +1,9 @@
+# vim:syn=dosini ft=tasks
+[start]
+command=python main.py
+cwd=$(VIM_FILEDIR)
+output=terminal
+# silent=1
+focus=1
+notify=echo
+save=2

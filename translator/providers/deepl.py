@@ -2,8 +2,8 @@
 import time
 import random
 import json
-from ._base import BaseTranslator
+from ._base import BaseProvider
 
-class DeeplTranslator(BaseTranslator):
+class DeeplProvider(BaseProvider):
     def __init__(self):
         ...

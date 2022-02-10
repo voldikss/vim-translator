@@ -6,13 +6,13 @@ from typing import Dict, List
 from .. import httpclient
 from ..model import Translation
 from ..compat import urlquote
-from ._base import BaseTranslator
+from ._base import BaseProvider
 from ._utils import md5sum
 
 
-class YoudaoTranslator(BaseTranslator):
+class YoudaoProvider(BaseProvider):
     def __init__(self):
-        super(YoudaoTranslator, self).__init__("youdao")
+        super(YoudaoProvider, self).__init__("youdao")
         self.url = "https://fanyi.youdao.com/translate_o"
         self.D = "97_3(jkMYg@T[KZQmqjTK"
         # 备用 self.D = "n%A-rKaT5fb[Gy?;N5@Tj"

@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 import json
-from ._base import BaseTranslator
+from ._base import BaseProvider
 
-class GoogleTranslator(BaseTranslator):
+class GoogleProvider(BaseProvider):
     def __init__(self):
-        super(GoogleTranslator, self).__init__("google")
+        super(GoogleProvider, self).__init__("google")
         self._host = "translate.googleapis.com"
         self._cnhost = "translate.google.cn"
 
