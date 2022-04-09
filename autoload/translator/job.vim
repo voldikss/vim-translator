@@ -42,7 +42,7 @@ function! translator#job#jobstart(cmd, type) abort
           \ 'err_mode': 'nl',
           \ 'timeout': '2000'
           \ }
-    call job_start(a:cmd, callback)
+    call job_start(join(a:cmd,' '), callback)
   endif
 endfunction
 
