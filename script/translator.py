@@ -248,7 +248,7 @@ class GoogleTranslator(BaseTranslator):
     def __init__(self):
         super(GoogleTranslator, self).__init__("google")
         self._host = "translate.googleapis.com"
-        self._cnhost = "translate.google.cn"
+        self._cnhost = "translate.google.com.hk"
 
     def get_url(self, sl, tl, qry):
         http_host = self._cnhost if "zh" in tl else self._host
