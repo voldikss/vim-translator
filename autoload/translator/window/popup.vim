@@ -32,7 +32,7 @@ function! translator#window#popup#create(linelist, configs) abort
         \ 'borderchars' : a:configs.borderchars,
         \ 'border': [1, 1, 1, 1],
         \ 'borderhighlight': ['TranslatorBorder'],
-        \ 'zindex':9999,
+        \ 'zindex':32000,
         \ }
   let winid = popup_create('', options)
   call translator#window#init(winid)
