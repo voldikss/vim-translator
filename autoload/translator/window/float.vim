@@ -220,6 +220,7 @@ function! translator#window#float#create(linelist, configs) abort
         \ 'height': a:configs.height,
         \ 'focusable': v:false,
         \ 'style':'minimal',
+        \ 'zindex':32000,
         \ }
   let bd_bufnr = translator#buffer#create_border(a:configs)
   let bd_winid = nvim_open_win(bd_bufnr, v:false, bd_options)
