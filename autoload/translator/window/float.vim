@@ -204,6 +204,7 @@ function! translator#window#float#create(linelist, configs) abort
         \ 'width': a:configs.width - 2,
         \ 'height': a:configs.height - 2,
         \ 'style':'minimal',
+        \ 'zindex':32000,
         \ }
   let bufnr = translator#buffer#create_scratch_buf(a:linelist)
   call translator#buffer#init(bufnr)
