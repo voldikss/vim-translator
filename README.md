@@ -126,7 +126,7 @@ Beside, there is a function which can be used to scroll window, only works in ne
 nnoremap <silent><expr> <M-f> translator#window#float#has_scroll() ?
                             \ translator#window#float#scroll(1) : "\<M-f>"
 nnoremap <silent><expr> <M-b> translator#window#float#has_scroll() ?
-                            \ translator#window#float#scroll(0) : "\<M-f>"
+                            \ translator#window#float#scroll(0) : "\<M-b>"
 ```
 
 ## Commands
