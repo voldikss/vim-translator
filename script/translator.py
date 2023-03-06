@@ -579,6 +579,16 @@ ENGINES = {
 }
 
 
+def sanitize_input_text(text):
+    while True:
+        try:
+            text.encode()
+            break
+        except UnicodeEncodeError:
+            text = text[:-1]
+    return text
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--engines", nargs="+", required=False, default=["google"])
@@ -588,6 +598,8 @@ def main():
     parser.add_argument("--options", type=str, default=None, required=False)
     parser.add_argument("text", nargs="+", type=str)
     args = parser.parse_args()
+
+    args.text = [ sanitize_input_text(x) for x in args.text ]
 
     text = " ".join(args.text).strip("'").strip('"').strip()
     text = re.sub(r"([a-z])([A-Z][a-z])", r"\1 \2", text)
