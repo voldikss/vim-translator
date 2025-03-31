@@ -231,7 +231,7 @@ function! translator#window#float#create(linelist, configs) abort
   noautocmd wincmd p
   augroup close_translator_window
     autocmd!
-    autocmd CursorMoved,CursorMovedI,InsertEnter,BufLeave <buffer>
+    autocmd CursorMoved,CursorMovedI,InsertEnter,TermEnter,BufLeave <buffer>
           \ call timer_start(100, { -> s:win_close_float() })
   augroup END
   let s:winid = winid
