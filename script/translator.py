@@ -347,13 +347,13 @@ class DeepLTranslator(BaseTranslator):
             return None
 
         data = {
-            "auth_key": self._auth_key,
             "text": text,
             "target_lang": self.normalize_lang(tl),
         }
         if sl != "auto":
             data["source_lang"] = self.normalize_lang(sl)
-        resp = self.http_post(self.get_url(), data)
+        headers = {"Authorization": "DeepL-Auth-Key {}".format(self._auth_key)}
+        resp = self.http_post(self.get_url(), data, headers)
         if not resp:
             return None
         try:

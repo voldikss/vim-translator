@@ -44,9 +44,10 @@ class TestTranslator(unittest.TestCase):
         t = DeepLTranslator("test-key:fx")
         request = {}
 
-        def http_post(url, data):
+        def http_post(url, data, headers):
             request["url"] = url
             request["data"] = data
+            request["headers"] = headers
             return '{"translations": [{"text": "天真"}]}'
 
         t.http_post = http_post
@@ -55,8 +56,13 @@ class TestTranslator(unittest.TestCase):
         self.assertEqual(request["url"], "https://api-free.deepl.com/v2/translate")
         self.assertEqual(
             request["data"],
-            {"auth_key": "test-key:fx", "text": "naive", "target_lang": "ZH"},
+            {"text": "naive", "target_lang": "ZH"},
         )
+        self.assertEqual(
+            request["headers"], {"Authorization": "DeepL-Auth-Key test-key:fx"}
+        )
+        t.translate("zh_cn", "en", "naive")
+        self.assertEqual(request["data"]["source_lang"], "ZH")
         self.assertEqual(
             DeepLTranslator("test-key").get_url(),
             "https://api.deepl.com/v2/translate",
@@ -64,7 +70,7 @@ class TestTranslator(unittest.TestCase):
 
     def test_deepl_invalid_response(self):
         t = DeepLTranslator("test-key")
-        t.http_post = lambda url, data: '{"translations": [{}]}'
+        t.http_post = lambda url, data, headers: '{"translations": [{}]}'
         self.assertIsNone(t.translate("auto", "zh", "naive"))
 
     def test_haici(self):
