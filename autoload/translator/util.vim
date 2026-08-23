@@ -95,6 +95,16 @@ function! translator#util#safe_trim(text) abort
   return substitute(a:text,'\%#=1^[[:space:]]\+\|[[:space:]]\+$', '', 'g')
 endfunction
 
+function! translator#util#preserve_case(source, text) abort
+  if a:source ==# toupper(a:source) && a:source !=# tolower(a:source)
+    return toupper(a:text)
+  elseif strcharpart(a:source, 0, 1) ==# toupper(strcharpart(a:source, 0, 1))
+        \ && strcharpart(a:source, 0, 1) !=# tolower(strcharpart(a:source, 0, 1))
+    return toupper(strcharpart(a:text, 0, 1)) . strcharpart(a:text, 1)
+  endif
+  return a:text
+endfunction
+
 function! translator#util#text_proc(text) abort
   let text = substitute(a:text, "\n", ' ', 'g')
   let text = substitute(text, "\n\r", ' ', 'g')

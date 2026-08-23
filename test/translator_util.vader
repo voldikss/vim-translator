@@ -49,6 +49,13 @@ Execute (Test translator#util#safe_trim):
   AssertEqual 'abc', translator#util#safe_trim(" abc \n ")
 
 
+Execute (Test translator#util#preserve_case):
+  AssertEqual 'translation', translator#util#preserve_case('word', 'translation')
+  AssertEqual 'Translation', translator#util#preserve_case('Word', 'translation')
+  AssertEqual 'TRANSLATION', translator#util#preserve_case('WORD', 'translation')
+  AssertEqual 'translation', translator#util#preserve_case('单词', 'translation')
+
+
 Given:
   'How are you'
 Do:

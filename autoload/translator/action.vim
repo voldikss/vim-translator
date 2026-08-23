@@ -75,7 +75,7 @@ function! translator#action#replace(translations) abort
   for t in a:translations['results']
     if !empty(t.paraphrase)
       let reg_tmp = @a
-      let @a = t.paraphrase
+      let @a = translator#util#preserve_case(a:translations['text'], t.paraphrase)
       normal! gv"ap
       let @a = reg_tmp
       unlet reg_tmp
