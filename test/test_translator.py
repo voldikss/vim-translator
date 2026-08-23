@@ -57,6 +57,10 @@ class TestTranslator(unittest.TestCase):
             request["data"],
             {"auth_key": "test-key:fx", "text": "naive", "target_lang": "ZH"},
         )
+        self.assertEqual(
+            DeepLTranslator("test-key").get_url(),
+            "https://api.deepl.com/v2/translate",
+        )
 
     def test_haici(self):
         t = HaiciDict()

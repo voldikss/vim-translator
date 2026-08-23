@@ -333,7 +333,7 @@ class DeepLTranslator(BaseTranslator):
         self._auth_key = auth_key
 
     def get_url(self):
-        if self._auth_key.endswith(":fx"):
+        if self._auth_key and self._auth_key.endswith(":fx"):
             return "https://api-free.deepl.com/v2/translate"
         return "https://api.deepl.com/v2/translate"
 
@@ -667,12 +667,13 @@ def main():
             translation["status"] = 0
 
     threads = []
+    engine_kwargs = {"deepl": {"auth_key": args.deepl_auth_key}}
     for e in engines:
         cls = ENGINES.get(e)
         if not cls:
             sys.stderr.write("Invalid engine name %s\n" % e)
             continue
-        translator = cls(args.deepl_auth_key) if e == "deepl" else cls()
+        translator = cls(**engine_kwargs.get(e, {}))
         if args.proxy:
             translator.set_proxy(args.proxy)
 
