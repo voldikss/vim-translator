@@ -23,6 +23,13 @@ class TranslationCacheTest(unittest.TestCase):
             )
             self.assertIsNone(cache.get("google", "auto", "zh", "goodbye", []))
 
+    def test_empty_result_is_cached(self):
+        with tempfile.TemporaryDirectory() as directory:
+            cache = TranslationCache(os.path.join(directory, "cache.sqlite3"))
+            cache.save("google", "auto", "zh", "hello", [], {})
+
+            self.assertEqual({}, cache.get("google", "auto", "zh", "hello", []))
+
 
 if __name__ == "__main__":
     unittest.main()

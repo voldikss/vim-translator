@@ -86,7 +86,8 @@ Type `String`.
 
 Optional path to the SQLite cache database. The default is
 `$XDG_CACHE_HOME/vim-translator/translations.sqlite3`, or
-`~/.cache/vim-translator/translations.sqlite3` when `XDG_CACHE_HOME` is unset.
+`~/.cache/vim-translator/translations.sqlite3` when `XDG_CACHE_HOME` is unset
+(`%LOCALAPPDATA%/vim-translator/translations.sqlite3` on Windows).
 
 Default: `''`
 

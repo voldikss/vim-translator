@@ -182,10 +182,9 @@ class TranslationCache(object):
         else:
             cache_home = os.environ.get("XDG_CACHE_HOME")
             if not cache_home:
-                cache_home = os.path.join(
-                    os.environ.get("LOCALAPPDATA", os.path.expanduser("~")),
-                    ".cache",
-                )
+                cache_home = os.environ.get("LOCALAPPDATA")
+                if not cache_home:
+                    cache_home = os.path.join(os.path.expanduser("~"), ".cache")
             self.path = os.path.join(
                 cache_home, "vim-translator", "translations.sqlite3"
             )
@@ -707,7 +706,7 @@ def main():
     def runner(translator):
         if cache:
             result = cache.get(translator._name, from_lang, to_lang, text, options)
-            if result:
+            if result is not None:
                 translation["results"].append(copy.deepcopy(result))
                 return
         res = translator.translate(from_lang, to_lang, text, options)
