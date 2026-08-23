@@ -50,7 +50,7 @@ function! s:echo_when_normal(translations, retries) abort
       call translator#util#show_msg('Translation output timed out', 'warning')
     endif
   else
-    call translator#action#echo(a:translations)
+    call s:render_echo(a:translations)
   endif
 endfunction
 
@@ -60,7 +60,10 @@ function! translator#action#echo(translations) abort
     call timer_start(10, {-> s:echo_when_normal(a:translations, 100)})
     return
   endif
+  call s:render_echo(a:translations)
+endfunction
 
+function! s:render_echo(translations) abort
   let phonetic = ''
   let paraphrase = ''
   let explains = ''
