@@ -194,7 +194,11 @@ class TranslationCache(object):
             )
         directory = os.path.dirname(self.path)
         if not os.path.isdir(directory):
-            os.makedirs(directory)
+            try:
+                os.makedirs(directory)
+            except OSError:
+                if not os.path.isdir(directory):
+                    raise
         self._initialize()
 
     def _connect(self):
