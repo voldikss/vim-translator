@@ -2,6 +2,8 @@
 import sys
 import copy
 import os
+import json
+import subprocess
 import unittest
 
 curr_filename = os.path.abspath(__file__)
@@ -60,6 +62,17 @@ class TestTranslator(unittest.TestCase):
         t = YoudaoTranslator()
         r = t.translate("auto", "zh", "naive")
         self.assertTrue(len(r['paraphrase']) != 0 or len(r['explains']))
+
+    def test_original_text_case(self):
+        output = subprocess.check_output([
+            sys.executable,
+            os.path.join(curr_dir, "../script/translator.py"),
+            "--engines", "unknown",
+            "--target_lang", "zh",
+            "--source_lang", "auto",
+            "Word",
+        ])
+        self.assertEqual("Word", json.loads(output.decode("utf-8"))["original_text"])
 
 
 if __name__ == "__main__":

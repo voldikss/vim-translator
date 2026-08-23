@@ -603,7 +603,8 @@ def main():
 
     text = " ".join(args.text).strip("'").strip('"').strip()
     text = re.sub(r"([a-z])([A-Z][a-z])", r"\1 \2", text)
-    text = re.sub(r"([a-zA-Z])_([a-zA-Z])", r"\1 \2", text).lower()
+    original_text = re.sub(r"([a-zA-Z])_([a-zA-Z])", r"\1 \2", text)
+    text = original_text.lower()
     engines = args.engines
     to_lang = args.target_lang
     from_lang = args.source_lang
@@ -614,6 +615,7 @@ def main():
 
     translation = {}
     translation["text"] = text
+    translation["original_text"] = original_text
     translation["status"] = 1
     translation["results"] = []
 
