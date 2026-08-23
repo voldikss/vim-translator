@@ -53,6 +53,7 @@ Execute (Test translator#util#preserve_case):
   AssertEqual 'translation', translator#util#preserve_case('word', 'translation')
   AssertEqual 'Translation', translator#util#preserve_case('Word', 'translation')
   AssertEqual 'TRANSLATION', translator#util#preserve_case('WORD', 'translation')
+  AssertEqual 'translation', translator#util#preserve_case('wOrD', 'translation')
   AssertEqual 'translation', translator#util#preserve_case('单词', 'translation')
 
 

@@ -96,10 +96,10 @@ function! translator#util#safe_trim(text) abort
 endfunction
 
 function! translator#util#preserve_case(source, text) abort
+  let first_char = strcharpart(a:source, 0, 1)
   if a:source ==# toupper(a:source) && a:source !=# tolower(a:source)
     return toupper(a:text)
-  elseif strcharpart(a:source, 0, 1) ==# toupper(strcharpart(a:source, 0, 1))
-        \ && strcharpart(a:source, 0, 1) !=# tolower(strcharpart(a:source, 0, 1))
+  elseif first_char ==# toupper(first_char) && first_char !=# tolower(first_char)
     return toupper(strcharpart(a:text, 0, 1)) . strcharpart(a:text, 1)
   endif
   return a:text
