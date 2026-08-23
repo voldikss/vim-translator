@@ -60,6 +60,7 @@ Execute (Echo: Leave Insert mode):
   let g:translator_test_translations = translations
   call timer_start(10, {-> translator#action#echo(g:translator_test_translations)})
   startinsert
+  " Allow the initial timer plus 100 retries at 10 ms each.
   sleep 1100m
   AssertEqual 'n', mode()
   unlet g:translator_test_translations
