@@ -1,5 +1,5 @@
 " ============================================================================
-" FileName: translator.vim
+" FileName: translation.vim
 " Author: voldikss <dyzplus@gmail.com>
 " GitHub: https://github.com/voldikss
 " ============================================================================
@@ -19,4 +19,4 @@ hi def link TranslatorDelimiter         Comment
 hi def link Translator                  Normal
 hi def link TranslatorBorder            NormalFloat
 
-let b:current_syntax = 'translator'
+let b:current_syntax = 'translation'

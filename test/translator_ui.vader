@@ -35,24 +35,24 @@ Before:
 Execute (Floating: Basic):
   call translator#action#window(translations)
   Assert HasBuffer('translatorborder') > -1
-  Assert HasBuffer('translator') > -1
+  Assert HasBuffer('translation') > -1
   doautocmd CursorMoved
   sleep 300m
   Assert HasBuffer('translatorborder') == -1
-  Assert HasBuffer('translator') == -1
+  Assert HasBuffer('translation') == -1
 
 
 Execute (Floating: Jump into floating window):
   call translator#action#window(translations)
   wincmd p
-  AssertEqual 'translator', &filetype
+  AssertEqual 'translation', &filetype
   AssertEqual 1, &wrap
   AssertEqual 3, &conceallevel
-  Assert HasBuffer('translator') > -1
+  Assert HasBuffer('translation') > -1
   Assert HasBuffer('translatorborder') > -1
   wincmd p
   sleep 300m
-  Assert HasBuffer('translator') == -1
+  Assert HasBuffer('translation') == -1
   Assert HasBuffer('translatorborder') == -1
 
 

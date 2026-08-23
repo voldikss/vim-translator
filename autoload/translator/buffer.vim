@@ -33,7 +33,7 @@ function! translator#buffer#create_scratch_buf(...) abort
 endfunction
 
 function! translator#buffer#init(bufnr) abort
-  call setbufvar(a:bufnr, '&filetype', 'translator')
+  call setbufvar(a:bufnr, '&filetype', 'translation')
   call setbufvar(a:bufnr, '&buftype', 'nofile')
   call setbufvar(a:bufnr, '&bufhidden', 'wipe')
   call setbufvar(a:bufnr, '&buflisted', 0)
