@@ -42,9 +42,11 @@ function! translator#action#window(translations) abort
   call translator#window#open(content)
 endfunction
 
-function! s:echo_when_normal(translations) abort
+function! s:echo_when_normal(translations, retries) abort
   if mode(1) =~# '^[iR]'
-    call timer_start(10, {-> s:echo_when_normal(a:translations)})
+    if a:retries > 0
+      call timer_start(10, {-> s:echo_when_normal(a:translations, a:retries - 1)})
+    endif
   else
     call translator#action#echo(a:translations)
   endif
@@ -53,7 +55,7 @@ endfunction
 function! translator#action#echo(translations) abort
   if mode(1) =~# '^[iR]'
     stopinsert
-    call timer_start(10, {-> s:echo_when_normal(a:translations)})
+    call timer_start(10, {-> s:echo_when_normal(a:translations, 100)})
     return
   endif
 
