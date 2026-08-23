@@ -46,6 +46,12 @@ function! translator#translate(options, displaymode) abort
   if !empty(g:translator_proxy_url)
     let cmd += ['--proxy', g:translator_proxy_url]
   endif
+  if g:translator_cache_enable
+    let cmd += ['--cache']
+    if !empty(g:translator_cache_path)
+      let cmd += ['--cache-db', g:translator_cache_path]
+    endif
+  endif
   if match(a:options.engines, 'trans') >= 0
     let cmd += [printf("--options='%s'", join(g:translator_translate_shell_options, ','))]
   endif

@@ -71,6 +71,25 @@ Type `Boolean`.
 
 Default: `v:false`
 
+#### **`g:translator_cache_enable`**
+
+Type `Boolean`.
+
+Cache translation results in a local SQLite database. Cached results are reused
+for the same engine, languages, text, and translate-shell options.
+
+Default: `v:true`
+
+#### **`g:translator_cache_path`**
+
+Type `String`.
+
+Optional path to the SQLite cache database. The default is
+`$XDG_CACHE_HOME/vim-translator/translations.sqlite3`, or
+`~/.cache/vim-translator/translations.sqlite3` when `XDG_CACHE_HOME` is unset.
+
+Default: `''`
+
 #### **`g:translator_window_type`**
 
 Type `String`.

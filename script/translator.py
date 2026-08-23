@@ -10,6 +10,7 @@ import copy
 import json
 import argparse
 import codecs
+import sqlite3
 
 if sys.version_info.major < 3:
     is_py3 = False
@@ -172,6 +173,84 @@ class BaseTranslator(object):
                 from html.parser import HTMLParser
             h = HTMLParser()
             return h.unescape(text)
+
+
+class TranslationCache(object):
+    def __init__(self, path=None):
+        if path:
+            self.path = os.path.expanduser(path)
+        else:
+            cache_home = os.environ.get("XDG_CACHE_HOME")
+            if not cache_home:
+                cache_home = os.path.join(
+                    os.environ.get("LOCALAPPDATA", os.path.expanduser("~")),
+                    ".cache",
+                )
+            self.path = os.path.join(
+                cache_home, "vim-translator", "translations.sqlite3"
+            )
+        directory = os.path.dirname(self.path)
+        if not os.path.isdir(directory):
+            os.makedirs(directory)
+        self._initialize()
+
+    def _connect(self):
+        return sqlite3.connect(self.path, timeout=5)
+
+    def _initialize(self):
+        with self._connect() as connection:
+            connection.execute(
+                """
+                CREATE TABLE IF NOT EXISTS translations (
+                    engine TEXT NOT NULL,
+                    source_lang TEXT NOT NULL,
+                    target_lang TEXT NOT NULL,
+                    text TEXT NOT NULL,
+                    options TEXT NOT NULL,
+                    result TEXT NOT NULL,
+                    PRIMARY KEY (engine, source_lang, target_lang, text, options)
+                )
+                """
+            )
+
+    def get(self, engine, source_lang, target_lang, text, options):
+        options = json.dumps(options, sort_keys=True)
+        try:
+            with self._connect() as connection:
+                row = connection.execute(
+                    """
+                    SELECT result FROM translations
+                    WHERE engine = ? AND source_lang = ? AND target_lang = ?
+                        AND text = ? AND options = ?
+                    """,
+                    (engine, source_lang, target_lang, text, options),
+                ).fetchone()
+            return json.loads(row[0]) if row else None
+        except (ValueError, sqlite3.Error) as error:
+            sys.stderr.write("Unable to read translation cache: %s\n" % error)
+            return None
+
+    def save(self, engine, source_lang, target_lang, text, options, result):
+        options = json.dumps(options, sort_keys=True)
+        try:
+            with self._connect() as connection:
+                connection.execute(
+                    """
+                    INSERT OR REPLACE INTO translations
+                        (engine, source_lang, target_lang, text, options, result)
+                    VALUES (?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        engine,
+                        source_lang,
+                        target_lang,
+                        text,
+                        options,
+                        json.dumps(result),
+                    ),
+                )
+        except (TypeError, ValueError, sqlite3.Error) as error:
+            sys.stderr.write("Unable to save translation cache: %s\n" % error)
 
 
 # NOTE: expired
@@ -596,6 +675,8 @@ def main():
     parser.add_argument("--source_lang", required=False, default="en")
     parser.add_argument("--proxy", required=False)
     parser.add_argument("--options", type=str, default=None, required=False)
+    parser.add_argument("--cache", action="store_true")
+    parser.add_argument("--cache-db", required=False)
     parser.add_argument("text", nargs="+", type=str)
     args = parser.parse_args()
 
@@ -611,6 +692,12 @@ def main():
         options = args.options.split(",")
     else:
         options = []
+    cache = None
+    if args.cache:
+        try:
+            cache = TranslationCache(args.cache_db)
+        except (OSError, sqlite3.Error) as error:
+            sys.stderr.write("Unable to initialize translation cache: %s\n" % error)
 
     translation = {}
     translation["text"] = text
@@ -618,8 +705,15 @@ def main():
     translation["results"] = []
 
     def runner(translator):
+        if cache:
+            result = cache.get(translator._name, from_lang, to_lang, text, options)
+            if result:
+                translation["results"].append(copy.deepcopy(result))
+                return
         res = translator.translate(from_lang, to_lang, text, options)
         if res:
+            if cache:
+                cache.save(translator._name, from_lang, to_lang, text, options, res)
             translation["results"].append(copy.deepcopy(res))
         else:
             translation["status"] = 0

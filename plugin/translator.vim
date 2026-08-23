@@ -12,6 +12,8 @@ endif
 let g:loaded_translator= 1
 
 let g:translator_history_enable          = get(g:, 'translator_history_enable', v:false)
+let g:translator_cache_enable            = get(g:, 'translator_cache_enable', v:true)
+let g:translator_cache_path              = get(g:, 'translator_cache_path', '')
 let g:translator_proxy_url               = get(g:, 'translator_proxy_url', '')
 let g:translator_source_lang             = get(g:, 'translator_source_lang', 'auto')
 let g:translator_target_lang             = get(g:, 'translator_target_lang', 'zh')

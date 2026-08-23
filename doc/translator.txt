@@ -62,6 +62,16 @@ g:translator_history_enable                  *g:translator_history_enable*
 	Type |Boolean|
 	Default: |v:false|
 
+g:translator_cache_enable                    *g:translator_cache_enable*
+	Type |Boolean|
+	Cache translation results in a local SQLite database.
+	Default: |v:true|
+
+g:translator_cache_path                      *g:translator_cache_path*
+	Type |String|
+	Optional path to the SQLite cache database.
+	Default: ''
+
 g:translator_window_type                     *g:translator_window_type*
 	Type |String|
 	Available: 'popup'(use floatwin in nvim or popup in vim),
