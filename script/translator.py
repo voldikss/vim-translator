@@ -363,7 +363,10 @@ class DeepLTranslator(BaseTranslator):
             return None
 
         res = self.create_translation(sl, tl, text)
-        res["paraphrase"] = "\n".join(x["text"] for x in translations)
+        try:
+            res["paraphrase"] = "\n".join(x["text"] for x in translations)
+        except (KeyError, TypeError):
+            return None
         return res
 
 

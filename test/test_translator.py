@@ -62,6 +62,11 @@ class TestTranslator(unittest.TestCase):
             "https://api.deepl.com/v2/translate",
         )
 
+    def test_deepl_invalid_response(self):
+        t = DeepLTranslator("test-key")
+        t.http_post = lambda url, data: '{"translations": [{}]}'
+        self.assertIsNone(t.translate("auto", "zh", "naive"))
+
     def test_haici(self):
         t = HaiciDict()
         r = t.translate("", "zh", "naive")
