@@ -182,7 +182,11 @@ class TranslationCache(object):
         else:
             cache_home = os.environ.get("XDG_CACHE_HOME")
             if not cache_home:
-                cache_home = os.environ.get("LOCALAPPDATA")
+                cache_home = (
+                    os.environ.get("LOCALAPPDATA")
+                    if sys.platform == "win32"
+                    else None
+                )
                 if not cache_home:
                     cache_home = os.path.join(os.path.expanduser("~"), ".cache")
             self.path = os.path.join(
@@ -692,7 +696,7 @@ def main():
     else:
         options = []
     cache = None
-    if args.cache:
+    if args.cache or args.cache_db:
         try:
             cache = TranslationCache(args.cache_db)
         except (OSError, sqlite3.Error) as error:
