@@ -46,6 +46,8 @@ function! s:echo_when_normal(translations, retries) abort
   if mode(1) =~# '^[iR]'
     if a:retries > 0
       call timer_start(10, {-> s:echo_when_normal(a:translations, a:retries - 1)})
+    else
+      call translator#util#show_msg('Translation output timed out', 'warning')
     endif
   else
     call translator#action#echo(a:translations)
