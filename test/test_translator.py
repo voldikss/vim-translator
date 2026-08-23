@@ -74,6 +74,10 @@ class TestTranslator(unittest.TestCase):
         self.assertIsNone(t.translate("auto", "zh", "naive"))
         t.http_post = lambda url, data, headers: '{"translations": []}'
         self.assertIsNone(t.translate("auto", "zh", "naive"))
+        t.http_post = lambda url, data, headers: "{}"
+        self.assertIsNone(t.translate("auto", "zh", "naive"))
+        t.http_post = lambda url, data, headers: None
+        self.assertIsNone(t.translate("auto", "zh", "naive"))
 
     def test_haici(self):
         t = HaiciDict()
