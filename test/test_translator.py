@@ -72,6 +72,8 @@ class TestTranslator(unittest.TestCase):
         t = DeepLTranslator("test-key")
         t.http_post = lambda url, data, headers: '{"translations": [{}]}'
         self.assertIsNone(t.translate("auto", "zh", "naive"))
+        t.http_post = lambda url, data, headers: '{"translations": []}'
+        self.assertIsNone(t.translate("auto", "zh", "naive"))
 
     def test_haici(self):
         t = HaiciDict()

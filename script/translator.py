@@ -361,6 +361,8 @@ class DeepLTranslator(BaseTranslator):
             translations = obj["translations"]
         except (KeyError, TypeError, ValueError):
             return None
+        if not translations:
+            return None
 
         res = self.create_translation(sl, tl, text)
         try:
