@@ -50,7 +50,7 @@ g:translator_default_engines                 *g:translator_default_engines*
 	Available: 'bing', 'google', 'haici', 'iciba'(expired), 'sdcv',
 	'trans', 'youdao'
 	Default: If g:translator_target_lang is 'zh', this will be
-	['bing', 'google', 'haici', 'youdao'], otherwise ['google']
+	['google', 'haici', 'youdao'], otherwise ['google']
 
 g:translator_proxy_url                       *g:translator_proxy_url*
 	Type |String|
