@@ -46,9 +46,17 @@ function! translator#translate(options, displaymode) abort
   if !empty(g:translator_proxy_url)
     let cmd += ['--proxy', g:translator_proxy_url]
   endif
+  if match(a:options.engines, 'deepl') >= 0 && !empty(g:translator_deepl_auth_key)
+    let cmd += ['--deepl_auth_key', g:translator_deepl_auth_key]
+  endif
   if match(a:options.engines, 'trans') >= 0
     let cmd += [printf("--options='%s'", join(g:translator_translate_shell_options, ','))]
   endif
-  call translator#logger#log(join(cmd, ' '))
+  let log_cmd = copy(cmd)
+  let deepl_auth_key_idx = index(log_cmd, '--deepl_auth_key')
+  if deepl_auth_key_idx >= 0
+    let log_cmd[deepl_auth_key_idx + 1] = '***'
+  endif
+  call translator#logger#log(join(log_cmd, ' '))
   call translator#job#jobstart(cmd, a:displaymode)
 endfunction

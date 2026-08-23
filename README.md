@@ -55,9 +55,17 @@ Please refer to [language support list](https://github.com/voldikss/vim-translat
 
 Type `List` of `String`.
 
-Available: `'bing'`, `'google'`, `'haici'`, `'iciba'`(expired), `'sdcv'`, `'trans'`, `'youdao'`
+Available: `'bing'`, `'deepl'`, `'google'`, `'haici'`, `'iciba'`(expired), `'sdcv'`, `'trans'`, `'youdao'`
 
 Default: If `g:translator_target_lang` is `'zh'`, this will be `['bing', 'google', 'haici', 'youdao']`, otherwise `['google']`
+
+#### **`g:translator_deepl_auth_key`**
+
+Type `String`.
+
+Default: `''`
+
+Required when using the `'deepl'` engine. Set this to a [DeepL API key](https://www.deepl.com/pro-api). Free API keys ending in `:fx` use the Free endpoint automatically; all other keys use the Pro endpoint.
 
 #### **`g:translator_proxy_url`**
 

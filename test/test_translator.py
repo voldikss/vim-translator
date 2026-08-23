@@ -11,6 +11,7 @@ sys.path.append(script_path)
 
 from translator import BaicizhanTranslator
 from translator import BingDict
+from translator import DeepLTranslator
 from translator import GoogleTranslator
 from translator import HaiciDict
 from translator import ICibaTranslator
@@ -38,6 +39,24 @@ class TestTranslator(unittest.TestCase):
         t = GoogleTranslator()
         r = t.translate("auto", "zh", "naive")
         self.assertTrue(len(r['paraphrase']) != 0 or len(r['explains']))
+
+    def test_deepl(self):
+        t = DeepLTranslator("test-key:fx")
+        request = {}
+
+        def http_post(url, data):
+            request["url"] = url
+            request["data"] = data
+            return '{"translations": [{"text": "天真"}]}'
+
+        t.http_post = http_post
+        r = t.translate("auto", "zh_cn", "naive")
+        self.assertEqual(r["paraphrase"], "天真")
+        self.assertEqual(request["url"], "https://api-free.deepl.com/v2/translate")
+        self.assertEqual(
+            request["data"],
+            {"auth_key": "test-key:fx", "text": "naive", "target_lang": "ZH"},
+        )
 
     def test_haici(self):
         t = HaiciDict()

@@ -47,10 +47,16 @@ g:translator_source_lang                     *g:translator_source_lang*
 
 g:translator_default_engines                 *g:translator_default_engines*
 	Type |List| of |String|
-	Available: 'bing', 'google', 'haici', 'iciba'(expired), 'sdcv',
+	Available: 'bing', 'deepl', 'google', 'haici', 'iciba'(expired), 'sdcv',
 	'trans', 'youdao'
 	Default: If g:translator_target_lang is 'zh', this will be
 	['bing', 'google', 'haici', 'youdao'], otherwise ['google']
+
+g:translator_deepl_auth_key                *g:translator_deepl_auth_key*
+	Type |String|
+	Required when using the 'deepl' engine. Free API keys ending in ':fx'
+	use the Free endpoint; all other keys use the Pro endpoint.
+	Default: ''
 
 g:translator_proxy_url                       *g:translator_proxy_url*
 	Type |String|

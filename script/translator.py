@@ -327,6 +327,46 @@ class GoogleTranslator(BaseTranslator):
         return result
 
 
+class DeepLTranslator(BaseTranslator):
+    def __init__(self, auth_key=None):
+        super(DeepLTranslator, self).__init__("deepl")
+        self._auth_key = auth_key
+
+    def get_url(self):
+        if self._auth_key.endswith(":fx"):
+            return "https://api-free.deepl.com/v2/translate"
+        return "https://api.deepl.com/v2/translate"
+
+    def normalize_lang(self, lang):
+        lang = lang.replace("_", "-").upper()
+        return "ZH" if lang in ("ZH-CN", "ZH-TW") else lang
+
+    def translate(self, sl, tl, text, options=None):
+        if not self._auth_key:
+            sys.stderr.write("DeepL API key is required\n")
+            return None
+
+        data = {
+            "auth_key": self._auth_key,
+            "text": text,
+            "target_lang": self.normalize_lang(tl),
+        }
+        if sl != "auto":
+            data["source_lang"] = self.normalize_lang(sl)
+        resp = self.http_post(self.get_url(), data)
+        if not resp:
+            return None
+        try:
+            obj = json.loads(resp)
+            translations = obj["translations"]
+        except (KeyError, TypeError, ValueError):
+            return None
+
+        res = self.create_translation(sl, tl, text)
+        res["paraphrase"] = "\n".join(x["text"] for x in translations)
+        return res
+
+
 class HaiciDict(BaseTranslator):
     def __init__(self):
         super(HaiciDict, self).__init__("haici")
@@ -570,6 +610,7 @@ class SdcvShell(BaseTranslator):
 ENGINES = {
     "baicizhan": BaicizhanTranslator,
     "bing": BingDict,
+    "deepl": DeepLTranslator,
     "haici": HaiciDict,
     "google": GoogleTranslator,
     "iciba": ICibaTranslator,
@@ -595,6 +636,7 @@ def main():
     parser.add_argument("--target_lang", required=False, default="zh")
     parser.add_argument("--source_lang", required=False, default="en")
     parser.add_argument("--proxy", required=False)
+    parser.add_argument("--deepl_auth_key", required=False)
     parser.add_argument("--options", type=str, default=None, required=False)
     parser.add_argument("text", nargs="+", type=str)
     args = parser.parse_args()
@@ -630,7 +672,7 @@ def main():
         if not cls:
             sys.stderr.write("Invalid engine name %s\n" % e)
             continue
-        translator = cls()
+        translator = cls(args.deepl_auth_key) if e == "deepl" else cls()
         if args.proxy:
             translator.set_proxy(args.proxy)
 
