@@ -43,6 +43,10 @@ function! translator#action#window(translations) abort
 endfunction
 
 function! translator#action#echo(translations) abort
+  if mode(1) =~# '^[iR]'
+    stopinsert
+  endif
+
   let phonetic = ''
   let paraphrase = ''
   let explains = ''
