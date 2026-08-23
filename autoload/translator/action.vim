@@ -45,6 +45,8 @@ endfunction
 function! translator#action#echo(translations) abort
   if mode(1) =~# '^[iR]'
     stopinsert
+    call timer_start(0, {-> translator#action#echo(a:translations)})
+    return
   endif
 
   let phonetic = ''
