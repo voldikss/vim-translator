@@ -57,6 +57,7 @@ endfunction
 function! translator#action#echo(translations) abort
   if mode(1) =~# '^[iR]'
     stopinsert
+    " Retry for up to one second while stopinsert completes.
     call timer_start(10, {-> s:echo_when_normal(a:translations, 100)})
     return
   endif

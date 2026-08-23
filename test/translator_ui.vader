@@ -58,11 +58,14 @@ Execute (Floating: Jump into floating window):
 
 Execute (Echo: Leave Insert mode):
   let g:translator_test_translations = translations
+  redir => output
   call timer_start(10, {-> translator#action#echo(g:translator_test_translations)})
   startinsert
   " Allow the initial timer plus 100 retries at 10 ms each.
   sleep 1100m
+  redir END
   AssertEqual 'n', mode()
+  Assert output =~ 'imported'
   unlet g:translator_test_translations
 
 
